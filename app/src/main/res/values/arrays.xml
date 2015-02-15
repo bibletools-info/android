@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="bible_books_short">
+        <item>Gen</item>
+        <item>Exo</item>
+        <item>Lev</item>
+        <item>Num</item>
+        <item>Deu</item>
+        <item>Jos</item>
+        <item>Judg</item>
+        <item>Rut</item>
+        <item>1Sa</item>
+        <item>2Sa</item>
+        <item>1Ki</item>
+        <item>2Ki</item>
+        <item>1Ch</item>
+        <item>2Ch</item>
+        <item>Ezr</item>
+        <item>Neh</item>
+        <item>Est</item>
+        <item>Job</item>
+        <item>Psa</item>
+        <item>Pro</item>
+        <item>Ecc</item>
+        <item>Son</item>
+        <item>Isa</item>
+        <item>Jer</item>
+        <item>Lam</item>
+        <item>Eze</item>
+        <item>Dan</item>
+        <item>Hos</item>
+        <item>Joe</item>
+        <item>Amo</item>
+        <item>Oba</item>
+        <item>Jon</item>
+        <item>Mic</item>
+        <item>Nah</item>
+        <item>Hab</item>
+        <item>Zep</item>
+        <item>Hag</item>
+        <item>Zec</item>
+        <item>Mal</item>
+        <item>Mat</item>
+        <item>Mar</item>
+        <item>Luk</item>
+        <item>Joh</item>
+        <item>Act</item>
+        <item>Rom</item>
+        <item>1Co</item>
+        <item>2Co</item>
+        <item>Gal</item>
+        <item>Eph</item>
+        <item>Phili</item>
+        <item>Col</item>
+        <item>1Th</item>
+        <item>2Th</item>
+        <item>1Ti</item>
+        <item>2Ti</item>
+        <item>Tit</item>
+        <item>Phile</item>
+        <item>Heb</item>
+        <item>Jam</item>
+        <item>1Pe</item>
+        <item>2Pe</item>
+        <item>1Jo</item>
+        <item>2Jo</item>
+        <item>3Jo</item>
+        <item>Jud</item>
+        <item>Rev</item>
+    </string-array>
+
+    <string-array name="bible_books_full">
+        <item>Genesis</item>
+        <item>Exodus</item>
+        <item>Leviticus</item>
+        <item>Numbers</item>
+        <item>Deuteronomy</item>
+        <item>Joshua</item>
+        <item>Judges</item>
+        <item>Ruth</item>
+        <item>1 Samuel</item>
+        <item>2 Samuel</item>
+        <item>1 Kings</item>
+        <item>2 Kings</item>
+        <item>1 Chronicles</item>
+        <item>2 Chronicles</item>
+        <item>Ezra</item>
+        <item>Nehemiah</item>
+        <item>Esther</item>
+        <item>Job</item>
+        <item>Psalms</item>
+        <item>Proverbs</item>
+        <item>Ecclesiastes</item>
+        <item>Song of Solomon</item>
+        <item>Isaiah</item>
+        <item>Jeremiah</item>
+        <item>Lamentations</item>
+        <item>Ezekiel</item>
+        <item>Daniel</item>
+        <item>Hosea</item>
+        <item>Joel</item>
+        <item>Amos</item>
+        <item>Obadiah</item>
+        <item>Jonah</item>
+        <item>Micah</item>
+        <item>Nahum</item>
+        <item>Habakkuk</item>
+        <item>Zephaniah</item>
+        <item>Haggai</item>
+        <item>Zechariah</item>
+        <item>Malachi</item>
+        <item>Mathew</item>
+        <item>Mark</item>
+        <item>Luke</item>
+        <item>John</item>
+        <item>Acts</item>
+        <item>Romans</item>
+        <item>1 Corinthians</item>
+        <item>2 Corinthians</item>
+        <item>Galatians</item>
+        <item>Ephesians</item>
+        <item>Philippians</item>
+        <item>Colossians</item>
+        <item>1 Thessalonians</item>
+        <item>2 Thessalonians</item>
+        <item>1 Timothy</item>
+        <item>2 Timothy</item>
+        <item>Titus</item>
+        <item>Philemon</item>
+        <item>Hebrews</item>
+        <item>James</item>
+        <item>1 Peter</item>
+        <item>2 Peter</item>
+        <item>1 John</item>
+        <item>2 John</item>
+        <item>3 John</item>
+        <item>Jude</item>
+        <item>Revelation</item>
+    </string-array>
+
+    <string-array name="egw_books_list">
+        <item>Ellen G. White 1888 Materials, The</item>
+        <item>Acts of the Apostles, The</item>
+        <item>God\'s Amazing Grace</item>
+        <item>Adventist Home, The</item>
+        <item>An Appeal to Mothers</item>
+        <item>[Australasian] Union Conference Record</item>
+        <item>Appeal to Youth</item>
+        <item>Commentary, The SDA , Vol. 1 (2BC for Vol. 2, etc.)</item>
+        <item>Bible Echo</item>
+        <item>Biography of E. G. White, Vol. 1 (2Bio for Vol. 2, etc.)</item>
+        <item>To Be Like Jesus</item>
+        <item>Bible Training School</item>
+        <item>Conflict and Courage</item>
+        <item>Counsels for the Church</item>
+        <item>Counsels on Diet and Foods</item>
+        <item>Christian Education</item>
+        <item>Christian Experience and Teaching</item>
+        <item>Colporteur Evangelist</item>
+        <item>Child Guidance</item>
+        <item>Counsels on Health</item>
+        <item>Christian Leadership</item>
+        <item>Christian Service</item>
+        <item>Country Living</item>
+        <item>Colporteur Ministry</item>
+        <item>Christ\'s Object Lessons</item>
+        <item>Confrontation</item>
+        <item>Christ Our Saviour</item>
+        <item>Counsels on Stewardship</item>
+        <item>Counsels on Sabbath School Work</item>
+        <item>Counsels to Parents, Teachers, and Students</item>
+        <item>Christian Temperance (EGW) and Bible Hygiene (James White)</item>
+        <item>Christ Triumphant</item>
+        <item>Counsels to Writers and Editors</item>
+        <item>Desire of Ages, The</item>
+        <item>Document File</item>
+        <item>Daughters of God</item>
+        <item>Education</item>
+        <item>Evangelism</item>
+        <item>Early Writings</item>
+        <item>Fundamentals of Christian Education</item>
+        <item>Faith I Live By, The</item>
+        <item>From the Heart</item>
+        <item>Faith and Works</item>
+        <item>Great Controversy, The</item>
+        <item>Great Controversy, The (1888 Edition)</item>
+        <item>General Conference Bulletin</item>
+        <item>General Conference Daily Bulletin</item>
+        <item>Good Health</item>
+        <item>Gospel Herald</item>
+        <item>Gospel Workers</item>
+        <item>Gospel Workers (1892 edition)</item>
+        <item>Healthful Living</item>
+        <item>In Heavenly Places</item>
+        <item>Health, Philanthropic, and Medical Missionary Work</item>
+        <item>Health Reformer</item>
+        <item>Historical Sketches of the Foreign Missions of the Seventh-day Adventists</item>
+        <item>Heaven</item>
+        <item>Last Day Events</item>
+        <item>Lift Him Up</item>
+        <item>Lion on the Loose</item>
+        <item>Sketches From the Life of Paul</item>
+        <item>Life Sketches of Ellen G. White</item>
+        <item>Life Sketches of James and Ellen White (1888 edition)</item>
+        <item>Letter, E. G. White</item>
+        <item>Letters to Young Lovers</item>
+        <item>Maranatha, the Lord is Coming</item>
+        <item>Thoughts From the Mount of Blessing</item>
+        <item>Mind, Character and Personality, Vol. 1 (2MCP for Vol. 2)</item>
+        <item>Ministry of Healing, The</item>
+        <item>My Life Today</item>
+        <item>Medical Ministry</item>
+        <item>Manuscript Releases, Vol. 1 (2MR for Vol. 2, etc.)</item>
+        <item>Manuscript, E. G. White</item>
+        <item>Messages to Young People</item>
+        <item>New Life, A</item>
+        <item>Notebook Leaflets, Vol. 1 (2NL for Vol. 2)</item>
+        <item>Pastoral Ministry</item>
+        <item>Our Father Cares</item>
+        <item>Our High Calling</item>
+        <item>Pacific Health Journal</item>
+        <item>Publishing Ministry, The</item>
+        <item>Patriarchs and Prophets</item>
+        <item>Prophets and Kings</item>
+        <item>Prayer</item>
+        <item>Pacific Union Recorder</item>
+        <item>Reflecting Christ</item>
+        <item>Review and Herald</item>
+        <item>Radiant Religion</item>
+        <item>Retirement Years, The</item>
+        <item>Solemn Appeal, A</item>
+        <item>Sermons and Talks, Vol. 1 (2SAT for Vol. 2)</item>
+        <item>Steps to Christ</item>
+        <item>Sons and Daughters of God</item>
+        <item>Echo Southern Field Echo</item>
+        <item>Spiritual Gifts, Vols. 1 (3SG for Vols. 3, etc.)</item>
+        <item>Steps to Jesus (adapted from SC) or Story of Jesus (on CD-ROM)</item>
+        <item>Sanctified Life, The</item>
+        <item>Selected Messages, Book One (2SM for Book 2, etc.)</item>
+        <item>Story of Jesus, The</item>
+        <item>Spirit of Prophecy, The, Vol. 1 (2SP for Vol. 2, etc.)</item>
+        <item>Special Testimonies, Series A (Nos. 1-12)</item>
+        <item>Special Testimonies, Series B (Nos. 1-19)</item>
+        <item>Special Testimonies to the Battle Creek Church</item>
+        <item>Special Testimonies on Education</item>
+        <item>Special Testimonies Relating to Medical Missionary Work</item>
+        <item>Special Testimonies to Managers and Workers in Institutions</item>
+        <item>Special Testimonies to Physicians and Helpers</item>
+        <item>Story of Redemption, The</item>
+        <item>Signs of the Times</item>
+        <item>Southern Work, The</item>
+        <item>Southern Watchman (if with date)</item>
+        <item>Testimonies for the Church Vol. 1 (2T for Vol. 2, etc.)</item>
+        <item>Truth About Angels, The</item>
+        <item>This Day With God</item>
+        <item>Temperance</item>
+        <item>Testimonies to Ministers and Gospel Workers</item>
+        <item>That I May Know Him</item>
+        <item>Testimonies to Southern Africa</item>
+        <item>Testimonies on Sexual Behaviour, Adultery, and Divorce</item>
+        <item>Testimony Studies on Diet and Foods</item>
+        <item>Selections From the Testimonies Bearing on Sabbath School Work (1900)</item>
+        <item>Testimony Treasures, Vol. 1 (2TT for Vol. 2, etc.)</item>
+        <item>Upward Look, The</item>
+        <item>Undated EGW Manuscript</item>
+        <item>Voice in Speech and Song, The</item>
+        <item>Welfare Ministry</item>
+        <item>Youth\'s Instructor, The</item>
+        <item>Ye Shall Receive Power, A</item>
+        <item>Word to the "Little Flock," A</item>
+    </string-array>
+
+    <string-array name="egw_books_codes_list">
+        <item>1888</item>
+        <item>AA</item>
+        <item>AG</item>
+        <item>AH</item>
+        <item>ApM</item>
+        <item>AUCR</item>
+        <item>AY</item>
+        <item>1BC</item>
+        <item>BE</item>
+        <item>1Bio</item>
+        <item>BLJ</item>
+        <item>BTS</item>
+        <item>CC</item>
+        <item>CCh</item>
+        <item>CD</item>
+        <item>CE</item>
+        <item>CET</item>
+        <item>CEv</item>
+        <item>CG</item>
+        <item>CH</item>
+        <item>ChL</item>
+        <item>ChS</item>
+        <item>CL</item>
+        <item>CM</item>
+        <item>COL</item>
+        <item>Con</item>
+        <item>COS</item>
+        <item>CS</item>
+        <item>CSW</item>
+        <item>CT</item>
+        <item>CTBH</item>
+        <item>CTr</item>
+        <item>CW</item>
+        <item>DA</item>
+        <item>DF</item>
+        <item>DG</item>
+        <item>Ed</item>
+        <item>Ev</item>
+        <item>EW</item>
+        <item>FE</item>
+        <item>FLB</item>
+        <item>FH</item>
+        <item>FW</item>
+        <item>GC</item>
+        <item>GC88</item>
+        <item>GCB</item>
+        <item>GCDB</item>
+        <item>GdH</item>
+        <item>GH</item>
+        <item>GW</item>
+        <item>GW92</item>
+        <item>HL</item>
+        <item>HP</item>
+        <item>HPMMW</item>
+        <item>HR</item>
+        <item>HS</item>
+        <item>Hvn</item>
+        <item>LDE</item>
+        <item>LHU</item>
+        <item>LL</item>
+        <item>LP</item>
+        <item>LS</item>
+        <item>LS88</item>
+        <item>Lt</item>
+        <item>LYL</item>
+        <item>Mar</item>
+        <item>MB</item>
+        <item>1MCP</item>
+        <item>MH</item>
+        <item>ML</item>
+        <item>MM</item>
+        <item>1MR</item>
+        <item>Ms</item>
+        <item>MYP</item>
+        <item>NL</item>
+        <item>1NL</item>
+        <item>PaM</item>
+        <item>OFC</item>
+        <item>OHC</item>
+        <item>PHJ</item>
+        <item>PM</item>
+        <item>PP</item>
+        <item>PK</item>
+        <item>Pr</item>
+        <item>PUR</item>
+        <item>RC</item>
+        <item>RH</item>
+        <item>RR</item>
+        <item>RY</item>
+        <item>SA</item>
+        <item>1SAT</item>
+        <item>SC</item>
+        <item>SD</item>
+        <item>SF Echo</item>
+        <item>1SG</item>
+        <item>SJ</item>
+        <item>SL</item>
+        <item>1SM</item>
+        <item>SOJ</item>
+        <item>1SP</item>
+        <item>SpT"A"</item>
+        <item>SpT"B"</item>
+        <item>SpTBCC</item>
+        <item>SpTEd</item>
+        <item>SpTMMW</item>
+        <item>SpTMWI</item>
+        <item>SpTPH</item>
+        <item>SR</item>
+        <item>ST</item>
+        <item>SW</item>
+        <item>SW</item>
+        <item>1T</item>
+        <item>TA</item>
+        <item>TDG</item>
+        <item>Te</item>
+        <item>TM</item>
+        <item>TMK</item>
+        <item>TSA</item>
+        <item>TSB</item>
+        <item>TSDF</item>
+        <item>TSS</item>
+        <item>1TT</item>
+        <item>UL</item>
+        <item>Und Ms</item>
+        <item>VSS</item>
+        <item>WM</item>
+        <item>YI</item>
+        <item>YRP</item>
+        <item>WLF</item>
+    </string-array>
+
+</resources>

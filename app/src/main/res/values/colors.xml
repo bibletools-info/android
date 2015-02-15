@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- theme colors-->
+    <color name="theme_primary">#34495f</color>
+    <color name="theme_primary_dark">#34495e</color>
+    <color name="theme_accent">#B8B8B8</color>
+
+    <color name="reference_title_background">#f5f5f5</color>
+
+    <!-- general text colors -->
+    <color name="text">#212121</color>
+    <color name="secondary">#727272</color>
+    <color name="hint">#B8B8B8</color>
+    <color name="dividers">#DADADA</color>
+
+
+</resources>
