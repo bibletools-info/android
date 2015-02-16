@@ -1,37 +1,69 @@
 package rawcomposition.bibletools.info.ui;
 
+import android.app.Activity;
+import android.database.Cursor;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.SearchView;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.orhanobut.wasp.CallBack;
 import com.orhanobut.wasp.WaspError;
 
+import java.util.List;
+
 import rawcomposition.bibletools.info.BibleToolsApplication;
 import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.api.BibleToolsApi;
-import rawcomposition.bibletools.info.model.References;
+import rawcomposition.bibletools.info.model.QueryObject;
+import rawcomposition.bibletools.info.model.json.References;
+import rawcomposition.bibletools.info.ui.adapters.SearchCursorAdapter;
+import rawcomposition.bibletools.info.ui.fragments.NavigationDrawerFragment;
 import rawcomposition.bibletools.info.ui.fragments.ReferencesFragment;
+import rawcomposition.bibletools.info.util.BibleQueryUtil;
 
 
-public class MainActivity extends ActionBarActivity implements SearchView.OnQueryTextListener{
+public class MainActivity extends BaseActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks{
 
     private static final String TAG = MainActivity.class.getName();
 
+    private SearchView mSearchView;
+
+    private MenuItem mSearchItem;
+
+    private NavigationDrawerFragment mNavigationDrawerFragment;
+
+    private CharSequence mTitle;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected int getLayoutResource() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new ReferencesFragment(), ReferencesFragment.class.getName())
-                    .commit();
-        }
+
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+
+
+        mTitle = getTitle();
+
+        // Set up the drawer.
+        mNavigationDrawerFragment.setUp(
+                R.id.navigation_drawer,
+                (DrawerLayout) findViewById(R.id.drawer_layout));
     }
 
 
@@ -40,9 +72,42 @@ public class MainActivity extends ActionBarActivity implements SearchView.OnQuer
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        mSearchView.setOnQueryTextListener(this);
+        mSearchItem = menu.findItem(R.id.action_search);
+        mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchItem);
+        mSearchView.setQueryHint(getString(R.string.action_search));
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if(!TextUtils.isEmpty(query)){
+                    performQuery(query);
+                    MenuItemCompat.collapseActionView(mSearchItem);
+
+                    return true;
+                }
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                if(!TextUtils.isEmpty(query)){
+                    List<QueryObject> queryObjects = BibleQueryUtil.getSuggestions(MainActivity.this, query);
+
+                    if(queryObjects.isEmpty()){
+                        return false;
+                    }
+
+                    Cursor cursor = BibleQueryUtil.getQueryCursor(queryObjects);
+
+                    SearchCursorAdapter adapter = new SearchCursorAdapter(MainActivity.this, cursor, 0, queryObjects);
+                    mSearchView.setSuggestionsAdapter(adapter);
+
+                    return true;
+                }
+
+                return false;
+            }
+        });
 
         return true;
     }
@@ -62,22 +127,12 @@ public class MainActivity extends ActionBarActivity implements SearchView.OnQuer
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        performQuery(query);
-        return true;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String s) {
-        return false;
-    }
 
 
     /*
         test method
      */
-    private void performQuery(String query){
+    public void performQuery(String query){
         String[] arr = query.split(" ");
 
         if(arr.length != 3){
@@ -101,6 +156,9 @@ public class MainActivity extends ActionBarActivity implements SearchView.OnQuer
             return;
         }
 
+        if(mSearchItem != null){
+            MenuItemCompat.collapseActionView(mSearchItem);
+        }
 
         BibleToolsApi api = ((BibleToolsApplication)getApplication())
                 .getApi();
@@ -128,6 +186,74 @@ public class MainActivity extends ActionBarActivity implements SearchView.OnQuer
     private void showToast(String message){
         Toast.makeText(this, message, Toast.LENGTH_LONG)
                 .show();
+    }
+
+
+    @Override
+    public void onNavigationDrawerItemSelected(int position) {
+
+        Fragment fragment = (position == 0) ? new ReferencesFragment() : PlaceholderFragment.newInstance(position + 1);
+
+        // update the main content by replacing fragments
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, fragment, fragment.getClass().getName())
+                .commit();
+
+    }
+
+    public void onSectionAttached(int number) {
+        switch (number) {
+            case 1:
+                mTitle = getString(R.string.app_name);
+                break;
+            case 2:
+                mTitle = getString(R.string.title_section2);
+                break;
+            case 3:
+                mTitle = getString(R.string.title_section3);
+                break;
+        }
+    }
+
+    /**
+     * A placeholder fragment containing a simple view.
+     */
+    public static class PlaceholderFragment extends Fragment {
+        /**
+         * The fragment argument representing the section number for this
+         * fragment.
+         */
+        private static final String ARG_SECTION_NUMBER = "section_number";
+
+        /**
+         * Returns a new instance of this fragment for the given section
+         * number.
+         */
+        public static PlaceholderFragment newInstance(int sectionNumber) {
+            PlaceholderFragment fragment = new PlaceholderFragment();
+            Bundle args = new Bundle();
+            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        public PlaceholderFragment() {
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_nav, container, false);
+            return rootView;
+        }
+
+        @Override
+        public void onAttach(Activity activity) {
+            super.onAttach(activity);
+            ((MainActivity) activity).onSectionAttached(
+                    getArguments().getInt(ARG_SECTION_NUMBER));
+        }
     }
 
 

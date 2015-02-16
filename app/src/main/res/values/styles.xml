@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
 
         <item name="colorPrimary">@color/theme_primary</item>
@@ -12,7 +12,41 @@
         <item name="android:textColorLink">@color/theme_primary_dark</item>
         <item name="android:textColorSecondary">@color/secondary</item>
         <item name="android:divider">@color/dividers</item>
+
+        <item name="popupMenuStyle">@style/Widget.AppTheme.PopupMenu</item>
+        <item name="listPopupWindowStyle">@style/Widget.AppTheme.PopupMenu</item>
+        <item name="textAppearanceLargePopupMenu">@style/TextAppearance.LargePopupMenu</item>
+        <item name="searchViewStyle">@style/Widget.AppTheme.SearchView</item>
+        <item name="actionBarIconColor">@android:color/white</item>
     </style>
+
+    <style name="Widget.AppTheme.ListView.DropDown" parent="Widget.AppCompat.Light.ListView.DropDown">
+        <item name="android:listSelector">?popupItemBackground</item>
+        <item name="android:divider">@null</item>
+        <item name="android:dividerHeight">0dp</item>
+    </style>
+
+    <style name="Widget.AppTheme.PopupMenu" parent="Widget.AppCompat.Light.PopupMenu">
+        <item name="android:dropDownSelector">?popupItemBackground</item>
+    </style>
+
+    <style name="TextAppearance.LargePopupMenu" parent="TextAppearance.AppCompat.Widget.PopupMenu.Large">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="ActionBar.TitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="ActionBarThemeOverlay" parent="">
+        <item name="android:textColorPrimary">#fff</item>
+        <item name="colorControlNormal">?actionBarIconColor</item>
+        <item name="colorControlHighlight">#3fff</item>
+    </style>
+
+<style name="ActionBarPopupThemeOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="Widget.AppTheme.SearchView" parent="Widget.AppCompat.Light.SearchView" />
 
     <style name="AppTheme.CardView">
         <item name="android:layout_width">match_parent</item>

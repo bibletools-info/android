@@ -1,4 +1,4 @@
-package rawcomposition.bibletools.info.model;
+package rawcomposition.bibletools.info.model.json;
 
 import java.io.Serializable;
 

@@ -5,7 +5,7 @@ import com.orhanobut.wasp.CallBack;
 import com.orhanobut.wasp.http.GET;
 import com.orhanobut.wasp.http.Path;
 
-import rawcomposition.bibletools.info.model.References;
+import rawcomposition.bibletools.info.model.json.References;
 
 
 /**

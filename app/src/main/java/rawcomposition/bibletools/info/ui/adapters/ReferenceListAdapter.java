@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import rawcomposition.bibletools.info.R;
-import rawcomposition.bibletools.info.model.Reference;
+import rawcomposition.bibletools.info.model.json.Reference;
 import rawcomposition.bibletools.info.util.AnimUtil;
 
 /**
@@ -28,6 +28,10 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
     public ReferenceListAdapter(List<Reference> references, Context context) {
         this.mReferences = references;
         this.context = context;
+    }
+
+    public void setReferences(List<Reference> mReferences) {
+        this.mReferences = mReferences;
     }
 
     @Override
