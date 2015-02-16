@@ -31,6 +31,8 @@ import rawcomposition.bibletools.info.ui.adapters.SearchCursorAdapter;
 import rawcomposition.bibletools.info.ui.fragments.NavigationDrawerFragment;
 import rawcomposition.bibletools.info.ui.fragments.ReferencesFragment;
 import rawcomposition.bibletools.info.util.BibleQueryUtil;
+import rawcomposition.bibletools.info.util.CacheUtil;
+import rawcomposition.bibletools.info.util.GSonUtil;
 
 
 public class MainActivity extends BaseActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks{
@@ -167,11 +169,15 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
             @Override
             public void onSuccess(References response) {
 
+                CacheUtil.save(MainActivity.this,
+                        References.class.getName(),
+                        GSonUtil.getInstance().toJson(response));
+
                 ReferencesFragment fragment = (ReferencesFragment)
                         getSupportFragmentManager().findFragmentByTag(ReferencesFragment.class.getName());
 
                 if(fragment != null){
-                    fragment.displayReferences(response);
+                    fragment.displayReferences(response, true);
                 }
             }
 
@@ -208,10 +214,10 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
                 mTitle = getString(R.string.app_name);
                 break;
             case 2:
-                mTitle = getString(R.string.title_section2);
+                mTitle = getString(R.string.title_favourites);
                 break;
             case 3:
-                mTitle = getString(R.string.title_section3);
+                mTitle = getString(R.string.title_categories);
                 break;
         }
     }

@@ -56,8 +56,22 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
         holder.title.setText((reference.getTitle()));
 
-        holder.content.setText(Html.fromHtml(reference.getContent()));
+        final TextView content = holder.content;
+        content.setText(Html.fromHtml(reference.getContent()));
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(reference.isCollapsed()){
+                    content.setMaxLines(Integer.MAX_VALUE);
+                    reference.setCollapsed(false);
+                } else {
+                    content.setMaxLines(4);
+                    reference.setCollapsed(true);
+                }
+            }
+        });
 
     }
 

@@ -30,6 +30,8 @@ public class Reference extends JSONModel {
     @SerializedName("content")
     private String content;
 
+    private boolean isCollapsed = false;
+
     public int getId() {
         return id;
     }
@@ -84,5 +86,13 @@ public class Reference extends JSONModel {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public boolean isCollapsed() {
+        return isCollapsed;
+    }
+
+    public void setCollapsed(boolean isCollapsed) {
+        this.isCollapsed = isCollapsed;
     }
 }
