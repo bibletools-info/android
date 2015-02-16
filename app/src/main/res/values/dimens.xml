@@ -5,6 +5,8 @@
 
     <dimen name="toolbar_elevation">4dp</dimen>
 
+    <dimen name="text_spacing_extra">6dp</dimen>
+
     <dimen name="text_micro">12sp</dimen>
     <dimen name="text_small">14sp</dimen>
     <dimen name="text_regular">16sp</dimen>

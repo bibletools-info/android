@@ -9,7 +9,7 @@
         <item name="colorAccent">@color/theme_accent</item>
 
         <item name="android:textColor">@color/text</item>
-        <item name="android:textColorLink">@color/theme_primary_dark</item>
+        <item name="android:textColorLink">@color/link_color</item>
         <item name="android:textColorSecondary">@color/secondary</item>
         <item name="android:divider">@color/dividers</item>
 
@@ -72,12 +72,14 @@
         <item name="android:paddingTop">@dimen/margin_small</item>
         <item name="android:background">@color/reference_title_background</item>
         <item name="android:textSize">@dimen/text_medium</item>
+        <item name="fontStyle">@string/font_medium</item>
     </style>
 
     <style name="referenceText" parent="AppTheme.TextView">
-        <item name="android:textSize">@dimen/text_regular</item>
+        <item name="android:textSize">@dimen/text_medium</item>
         <item name="android:maxLines">4</item>
         <item name="android:ellipsize">end</item>
+        <item name="android:lineSpacingExtra">@dimen/margin_tiny</item>
     </style>
 
 </resources>
