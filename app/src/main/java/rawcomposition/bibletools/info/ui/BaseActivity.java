@@ -31,8 +31,11 @@ public abstract class BaseActivity extends ActionBarActivity {
         mHeaderView = findViewById(R.id.header_view);
         if (mToolbar != null) {
             try{
-                ViewCompat.setTranslationZ(mHeaderView, getResources().getDimension(R.dimen.toolbar_elevation));
-                ViewCompat.setElevation(mHeaderView, getResources().getDimension(R.dimen.toolbar_elevation));
+
+                if(mHeaderView != null){
+                    ViewCompat.setTranslationZ(mHeaderView, getResources().getDimension(R.dimen.toolbar_elevation));
+                    ViewCompat.setElevation(mHeaderView, getResources().getDimension(R.dimen.toolbar_elevation));
+                }
 
                 setSupportActionBar(mToolbar);
 

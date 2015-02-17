@@ -1,6 +1,7 @@
 package rawcomposition.bibletools.info.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -123,6 +124,7 @@ public class MainActivity extends BaseActivity implements NavigationDrawerFragme
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SearchActivity.class));
             return true;
         }
 
