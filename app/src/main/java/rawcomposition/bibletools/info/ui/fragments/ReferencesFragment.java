@@ -15,7 +15,9 @@ import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.model.json.Reference;
 import rawcomposition.bibletools.info.model.json.References;
 import rawcomposition.bibletools.info.ui.MainActivity;
+import rawcomposition.bibletools.info.ui.SearchActivity;
 import rawcomposition.bibletools.info.ui.adapters.ReferenceListAdapter;
+import rawcomposition.bibletools.info.ui.callbacks.ScrollManager;
 import rawcomposition.bibletools.info.util.CacheUtil;
 import rawcomposition.bibletools.info.util.DeviceUtil;
 import rawcomposition.bibletools.info.util.GSonUtil;
@@ -62,6 +64,14 @@ public class ReferencesFragment extends BaseFragment {
         showCache();
 
 
+       /* ScrollManager manager = new ScrollManager();
+        manager.attach(mRecycler);
+        manager.addView(((SearchActivity)getActivity()).getHideAbleView()
+                , ScrollManager.Direction.UP);
+      //  manager.addView(fab, ScrollManager.Direction.DOWN);
+        manager.setInitialOffset(((SearchActivity)getActivity())
+                .getHideAbleView().getHeight());*/
+
     }
 
     public void displayReferences(References references, boolean smoothScroll){
@@ -90,7 +100,41 @@ public class ReferencesFragment extends BaseFragment {
         }
 
         //No cache fetch Genesis 1:1
-        ((MainActivity)getActivity())
-                .performQuery("1 1 1");
+        ((SearchActivity)getActivity())
+                .performQuery("Genesis 1:1");
+    }
+
+
+    private class ScrollListener extends RecyclerView.OnScrollListener{
+
+        private static final int MIN_SCROLL_TO_HIDE = 10;
+        private int accummulatedDy;
+        private int totalDy;
+        private int initialOffset = 48;
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+
+            totalDy += dy;
+
+            if (totalDy < initialOffset) {
+                return;
+            }
+
+            if (dy > 0) {
+                accummulatedDy = accummulatedDy > 0 ? accummulatedDy + dy : dy;
+                if (accummulatedDy > MIN_SCROLL_TO_HIDE) {
+                    ((SearchActivity)getActivity())
+                            .hideActionBar();
+                }
+            } else if (dy < 0) {
+                accummulatedDy = accummulatedDy < 0 ? accummulatedDy + dy : dy;
+                if (accummulatedDy < -MIN_SCROLL_TO_HIDE) {
+                    ((SearchActivity)getActivity())
+                            .showActionBar();
+                }
+            }
+        }
     }
 }
