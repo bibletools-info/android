@@ -22,18 +22,13 @@ public class SearchTextWatcher implements TextWatcher{
     private ClearAutoCompleteTextView mTextView;
     private ImageView mDrawerToggle;
 
+    private View.OnClickListener mDrawerToggleListener;
 
-    public SearchTextWatcher(ClearAutoCompleteTextView textView, ImageView drawerToggle) {
+
+    public SearchTextWatcher(ClearAutoCompleteTextView textView, ImageView drawerToggle, View.OnClickListener drawerToggleListener) {
         this.mTextView = textView;
         this.mDrawerToggle = drawerToggle;
-
-        mDrawerToggle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                mTextView.setText("");
-            }
-        });
+        this.mDrawerToggleListener = drawerToggleListener;
     }
 
     @Override
@@ -51,6 +46,8 @@ public class SearchTextWatcher implements TextWatcher{
                 mState = BURGER;
 
                 mTextView.hideClearButton();
+
+                mDrawerToggle.setOnClickListener(mDrawerToggleListener);
             }
         } else {
             if(mState != ARROW){
@@ -58,6 +55,8 @@ public class SearchTextWatcher implements TextWatcher{
                 mState = ARROW;
 
                 mTextView.showClearButton();
+
+                mDrawerToggle.setOnClickListener(mClearListener);
             }
         }
 
@@ -67,4 +66,12 @@ public class SearchTextWatcher implements TextWatcher{
     public void afterTextChanged(Editable s) {
 
     }
+
+
+    private View.OnClickListener mClearListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mTextView.setText("");
+        }
+    };
 }

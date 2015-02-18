@@ -18,6 +18,7 @@ package rawcomposition.bibletools.info.ui.callbacks;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,10 +93,23 @@ public class ScrollManager extends RecyclerView.OnScrollListener {
         }
     }
 
-    private void hideView(View view, Direction direction) {
+    private void hideView(final View view, Direction direction) {
         int height = calculateTranslation(view);
         int translateY = direction == Direction.UP ? -height : height;
         runTranslateAnimation(view, translateY, new AccelerateInterpolator(3));
+
+        new Handler()
+                .postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(view.getVisibility() == View.VISIBLE){
+                            view.setVisibility(View.GONE);
+                        }
+                    }
+                }, view.getContext().getResources().getInteger(android.R.integer.config_mediumAnimTime));
+
+
+
     }
 
     /**
@@ -113,13 +127,19 @@ public class ScrollManager extends RecyclerView.OnScrollListener {
     }
 
     private void showView(View view) {
+        if(view.getVisibility() == ViewGroup.GONE){
+            view.setVisibility(View.VISIBLE);
+        }
+
+
         runTranslateAnimation(view, 0, new DecelerateInterpolator(3));
     }
 
-    private void runTranslateAnimation(View view, int translateY, Interpolator interpolator) {
+    private void runTranslateAnimation(final View view, final int translateY, Interpolator interpolator) {
         Animator slideInAnimation = ObjectAnimator.ofFloat(view, "translationY", translateY);
         slideInAnimation.setDuration(view.getContext().getResources().getInteger(android.R.integer.config_mediumAnimTime));
         slideInAnimation.setInterpolator(interpolator);
+
         slideInAnimation.start();
     }
 }

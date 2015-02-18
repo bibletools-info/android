@@ -2,24 +2,27 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/AppTheme.CardView"
-    android:clickable="true">
+    android:clickable="true"
+    android:descendantFocusability="blocksDescendants">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:descendantFocusability="blocksDescendants">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="@color/theme_primary"
+            android:gravity="center_vertical">
             <rawcomposition.bibletools.info.custom.AppTextView
                 android:id="@+id/reference_title"
-                style="@style/referenceTitle"
+                style="@style/referenceTitle.verse"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                tools:text="SDA Bible Commentary"/>
+                tools:text="Genesis 1:1"
+                android:textColor="@android:color/white"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -27,16 +30,15 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/blank"/>
+                    android:id="@+id/navigate_previous"
+                    style="@style/selectableItem.verseNavigation"
+                    android:src="@drawable/ic_chevron_left_white"
+                    />
 
                 <ImageView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/blank"/>
+                    android:id="@+id/navigate_next"
+                    style="@style/selectableItem.verseNavigation"
+                    android:src="@drawable/ic_chevron_right_white"/>
 
             </LinearLayout>
         </LinearLayout>
@@ -49,7 +51,7 @@
         <rawcomposition.bibletools.info.custom.AppTextView
             android:id="@+id/reference_text"
             style="@style/referenceText"
-            tools:text="1. Now. From the Hebrew particle we, which is more commonly translated “and.” This is the first instance of its use at the beginning of a book. All but four of the historical books of the"/>
+            tools:text="In the beginning God created the heaven and earth"/>
 
     </LinearLayout>
 

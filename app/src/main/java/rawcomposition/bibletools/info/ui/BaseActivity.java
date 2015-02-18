@@ -50,6 +50,7 @@ public abstract class BaseActivity extends ActionBarActivity {
                     ViewCompat.setElevation(mHeaderView, getResources().getDimension(R.dimen.toolbar_elevation));
                 }
 
+
                 setSupportActionBar(mToolbar);
 
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);

@@ -1,6 +1,6 @@
 package rawcomposition.bibletools.info.ui.fragments;
 
-import android.support.v7.widget.GridLayoutManager;
+import android.app.Activity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -13,11 +13,10 @@ import java.util.List;
 
 import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.model.json.Reference;
-import rawcomposition.bibletools.info.model.json.References;
+import rawcomposition.bibletools.info.model.json.ReferencesResponse;
 import rawcomposition.bibletools.info.ui.MainActivity;
-import rawcomposition.bibletools.info.ui.SearchActivity;
 import rawcomposition.bibletools.info.ui.adapters.ReferenceListAdapter;
-import rawcomposition.bibletools.info.ui.callbacks.ScrollManager;
+import rawcomposition.bibletools.info.ui.callbacks.OnNavigationListener;
 import rawcomposition.bibletools.info.util.CacheUtil;
 import rawcomposition.bibletools.info.util.DeviceUtil;
 import rawcomposition.bibletools.info.util.GSonUtil;
@@ -35,9 +34,24 @@ public class ReferencesFragment extends BaseFragment {
 
     private RecyclerView mRecycler;
 
+    private OnNavigationListener mNavigationListener;
+
     @Override
     protected int getLayoutResource() {
         return R.layout.fragment_references;
+    }
+
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        try {
+            mNavigationListener = (OnNavigationListener) activity;
+        } catch (ClassCastException ex) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnNavigationListener");
+        }
     }
 
     @Override
@@ -58,8 +72,8 @@ public class ReferencesFragment extends BaseFragment {
 
         mProgress = (ProgressBar) rootView.findViewById(R.id.progress);
 
-        mAdapter = new ReferenceListAdapter(mReferences, getActivity());
-        mRecycler.setAdapter(mAdapter);
+        //mAdapter = new ReferenceListAdapter(getActivity(), mReferences, mNavigationListener);
+       // mRecycler.setAdapter(mAdapter);
 
         showCache();
 
@@ -72,12 +86,14 @@ public class ReferencesFragment extends BaseFragment {
         manager.setInitialOffset(((SearchActivity)getActivity())
                 .getHideAbleView().getHeight());*/
 
+       // mRecycler.setOnScrollListener(new ScrollListener());
+
     }
 
-    public void displayReferences(References references, boolean smoothScroll){
+    public void displayReferences(ReferencesResponse referencesResponse, boolean smoothScroll){
         mProgress.setVisibility(View.GONE);
 
-        this.mReferences = references.getResources();
+        this.mReferences = referencesResponse.getResources();
         mAdapter.setReferences(mReferences);
         mAdapter.notifyDataSetChanged();
 
@@ -87,20 +103,20 @@ public class ReferencesFragment extends BaseFragment {
     }
 
     private void showCache(){
-        String jsonString = CacheUtil.find(getActivity(), References.class.getName());
+        String jsonString = CacheUtil.find(getActivity(), ReferencesResponse.class.getName());
 
         if(!TextUtils.isEmpty(jsonString)){
-            References references = GSonUtil.getInstance().fromJson(jsonString, References.class);
+            ReferencesResponse referencesResponse = GSonUtil.getInstance().fromJson(jsonString, ReferencesResponse.class);
 
-            if(references != null){
-                displayReferences(references, false);
+            if(referencesResponse != null){
+                displayReferences(referencesResponse, false);
 
                 return;
             }
         }
 
         //No cache fetch Genesis 1:1
-        ((SearchActivity)getActivity())
+        ((MainActivity)getActivity())
                 .performQuery("Genesis 1:1");
     }
 
@@ -125,16 +141,16 @@ public class ReferencesFragment extends BaseFragment {
             if (dy > 0) {
                 accummulatedDy = accummulatedDy > 0 ? accummulatedDy + dy : dy;
                 if (accummulatedDy > MIN_SCROLL_TO_HIDE) {
-                    ((SearchActivity)getActivity())
-                            .hideActionBar();
+                    //slideUp
                 }
             } else if (dy < 0) {
                 accummulatedDy = accummulatedDy < 0 ? accummulatedDy + dy : dy;
                 if (accummulatedDy < -MIN_SCROLL_TO_HIDE) {
-                    ((SearchActivity)getActivity())
-                            .showActionBar();
+                    //slideDown
                 }
             }
         }
     }
+
+
 }

@@ -5,7 +5,7 @@ import com.orhanobut.wasp.CallBack;
 import com.orhanobut.wasp.http.GET;
 import com.orhanobut.wasp.http.Path;
 
-import rawcomposition.bibletools.info.model.json.References;
+import rawcomposition.bibletools.info.model.json.ReferencesResponse;
 
 
 /**
@@ -18,6 +18,6 @@ public interface BibleToolsApi {
             @Path("book") int book,
             @Path("chapter") int chapter,
             @Path("verse") int verse,
-            CallBack<References> callBack
+            CallBack<ReferencesResponse> callBack
     );
 }
