@@ -10,10 +10,22 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import rawcomposition.bibletools.info.R;
+
 /**
  *
  */
 public class CacheUtil {
+
+    private static final String FILE_PRE = "CACHE_";
+
+    public static String getFileName(Context context, int book, int chapter, int verse){
+        String[] books = context.getResources().getStringArray(R.array.bible_books_short);
+
+        String shortBook = books[book - 1];
+
+        return FILE_PRE + shortBook + "_" + chapter + ":" + verse;
+    }
 
     public static void save(Context context, String fileName, String data) {
 

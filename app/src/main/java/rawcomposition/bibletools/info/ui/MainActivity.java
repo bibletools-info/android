@@ -5,20 +5,17 @@ import android.speech.RecognizerIntent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +42,6 @@ import rawcomposition.bibletools.info.ui.adapters.ReferenceListAdapter;
 import rawcomposition.bibletools.info.ui.callbacks.OnNavigationListener;
 import rawcomposition.bibletools.info.ui.callbacks.SearchQueryStripListener;
 import rawcomposition.bibletools.info.ui.fragments.NavigationDrawerFragment;
-import rawcomposition.bibletools.info.ui.fragments.ReferencesFragment;
 import rawcomposition.bibletools.info.util.BibleQueryUtil;
 import rawcomposition.bibletools.info.util.CacheUtil;
 import rawcomposition.bibletools.info.util.DeviceUtil;
@@ -155,7 +151,11 @@ public class MainActivity extends BaseActivity implements OnNavigationListener, 
    }
 
     private void showCache(){
-        String jsonString = CacheUtil.find(this, ReferencesResponse.class.getName());
+        //  Default to Genesis 1:1 on start up
+        performRequest(1, 1, 1);
+
+
+       /* String jsonString = CacheUtil.find(this, ReferencesResponse.class.getName());
 
         if(!TextUtils.isEmpty(jsonString)){
             ReferencesResponse referencesResponse = GSonUtil.getInstance().fromJson(jsonString, ReferencesResponse.class);
@@ -168,7 +168,7 @@ public class MainActivity extends BaseActivity implements OnNavigationListener, 
         }
 
         //No cache fetch Genesis 1:1
-        performRequest(1, 1, 1);
+        performRequest(1, 1, 1);*/
     }
 
     public void displayReferences(ReferencesResponse referencesResponse, boolean smoothScroll){
@@ -281,7 +281,20 @@ public class MainActivity extends BaseActivity implements OnNavigationListener, 
 
     }
 
-    private void performRequest(int book, int chapter, int verse){
+    private void performRequest(final int book, final int chapter, final int verse){
+
+        String jsonString = CacheUtil.find(this, CacheUtil.getFileName(this, book, chapter, verse));
+
+        if(!TextUtils.isEmpty(jsonString)){
+
+            ReferencesResponse referencesResponse = GSonUtil.getInstance().fromJson(jsonString, ReferencesResponse.class);
+
+            if(referencesResponse != null){
+                displayReferences(referencesResponse, true);
+
+                return;
+            }
+        }
 
         BibleToolsApi api = ((BibleToolsApplication)getApplication())
                 .getApi();
@@ -291,7 +304,7 @@ public class MainActivity extends BaseActivity implements OnNavigationListener, 
             public void onSuccess(ReferencesResponse response) {
 
                 CacheUtil.save(MainActivity.this,
-                        ReferencesResponse.class.getName(),
+                        CacheUtil.getFileName(MainActivity.this, book, chapter, verse),
                         GSonUtil.getInstance().toJson(response));
 
                  displayReferences(response, true);
@@ -301,6 +314,7 @@ public class MainActivity extends BaseActivity implements OnNavigationListener, 
             @Override
             public void onError(WaspError waspError) {
                 Log.d(TAG, waspError.getErrorMessage());
+                mProgress.setVisibility(View.GONE);
 
                 showToast(getString(R.string.api_default_error));
             }
@@ -390,8 +404,12 @@ public class MainActivity extends BaseActivity implements OnNavigationListener, 
     private void showToolbar() {
         float headerTranslationY = ViewHelper.getTranslationY(mHeaderView);
         if (headerTranslationY != 0) {
+         //   mHeaderView.setVisibility(View.VISIBLE);
             ViewPropertyAnimator.animate(mHeaderView).cancel();
-            ViewPropertyAnimator.animate(mHeaderView).translationY(0).setDuration(200).start();
+            ViewPropertyAnimator.animate(mHeaderView)
+                    .translationY(0)
+                    .setDuration(200)
+                    .start();
         }
     }
 
@@ -400,7 +418,10 @@ public class MainActivity extends BaseActivity implements OnNavigationListener, 
         int toolbarHeight = mHeaderView.getHeight();
         if (headerTranslationY != -toolbarHeight) {
             ViewPropertyAnimator.animate(mHeaderView).cancel();
-            ViewPropertyAnimator.animate(mHeaderView).translationY(-toolbarHeight).setDuration(200).start();
+            ViewPropertyAnimator.animate(mHeaderView)
+                    .translationY(-toolbarHeight)
+                    .setDuration(200)
+                    .start();
 
         }
     }
