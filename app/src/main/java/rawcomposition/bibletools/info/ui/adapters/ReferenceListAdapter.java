@@ -1,20 +1,26 @@
 package rawcomposition.bibletools.info.ui.adapters;
 
 import android.content.Context;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
 import rawcomposition.bibletools.info.R;
+import rawcomposition.bibletools.info.custom.IconizedMenu;
 import rawcomposition.bibletools.info.model.json.Reference;
 import rawcomposition.bibletools.info.ui.callbacks.OnNavigationListener;
 import rawcomposition.bibletools.info.util.AnimUtil;
+import rawcomposition.bibletools.info.util.TextViewUtil;
 
 /**
  * Created by tinashe on 2015/02/15.
@@ -88,7 +94,7 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
         final TextView content = holder.content;
 
-        if(position == 0){
+        if(position == TITLE){
             content.setText(reference.getText());
 
             if(TextUtils.isEmpty(reference.getPrevious())){
@@ -118,6 +124,8 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
         } else {
 
             content.setText(Html.fromHtml(reference.getContent()));
+
+            setOptionsListener(holder.refOptions, reference);
 
         }
 
@@ -150,6 +158,8 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
         private View navigatePrevious;
         private View navigateNext;
 
+        private ImageView refOptions;
+
         public ReferenceViewHolder(View itemView) {
             super(itemView);
 
@@ -158,6 +168,43 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
             navigatePrevious = itemView.findViewById(R.id.navigate_previous);
             navigateNext = itemView.findViewById(R.id.navigate_next);
+
+            refOptions = (ImageView) itemView.findViewById(R.id.action_options);
         }
+    }
+
+    private void setOptionsListener(final ImageView imageView, final Reference item){
+        final String subject = mReferences.get(0).getTitle()
+                + " - " + item.getTitle();
+        final CharSequence text = Html.fromHtml(item.getContent());
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                PopupMenu popupMenu = new PopupMenu(context, imageView);
+                MenuInflater menuInflater = popupMenu.getMenuInflater();
+                menuInflater.inflate(R.menu.menu_ref_options, popupMenu.getMenu());
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+
+                        switch (menuItem.getItemId()){
+                            case R.id.action_share:
+                                TextViewUtil.shareOrSearch(context, subject, text, true);
+                                return true;
+                            case R.id.action_copy:
+                                return true;
+                            case R.id.action_favourite:
+                                return true;
+                        }
+                        return false;
+                    }
+                });
+
+                popupMenu.show();
+            }
+        });
     }
 }

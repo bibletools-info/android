@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rawcomposition.bibletools.info.custom.AppTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/margin_medium"
+    android:paddingRight="@dimen/margin_medium"
+    android:paddingBottom="12dp"
+    android:paddingTop="12dp"
+    android:textSize="@dimen/text_regular"
+    tools:text="@string/action_settings"
+    app:fontStyle="@string/font_medium" />
+

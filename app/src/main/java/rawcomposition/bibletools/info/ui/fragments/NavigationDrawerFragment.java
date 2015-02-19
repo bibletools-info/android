@@ -9,10 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import rawcomposition.bibletools.info.R;
+import rawcomposition.bibletools.info.ui.adapters.DrawerAdapter;
+import rawcomposition.bibletools.info.util.TextViewUtil;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -49,35 +51,27 @@ public class NavigationDrawerFragment extends Fragment {
         selectItem(mCurrentSelectedPosition);
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        // Indicate that this fragment would like to influence the set of actions in the action bar.
-        setHasOptionsMenu(true);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mDrawerListView = (ListView) inflater.inflate(
+        View  view = inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
+        mDrawerListView = (ListView) view.findViewById(R.id.drawer_list);
+
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItem(position);
             }
         });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActivity(),
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                new String[]{
-                        getString(R.string.title_home),
-                        getString(R.string.title_favourites),
-                        getString(R.string.title_categories),
-                }));
+        mDrawerListView.setAdapter(new DrawerAdapter(getActivity()));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-        return mDrawerListView;
+
+        TextView textView = (TextView) view.findViewById(R.id.app_title);
+        TextViewUtil.setCustomFontTitle(getActivity(), textView);
+
+        return view;
     }
 
     public boolean isDrawerOpen() {

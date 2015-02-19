@@ -118,6 +118,7 @@
 
     <style name="selectableItem">
         <item name="android:background">@drawable/selectable_item_background</item>
+        <item name="android:clickable">true</item>
     </style>
 
     <style name="selectableItem.verseNavigation">

@@ -221,7 +221,12 @@ public class MainActivity extends BaseActivity implements OnNavigationListener, 
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Listening...");
-        startActivityForResult(intent, REQUEST_CODE);
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_CODE);
+        } else {
+            showToast("Speech not supported");
+        }
     }
 
     /**
