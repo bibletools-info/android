@@ -20,6 +20,10 @@
         <item name="actionBarIconColor">@android:color/white</item>
 
         <item name="selectableItemBackground">@drawable/selectable_item_background</item>
+
+        <item name="md_positive_color">@color/theme_primary</item>
+        <item name="md_neutral_color">@color/theme_primary</item>
+        <item name="md_negative_color">@color/theme_primary</item>
     </style>
 
     <style name="Widget.AppTheme.ListView.DropDown" parent="Widget.AppCompat.Light.ListView.DropDown">

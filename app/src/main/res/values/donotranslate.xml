@@ -5,4 +5,9 @@
 
     <string name="font_regular">Lato-Light.ttf</string>
     <string name="font_medium">Lato-Regular.ttf</string>
+
+    <string name="app_full_name">Bible Tools.info</string>
+    <string name="app_email">akjackson1@gmail.com</string>
+    <string name="app_help">http://bibletools.info/about</string>
+    <string name="app_version">Version: 1.0.0</string>
 </resources>

@@ -9,6 +9,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import rawcomposition.bibletools.info.R;
 
@@ -20,7 +23,7 @@ public class CacheUtil {
     private static final String FILE_PRE = "CACHE_";
 
     public static String getFileName(Context context, int book, int chapter, int verse){
-        String[] books = context.getResources().getStringArray(R.array.bible_books_short);
+        String[] books = context.getResources().getStringArray(R.array.bible_books_full);
 
         String shortBook = books[book - 1];
 
@@ -105,5 +108,30 @@ public class CacheUtil {
             }
         }
         return dir.delete();
+    }
+
+    public static List<String> getCachedReferences(Context context){
+        List<String> references = new ArrayList<>();
+        String fileName;
+
+        File dir = new File(context.getCacheDir().getPath());
+        if (dir.exists()) {
+            for (File file : dir.listFiles()) {
+                fileName = file.getName();
+
+                if(fileName.contains(FILE_PRE)){
+                    references.add(fileName.replace(FILE_PRE, "").replace("_", " "));
+                }
+            }
+        }
+
+        Collections.reverse(references);
+
+        return references;
+    }
+
+    public static String getRecentReference(Context context){
+
+        return getCachedReferences(context).isEmpty() ? "Genesis 1:1" : getCachedReferences(context).get(0);
     }
 }

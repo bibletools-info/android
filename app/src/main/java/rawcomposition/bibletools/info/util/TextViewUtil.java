@@ -146,6 +146,7 @@ public class TextViewUtil {
 
 
 
+
     public static void clickify(TextView view, String clickableText, ClickSpan.OnClickListener listener) {
 
         CharSequence text = view.getText();

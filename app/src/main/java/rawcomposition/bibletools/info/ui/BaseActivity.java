@@ -1,5 +1,9 @@
 package rawcomposition.bibletools.info.ui;
 
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewCompat;
@@ -13,6 +17,7 @@ import com.nineoldandroids.view.ViewPropertyAnimator;
 
 import java.util.ArrayList;
 
+import rawcomposition.bibletools.info.BuildConfig;
 import rawcomposition.bibletools.info.R;
 
 /**
@@ -114,5 +119,26 @@ public abstract class BaseActivity extends ActionBarActivity {
                         .setInterpolator(new DecelerateInterpolator());
             }
         }
+    }
+
+
+    protected void sendFeedBack(){
+
+        String subject = getString(R.string.app_full_name)
+                + " (Android - " + BuildConfig.VERSION_NAME + ")";
+
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:"));
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{getString(R.string.app_email)});
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(Intent.createChooser(intent, getString(R.string.label_email)));
+        }
+    }
+
+    protected void showHelp(){
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(getString(R.string.app_help)));
+        startActivity(intent);
     }
 }

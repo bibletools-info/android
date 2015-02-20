@@ -49,6 +49,7 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
     public void setReferences(List<Reference> mReferences) {
         this.mReferences = mReferences;
+        this.mLastAnimatedPosition = -1;
     }
 
     @Override

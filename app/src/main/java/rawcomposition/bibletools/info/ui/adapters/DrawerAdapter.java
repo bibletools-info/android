@@ -44,11 +44,11 @@ public class DrawerAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
        ViewHolder holder;
 
-        if(position == 2){
+        if(position == 3){
             return mInflater.inflate(R.layout.drawer_divider, parent, false);
         }
 
-        if(position > 2){
+        if(position > 3){
             TextView textView = (TextView)mInflater.inflate(R.layout.drawer_text_item, parent, false);
             textView.setText(getItem(position - 1));
             return textView;
@@ -73,6 +73,9 @@ public class DrawerAdapter extends BaseAdapter {
                 break;
             case 1:
                 holder.icon.setImageResource(R.drawable.ic_favorite_grey);
+                break;
+            case 2:
+                holder.icon.setImageResource(R.drawable.ic_history_grey);
                 break;
         }
         return convertView;

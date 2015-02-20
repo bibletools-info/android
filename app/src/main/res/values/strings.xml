@@ -17,9 +17,10 @@
 
     <string name="blank"> </string>
 
+    <string name="label_email">Send with:</string>
     <string name="title_home">Home</string>
     <string name="title_favourites">Favourites</string>
-    <string name="title_categories">CATEGORIES</string>
+    <string name="title_history">History</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

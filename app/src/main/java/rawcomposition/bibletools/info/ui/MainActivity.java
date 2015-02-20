@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
@@ -29,6 +30,7 @@ import com.orhanobut.wasp.CallBack;
 import com.orhanobut.wasp.WaspError;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import rawcomposition.bibletools.info.BibleToolsApplication;
@@ -118,7 +120,7 @@ public class MainActivity extends BaseActivity implements OnNavigationListener, 
                     KeyBoardUtil.hideKeyboard(MainActivity.this, mSearchView);
 
                     if (!TextUtils.isEmpty(mSearchView.getText())) {
-                        performQuery(mSearchView.getText().toString());
+                        performQuery(mSearchView.getText().toString().trim());
                     }
                 }
                 return false;
@@ -147,29 +149,9 @@ public class MainActivity extends BaseActivity implements OnNavigationListener, 
        mAdapter = new ReferenceListAdapter(this, mReferences, this);
        mRecycler.setAdapter(mAdapter);
 
-       showCache();
+       performQuery(CacheUtil.getRecentReference(this));
    }
 
-    private void showCache(){
-        //  Default to Genesis 1:1 on start up
-        performRequest(1, 1, 1);
-
-
-       /* String jsonString = CacheUtil.find(this, ReferencesResponse.class.getName());
-
-        if(!TextUtils.isEmpty(jsonString)){
-            ReferencesResponse referencesResponse = GSonUtil.getInstance().fromJson(jsonString, ReferencesResponse.class);
-
-            if(referencesResponse != null){
-                displayReferences(referencesResponse, false);
-
-                return;
-            }
-        }
-
-        //No cache fetch Genesis 1:1
-        performRequest(1, 1, 1);*/
-    }
 
     public void displayReferences(ReferencesResponse referencesResponse, boolean smoothScroll){
         mProgress.setVisibility(View.GONE);
@@ -354,7 +336,42 @@ public class MainActivity extends BaseActivity implements OnNavigationListener, 
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
+        Log.d(TAG, "Position: " + position);
 
+        switch (position){
+            case 1:
+                //Favourites
+                break;
+            case 2:
+                showHistoryDialog(CacheUtil.getCachedReferences(this));
+               break;
+            case 4:
+                //Settings
+                break;
+            case 5:
+                showHelp();
+                break;
+            case 6:
+                sendFeedBack();
+                break;
+        }
+    }
+
+    private void showHistoryDialog(final List<String> history){
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(this);
+        builder.title(R.string.title_history)
+                .titleColorRes(R.color.theme_primary)
+                .iconRes(R.drawable.ic_history_color)
+                .items(history.toArray(new String[history.size()]))
+                .itemsCallback(new MaterialDialog.ListCallback() {
+                    @Override
+                    public void onSelection(MaterialDialog materialDialog, View view, int position, CharSequence charSequence) {
+
+                        performQuery(history.get(position));
+                    }
+                })
+                .positiveText(R.string.action_cancel)
+                .show();
     }
 
     @Override
