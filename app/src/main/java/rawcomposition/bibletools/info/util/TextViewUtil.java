@@ -178,7 +178,7 @@ public class TextViewUtil {
         Typeface t2 = Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf");
 
         SpannableString sb = new SpannableString(text);
-        sb.setSpan(new CustomTypefaceSpan("", t1), 0, 10, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        sb.setSpan(new CustomTypefaceSpan("", t1), 0, text.indexOf('.'), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
         sb.setSpan(new CustomTypefaceSpan("", t2), 11, text.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
         textView.setText(sb);
     }

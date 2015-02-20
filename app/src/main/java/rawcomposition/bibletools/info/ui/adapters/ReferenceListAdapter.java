@@ -16,7 +16,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import rawcomposition.bibletools.info.R;
-import rawcomposition.bibletools.info.custom.IconizedMenu;
 import rawcomposition.bibletools.info.model.json.Reference;
 import rawcomposition.bibletools.info.ui.callbacks.OnNavigationListener;
 import rawcomposition.bibletools.info.util.AnimUtil;
@@ -40,7 +39,6 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
     private int mLastAnimatedPosition = -1;
 
     private OnNavigationListener mListener;
-
 
     public ReferenceListAdapter(Context context, List<Reference> references, OnNavigationListener listener) {
         this.mReferences = references;
@@ -126,7 +124,6 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
             content.setText(Html.fromHtml(reference.getContent()));
 
             setOptionsListener(holder.refOptions, reference);
-
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
