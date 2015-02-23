@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.text.ClipboardManager;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -19,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.ui.callbacks.ClickSpan;
@@ -142,6 +144,15 @@ public class TextViewUtil {
             }
 
         }
+    }
+
+    public static void copyText(Context context, String text){
+        ClipboardManager clipboard = (ClipboardManager)
+                context.getSystemService(Context.CLIPBOARD_SERVICE);
+
+        clipboard.setText(text);
+        Toast.makeText(context, "Copied to Clipboard", Toast.LENGTH_SHORT)
+                .show();
     }
 
 

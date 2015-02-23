@@ -1,6 +1,7 @@
 package rawcomposition.bibletools.info.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.speech.RecognizerIntent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -55,6 +56,8 @@ public class MainActivity extends BaseActivity implements OnNavigationListener, 
     private static final int REQUEST_CODE = 1234;
 
     private static final String TAG = MainActivity.class.getName();
+
+    private static final String VERSE_KEY = "verse";
 
     @Override
     protected int getLayoutResource() {
@@ -149,7 +152,25 @@ public class MainActivity extends BaseActivity implements OnNavigationListener, 
        mAdapter = new ReferenceListAdapter(this, mReferences, this);
        mRecycler.setAdapter(mAdapter);
 
-       performQuery(CacheUtil.getRecentReference(this));
+
+       Intent intent = getIntent();
+       Uri data = intent.getData();
+
+       if(data != null){
+           String verse = data.getQueryParameter("verse");
+
+           Log.d(TAG, "VERSE: " + verse);
+
+           if(!TextUtils.isEmpty(verse)){
+               performQuery(verse);
+           } else {
+               performQuery(CacheUtil.getRecentReference(this));
+           }
+
+       } else {
+           performQuery(CacheUtil.getRecentReference(this));
+       }
+
    }
 
 

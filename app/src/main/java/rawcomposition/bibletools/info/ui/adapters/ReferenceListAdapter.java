@@ -193,6 +193,7 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
                                 TextViewUtil.shareOrSearch(context, subject, text, true);
                                 return true;
                             case R.id.action_copy:
+                                TextViewUtil.copyText(context, subject + "\n" + text);
                                 return true;
                             case R.id.action_favourite:
                                 return true;
