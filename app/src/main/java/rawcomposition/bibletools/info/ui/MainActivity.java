@@ -378,7 +378,15 @@ public class MainActivity extends BaseActivity implements OnNavigationListener, 
         }
     }
 
-    private void showHistoryDialog(final List<String> history){
+    private void showHistoryDialog(List<String> history){
+        List<String> temp;
+        if(history.size() > 10){
+            temp = history.subList(0, 9);
+        } else {
+            temp = history;
+        }
+        final List<String> list = temp;
+
         MaterialDialog.Builder builder = new MaterialDialog.Builder(this);
         builder.title(R.string.title_history)
                 .titleColorRes(R.color.theme_primary)
@@ -388,7 +396,7 @@ public class MainActivity extends BaseActivity implements OnNavigationListener, 
                     @Override
                     public void onSelection(MaterialDialog materialDialog, View view, int position, CharSequence charSequence) {
 
-                        performQuery(history.get(position));
+                        performQuery(list.get(position));
                     }
                 })
                 .positiveText(R.string.action_cancel)
