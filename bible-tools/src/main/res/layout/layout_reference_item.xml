@@ -42,6 +42,7 @@
         <rawcomposition.bibletools.info.custom.AppTextView
             android:id="@+id/reference_text"
             style="@style/referenceText"
+            android:autoLink="none"
             tools:text="1. Now. From the Hebrew particle we, which is more commonly translated “and.” This is the first instance of its use at the beginning of a book. All but four of the historical books of the"/>
 
     </LinearLayout>

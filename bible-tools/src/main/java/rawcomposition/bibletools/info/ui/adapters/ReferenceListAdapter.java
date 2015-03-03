@@ -126,9 +126,7 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
             setOptionsListener(holder.refOptions, reference);
 
-            TextViewUtil.stripVerses(reference.getContent());
-
-            TextViewUtil.setClickListener(content);
+            TextViewUtil.setVerseClickListener(content, mListener);
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -176,8 +174,10 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
     }
 
     private void setOptionsListener(final ImageView imageView, final Reference item){
+
         final String subject = mReferences.get(0).getTitle()
                 + " - " + item.getTitle();
+
         final CharSequence text = Html.fromHtml(item.getContent());
 
         imageView.setOnClickListener(new View.OnClickListener() {

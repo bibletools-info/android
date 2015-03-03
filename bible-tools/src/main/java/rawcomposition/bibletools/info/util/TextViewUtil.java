@@ -6,17 +6,17 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Build;
 import android.text.ClipboardManager;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.method.MovementMethod;
+import android.text.style.CharacterStyle;
 import android.text.style.ClickableSpan;
-import android.text.style.TypefaceSpan;
 import android.text.style.URLSpan;
 import android.util.Log;
 import android.view.ActionMode;
@@ -34,6 +34,7 @@ import java.util.regex.Pattern;
 
 import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.ui.callbacks.ClickSpan;
+import rawcomposition.bibletools.info.ui.callbacks.OnNavigationListener;
 
 
 /**
@@ -189,6 +190,8 @@ public class TextViewUtil {
         MovementMethod m = view.getMovementMethod();
         if ((m == null) || !(m instanceof LinkMovementMethod)) {
             view.setMovementMethod(LinkMovementMethod.getInstance());
+
+            Log.d(TAG, "Clickified: " + clickableText);
         }
     }
 
@@ -226,75 +229,118 @@ public class TextViewUtil {
 
     }
 
-    public static void setClickListener(final TextView textView){
-      /*  myTextView.setOnClickListener(new View.OnClickListener() {
+    public static void setVerseClickListener(final TextView textView, final OnNavigationListener listener){
+        final String reference = "/reference/";
+        final String publication = "publication.php";
 
+        Spannable formattedContent = replaceAll((Spanned)textView.getText(), URLSpan.class, new URLSpanConverter(), new CustomClickableSpan.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if(myTextView.getSelectionStart()== -1 &&
-                        myTextView.getSelectionEnd() == -1){
-                   Log.d(TAG,  "You clicked outside the link");
+            public void onClick(String url) {
 
+                if(url.contains(publication)){
+                    Uri data = Uri.parse(url);
+
+                    String book = data.getQueryParameter("bookSubCode");
+                    String chapter = data.getQueryParameter("chapter");
+                    String verse = data.getQueryParameter("verse");
+
+                    if(!TextUtils.isEmpty(book) && !TextUtils.isEmpty(chapter)){
+
+                        if(TextUtils.isEmpty(verse)){
+                            verse = "1";
+                        }
+
+                        String ref = book + " " + chapter +":" + verse;
+
+                        Log.d(TAG, ref);
+
+
+
+                        listener.onVerseClick(ref);
+
+                    } else {
+                        Log.d(TAG, url);
+                    }
+
+
+                } else {
+
+                    if(url.contains(reference)){
+                        url = url.replace(reference, "");
+
+                        Log.d(TAG, url);
+
+                    } else {
+
+                        Log.d(TAG, url);
+                    }
                 }
-                else {
-
-                    int start = myTextView.getSelectionStart();
-                    int end = myTextView.getSelectionEnd();
-                    String selected = myTextView.getText().toString().substring(start, end);
-
-                    Log.d(TAG, selected);
-
-                }
-            }
-        });*/
-
-
-        textView.setMovementMethod(LinkMovementMethod.getInstance());
-
-        CharSequence charSequence = textView.getText();
-        SpannableStringBuilder sp = new SpannableStringBuilder(charSequence);
-
-        URLSpan[] spans = sp.getSpans(0, charSequence.length(), URLSpan.class);
-
-        for (URLSpan urlSpan : spans) {
-            MySpan mySpan = new MySpan(urlSpan.getURL());
-            sp.setSpan(mySpan, sp.getSpanStart(urlSpan),
-                    sp.getSpanEnd(urlSpan), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-        }
-
-        textView.setText(sp);
-
-        textView.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // 2.if clicking a link
-              //  if (!isClickingLink) {
-                    Log.w("log", "not clicking link");
-              //  }
-              //  isClickingLink = false;
             }
         });
+
+
+        textView.setText(formattedContent);
+        MovementMethod m = textView.getMovementMethod();
+        if ((m == null) || !(m instanceof LinkMovementMethod)) {
+            textView.setMovementMethod(LinkMovementMethod.getInstance());
+        }
+
     }
 
-    private static class MySpan extends ClickableSpan {
 
-        private String mUrl;
+    public static <A extends CharacterStyle, B extends CharacterStyle> Spannable replaceAll(Spanned original,
+                                                                                            Class<A> sourceType,
+                                                                                            SpanConverter<A, B> converter,
+                                                                                            final CustomClickableSpan.OnClickListener listener) {
 
-        public MySpan(String url) {
+        SpannableString result = new SpannableString(original);
+        A[] spans = result.getSpans(0, result.length(), sourceType);
 
-            super();
-            mUrl = url;
+        for (A span : spans) {
+            int start = result.getSpanStart(span);
+            int end = result.getSpanEnd(span);
+            int flags = result.getSpanFlags(span);
+
+            result.removeSpan(span);
+            result.setSpan(converter.convert(span, listener), start, end, flags);
+        }
+
+        return (result);
+    }
+
+    public interface SpanConverter<A extends CharacterStyle, B extends CharacterStyle> {
+        B convert(A span, CustomClickableSpan.OnClickListener listener);
+    }
+
+    public static class CustomClickableSpan extends ClickableSpan {
+
+        private String url;
+        private OnClickListener mListener;
+
+        public CustomClickableSpan(String url, OnClickListener mListener) {
+            this.url = url;
+            this.mListener = mListener;
         }
 
         @Override
         public void onClick(View widget) {
-
-            Log.w("log", "clicking link");
-
-           // isClickingLink = true;
-            // 1. do url click
+            if (mListener != null) mListener.onClick(url);
         }
 
+        public interface OnClickListener {
+            void onClick(String url);
+        }
     }
+
+    static class URLSpanConverter
+            implements
+            SpanConverter<URLSpan, CustomClickableSpan> {
+
+
+        @Override
+        public CustomClickableSpan convert(URLSpan span, CustomClickableSpan.OnClickListener listener) {
+            return new CustomClickableSpan(span.getURL(), listener);
+        }
+    }
+
 }

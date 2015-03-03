@@ -4,3 +4,4 @@
 /build
 *.iml
 .idea/*
+bible-tools/manifest-merger-release-report.txt

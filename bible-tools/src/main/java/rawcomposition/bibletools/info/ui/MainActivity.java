@@ -304,6 +304,11 @@ public class MainActivity extends BaseActivity implements OnNavigationListener, 
             }
         }
 
+        if(!DeviceUtil.isConnected(this)){
+            showToast(getString(R.string.error_no_connection));
+            return;
+        }
+
         BibleToolsApi api = ((BibleToolsApplication)getApplication())
                 .getApi();
 
@@ -353,6 +358,11 @@ public class MainActivity extends BaseActivity implements OnNavigationListener, 
             KeyBoardUtil.hideKeyboard(this, mSearchView);
             performRequest(arr[0], arr[1], arr[2]);
         }
+    }
+
+    @Override
+    public void onVerseClick(String verse){
+        performQuery(verse);
     }
 
     @Override
