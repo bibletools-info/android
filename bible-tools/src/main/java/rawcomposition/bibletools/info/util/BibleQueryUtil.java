@@ -116,6 +116,72 @@ public class BibleQueryUtil {
         }
     }
 
+    public static void stripClickQuery(Context context, String query, SearchQueryStripListener listener){
+        List<String> titles = Arrays.asList(context.getResources().getStringArray(R.array.bible_books_short));
+
+        /*
+            Gen 1:2
+            2 Samuel 2:3
+            1 Samuel 3:4
+         */
+        String bookTitle;
+
+        String arr[] = query.split(" ");
+        String temp = arr[0];
+        if(TextUtils.isDigitsOnly(temp)){
+            bookTitle = temp + " " + extractWord(query);
+        } else {
+            bookTitle = extractWord(query);
+        }
+
+        Log.d(TAG, "Extracted: [ " + bookTitle + " ]");
+
+        if(TextUtils.isEmpty(bookTitle)){
+            listener.onError();
+
+            return;
+        }
+
+        int bookCode = 0;
+        boolean found = false;
+        for(String book: titles){
+            bookCode++;
+
+            if(book.toLowerCase().contains(bookTitle.toLowerCase())){
+                found = true;
+                break;
+            }
+
+        }
+
+        if(!found){
+            listener.onError();
+
+            return;
+        }
+
+
+        if(TextUtils.isEmpty(query.replace(bookTitle, ""))){
+            listener.onSuccess(bookCode, 1, 1);
+
+            return;
+        }
+
+        String nums = query.replace(bookTitle, "");
+        if(nums.contains(":")){
+            arr = nums.split(":");
+
+            int chapter = getNumber(arr[0]);
+            int verse = getNumber(arr[1]);
+
+            listener.onSuccess(bookCode, chapter, verse);
+        } else {
+            int chapter = getNumber(nums);
+
+            listener.onSuccess(bookCode, chapter, 1);
+        }
+    }
+
     public static int getNumber(String text){
         try{
             text = text.replaceAll("\\D+","");

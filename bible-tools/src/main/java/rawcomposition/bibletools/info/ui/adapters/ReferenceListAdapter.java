@@ -125,6 +125,10 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
             content.setText(Html.fromHtml(reference.getContent()));
 
             setOptionsListener(holder.refOptions, reference);
+
+            TextViewUtil.stripVerses(reference.getContent());
+
+            TextViewUtil.setClickListener(content);
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

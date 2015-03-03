@@ -18,12 +18,12 @@
         <item>Jos</item>
         <item>Judg</item>
         <item>Rut</item>
-        <item>1Sa</item>
-        <item>2Sa</item>
-        <item>1Ki</item>
-        <item>2Ki</item>
-        <item>1Ch</item>
-        <item>2Ch</item>
+        <item>1 Sa</item>
+        <item>2 Sa</item>
+        <item>1 Ki</item>
+        <item>2 Ki</item>
+        <item>1 Ch</item>
+        <item>2 Ch</item>
         <item>Ezr</item>
         <item>Neh</item>
         <item>Est</item>
@@ -61,19 +61,19 @@
         <item>Eph</item>
         <item>Phili</item>
         <item>Col</item>
-        <item>1Th</item>
-        <item>2Th</item>
-        <item>1Ti</item>
-        <item>2Ti</item>
+        <item>1 Th</item>
+        <item>2 Th</item>
+        <item>1 Ti</item>
+        <item>2 Ti</item>
         <item>Tit</item>
         <item>Phile</item>
         <item>Heb</item>
         <item>Jam</item>
-        <item>1Pe</item>
-        <item>2Pe</item>
-        <item>1Jo</item>
-        <item>2Jo</item>
-        <item>3Jo</item>
+        <item>1 Pe</item>
+        <item>2 Pe</item>
+        <item>1 Jo</item>
+        <item>2 Jo</item>
+        <item>3 Jo</item>
         <item>Jud</item>
         <item>Rev</item>
     </string-array>

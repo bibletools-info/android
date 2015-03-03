@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'easyrelease'
 
 android {
     compileSdkVersion 21
@@ -8,8 +9,8 @@ android {
         applicationId "rawcomposition.bibletools.info"
         minSdkVersion 10
         targetSdkVersion 21
-        versionCode 7
-        versionName "1.0.1"
+        versionCode 1
+        versionName "1.0.1-beta"
     }
     buildTypes {
         release {

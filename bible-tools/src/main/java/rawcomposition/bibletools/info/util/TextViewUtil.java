@@ -10,17 +10,27 @@ import android.os.Build;
 import android.text.ClipboardManager;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.method.MovementMethod;
+import android.text.style.ClickableSpan;
 import android.text.style.TypefaceSpan;
+import android.text.style.URLSpan;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.ui.callbacks.ClickSpan;
@@ -193,5 +203,98 @@ public class TextViewUtil {
         sb.setSpan(new CustomTypefaceSpan("", t1), 0, text.indexOf('.'), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
         sb.setSpan(new CustomTypefaceSpan("", t2), 11, text.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
         textView.setText(sb);
+    }
+
+    public static void stripVerses(String reference){
+        String start = "class=\"bibleref\">";
+        String end = "</a>";
+        String regex = "class=\\\"bibleref\\\">(.*?)<\\/a>";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(reference);
+
+        List<String> allMatches = new ArrayList<>();
+
+        while (matcher.find()){
+            allMatches.add(matcher.group().replace(start, "").replace(end, ""));
+
+        }
+
+        for(String verse: allMatches){
+            Log.d(TAG, verse);
+        }
+
+    }
+
+    public static void setClickListener(final TextView textView){
+      /*  myTextView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if(myTextView.getSelectionStart()== -1 &&
+                        myTextView.getSelectionEnd() == -1){
+                   Log.d(TAG,  "You clicked outside the link");
+
+                }
+                else {
+
+                    int start = myTextView.getSelectionStart();
+                    int end = myTextView.getSelectionEnd();
+                    String selected = myTextView.getText().toString().substring(start, end);
+
+                    Log.d(TAG, selected);
+
+                }
+            }
+        });*/
+
+
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
+
+        CharSequence charSequence = textView.getText();
+        SpannableStringBuilder sp = new SpannableStringBuilder(charSequence);
+
+        URLSpan[] spans = sp.getSpans(0, charSequence.length(), URLSpan.class);
+
+        for (URLSpan urlSpan : spans) {
+            MySpan mySpan = new MySpan(urlSpan.getURL());
+            sp.setSpan(mySpan, sp.getSpanStart(urlSpan),
+                    sp.getSpanEnd(urlSpan), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        }
+
+        textView.setText(sp);
+
+        textView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // 2.if clicking a link
+              //  if (!isClickingLink) {
+                    Log.w("log", "not clicking link");
+              //  }
+              //  isClickingLink = false;
+            }
+        });
+    }
+
+    private static class MySpan extends ClickableSpan {
+
+        private String mUrl;
+
+        public MySpan(String url) {
+
+            super();
+            mUrl = url;
+        }
+
+        @Override
+        public void onClick(View widget) {
+
+            Log.w("log", "clicking link");
+
+           // isClickingLink = true;
+            // 1. do url click
+        }
+
     }
 }
