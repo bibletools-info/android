@@ -12,4 +12,9 @@
     <string name="app_host">path</string>
     <string name="app_scheme">bibletools</string>
     <string name="app_version">Version: 1.0.0</string>
+
+    <string name="pref_key_history_entries">history_entries</string>
+    <string name="pref_key_version">version</string>
+    <string name="pref_key_cache">cache_references</string>
+    <string name="pref_feedback">send_feedback</string>
 </resources>

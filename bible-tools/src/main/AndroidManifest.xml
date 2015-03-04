@@ -3,7 +3,7 @@
     package="rawcomposition.bibletools.info" >
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".BibleToolsApplication"
@@ -30,7 +30,15 @@
                     android:scheme="@string/app_scheme" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:label="@string/action_settings"
+            android:theme="@style/AppTheme.Settings"
+            android:parentActivityName=".ui.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="rawcomposition.bibletools.info.ui.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

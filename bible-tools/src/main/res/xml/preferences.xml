@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/settings_cat_preference">
+
+        <com.afollestad.materialdialogs.prefs.MaterialListPreference
+            android:key="@string/pref_key_history_entries"
+            android:title="@string/settings_history_count_title"
+            android:summary="@string/settings_history_count_summary"
+            android:entries="@array/history_entries"
+            android:defaultValue="10"
+            android:entryValues="@array/history_entries"/>
+
+        <CheckBoxPreference
+            android:key="@string/pref_key_cache"
+            android:title="@string/settings_cache_pref_title"
+            android:summary="@string/settings_cache_pref_summary"
+            android:defaultValue="true"/>
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory
+        android:title="@string/settings_about_preference">
+
+        <Preference
+            android:key="@string/pref_key_version"
+            android:title="@string/settings_version"
+            android:persistent="false"/>
+        <Preference
+            android:key="@string/pref_feedback"
+            android:title="@string/action_send_feedback"
+            android:persistent="false"/>
+
+        <Preference
+            android:title="@string/settings_web_app_title"
+            android:summary="@string/settings_web_app_summary"
+            android:persistent="false">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="http://www.bibletools.info"
+                />
+            </Preference>
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

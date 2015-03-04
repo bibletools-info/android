@@ -378,6 +378,7 @@ public class MainActivity extends BaseActivity implements OnNavigationListener, 
                break;
             case 4:
                 //Settings
+                startActivity(new Intent(this, SettingsActivity.class));
                 break;
             case 5:
                 showHelp();
