@@ -21,6 +21,10 @@
     <string name="title_home">Home</string>
     <string name="title_favourites">Favourites</string>
     <string name="title_history">History</string>
+    <string name="title_all">All</string>
+    <string name="title_ot">Old Testament</string>
+    <string name="title_nt">New Testament</string>
+    <string name="title_empty_favourites">No Favourites</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -39,5 +43,7 @@
     <string name="settings_version">Version</string>
     <string name="settings_web_app_title">Web App</string>
     <string name="settings_web_app_summary">Open the Web App</string>
+    <string name="title_activity_favourites">Favourites</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

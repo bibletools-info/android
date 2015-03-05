@@ -6,11 +6,11 @@ import android.speech.RecognizerIntent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -18,20 +18,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView;
-import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
-import com.github.ksoichiro.android.observablescrollview.ScrollState;
-import com.github.ksoichiro.android.observablescrollview.ScrollUtils;
-import com.nineoldandroids.view.ViewHelper;
-import com.nineoldandroids.view.ViewPropertyAnimator;
 import com.orhanobut.wasp.CallBack;
 import com.orhanobut.wasp.WaspError;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import rawcomposition.bibletools.info.BibleToolsApplication;
@@ -51,7 +43,8 @@ import rawcomposition.bibletools.info.util.DeviceUtil;
 import rawcomposition.bibletools.info.util.GSonUtil;
 import rawcomposition.bibletools.info.util.KeyBoardUtil;
 
-public class MainActivity extends BaseActivity implements OnNavigationListener, NavigationDrawerFragment.NavigationDrawerCallbacks, ObservableScrollViewCallbacks{
+public class MainActivity extends BaseActivity implements
+        OnNavigationListener, NavigationDrawerFragment.NavigationDrawerCallbacks{
 
     private static final int REQUEST_CODE = 1234;
 
@@ -74,11 +67,8 @@ public class MainActivity extends BaseActivity implements OnNavigationListener, 
 
     private List<Reference> mReferences = new ArrayList<>();
 
-    private ObservableRecyclerView mRecycler;
+    private RecyclerView mRecycler;
 
-    private View mHeaderView;
-
-    private int mBaseTranslationY;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -135,8 +125,7 @@ public class MainActivity extends BaseActivity implements OnNavigationListener, 
    private void initRecyclerStuff(){
        mHeaderView = findViewById(R.id.header);
 
-       mRecycler = (ObservableRecyclerView) findViewById(R.id.recycler);
-      // mRecycler.setScrollViewCallbacks(this);
+       mRecycler = (RecyclerView) findViewById(R.id.recycler);
 
        if(DeviceUtil.isTablet(this)){
            StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
@@ -149,7 +138,7 @@ public class MainActivity extends BaseActivity implements OnNavigationListener, 
 
        mProgress = (ProgressBar) findViewById(R.id.progress);
 
-       mAdapter = new ReferenceListAdapter(this, mReferences, this);
+       mAdapter = new ReferenceListAdapter(MainActivity.this, mReferences, this);
        mRecycler.setAdapter(mAdapter);
 
 
@@ -334,10 +323,7 @@ public class MainActivity extends BaseActivity implements OnNavigationListener, 
         });
     }
 
-    private void showToast(String message){
-        Toast.makeText(this, message, Toast.LENGTH_LONG)
-                .show();
-    }
+
 
     @Override
     public void onPrevious(String text) {
@@ -372,8 +358,10 @@ public class MainActivity extends BaseActivity implements OnNavigationListener, 
         switch (position){
             case 1:
                 //Favourites
+                startActivity(new Intent(this, FavouritesActivity.class));
                 break;
             case 2:
+                //History
                 showHistoryDialog(CacheUtil.getCachedReferences(this));
                break;
             case 4:
@@ -381,9 +369,11 @@ public class MainActivity extends BaseActivity implements OnNavigationListener, 
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
             case 5:
+                //Help
                 showHelp();
                 break;
             case 6:
+                //Feedback
                 sendFeedBack();
                 break;
         }
@@ -414,79 +404,6 @@ public class MainActivity extends BaseActivity implements OnNavigationListener, 
                 .show();
     }
 
-    @Override
-    public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
-        if (dragging) {
-            int toolbarHeight = mHeaderView.getHeight();
-            if (firstScroll) {
-                float currentHeaderTranslationY = ViewHelper.getTranslationY(mHeaderView);
-                if (-toolbarHeight < currentHeaderTranslationY) {
-                    mBaseTranslationY = scrollY;
-                }
-            }
-            float headerTranslationY = ScrollUtils.getFloat(-(scrollY - mBaseTranslationY), -toolbarHeight, 0);
-            ViewPropertyAnimator.animate(mHeaderView).cancel();
-            ViewHelper.setTranslationY(mHeaderView, headerTranslationY);
-        }
-    }
-
-    @Override
-    public void onDownMotionEvent() {
-
-    }
-
-    @Override
-    public void onUpOrCancelMotionEvent(ScrollState scrollState) {
-        mBaseTranslationY = 0;
-
-        if (scrollState == ScrollState.DOWN) {
-            showToolbar();
-        } else if (scrollState == ScrollState.UP) {
-
-             hideToolbar();
-
-        } else {
-            // Even if onScrollChanged occurs without scrollY changing, toolbar should be adjusted
-            if (!toolbarIsShown() && !toolbarIsHidden()) {
-                // Toolbar is moving but doesn't know which to move:
-                // you can change this to hideToolbar()
-                showToolbar();
-            }
-        }
-    }
-
-    private boolean toolbarIsShown() {
-        return ViewHelper.getTranslationY(mHeaderView) == 0;
-    }
-
-    private boolean toolbarIsHidden() {
-        return ViewHelper.getTranslationY(mHeaderView) == -mHeaderView.getHeight();
-    }
-
-    private void showToolbar() {
-        float headerTranslationY = ViewHelper.getTranslationY(mHeaderView);
-        if (headerTranslationY != 0) {
-         //   mHeaderView.setVisibility(View.VISIBLE);
-            ViewPropertyAnimator.animate(mHeaderView).cancel();
-            ViewPropertyAnimator.animate(mHeaderView)
-                    .translationY(0)
-                    .setDuration(200)
-                    .start();
-        }
-    }
-
-    private void hideToolbar() {
-        float headerTranslationY = ViewHelper.getTranslationY(mHeaderView);
-        int toolbarHeight = mHeaderView.getHeight();
-        if (headerTranslationY != -toolbarHeight) {
-            ViewPropertyAnimator.animate(mHeaderView).cancel();
-            ViewPropertyAnimator.animate(mHeaderView)
-                    .translationY(-toolbarHeight)
-                    .setDuration(200)
-                    .start();
-
-        }
-    }
 
 
 }

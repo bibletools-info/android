@@ -1,8 +1,6 @@
 package rawcomposition.bibletools.info.ui;
 
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -19,6 +17,7 @@ import java.util.ArrayList;
 
 import rawcomposition.bibletools.info.BuildConfig;
 import rawcomposition.bibletools.info.R;
+import rawcomposition.bibletools.info.util.ToastUtil;
 
 /**
  * Created by tinashe
@@ -140,5 +139,9 @@ public abstract class BaseActivity extends ActionBarActivity {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(getString(R.string.app_help)));
         startActivity(intent);
+    }
+
+    protected void showToast(String message){
+        ToastUtil.show(this, message);
     }
 }

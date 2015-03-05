@@ -78,6 +78,11 @@ public class BibleQueryUtil {
 
         int bookCode = 0;
         boolean found = false;
+
+        if(bookTitle.equals("Psalms")){
+            bookTitle = "Psalm";
+        }
+
         for(String book: titles){
             bookCode++;
 
@@ -114,6 +119,38 @@ public class BibleQueryUtil {
 
             listener.onSuccess(bookCode, chapter, 1);
         }
+    }
+
+    public static boolean isNewTestament(Context context, String verse){
+        List<String> books = Arrays.asList(context.getResources().getStringArray(R.array.bible_books_full));
+
+        String bookTitle;
+
+        String arr[] = verse.split(" ");
+        String temp = arr[0];
+        if(TextUtils.isDigitsOnly(temp)){
+            bookTitle = temp + " " + extractWord(verse);
+        } else {
+            bookTitle = extractWord(verse);
+        }
+
+        Log.d(TAG, "Extracted: [ " + bookTitle + " ]");
+
+        if(bookTitle.equals("Psalms")){
+            bookTitle = "Psalm";
+        }
+        int bookCode = 0;
+        for(String book: books){
+            bookCode++;
+
+            if(book.toLowerCase().contains(bookTitle.toLowerCase())){
+               // found = true;
+                break;
+            }
+
+        }
+
+        return bookCode >= 40;
     }
 
     public static void stripClickQuery(Context context, String query, SearchQueryStripListener listener){

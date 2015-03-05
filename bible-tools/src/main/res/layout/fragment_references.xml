@@ -6,7 +6,7 @@
     android:layout_below="@+id/header"
     android:id="@+id/scroll_view">
 
-    <com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recycler"

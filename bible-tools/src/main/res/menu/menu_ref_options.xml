@@ -14,9 +14,4 @@
         android:icon="@drawable/ic_content_copy"
         app:showAsAction="ifRoom"/>
 
-    <item
-        android:id="@+id/action_favourite"
-        android:title="@string/action_favourite"
-        android:icon="@drawable/ic_favorite_grey"
-        app:showAsAction="ifRoom"/>
 </menu>

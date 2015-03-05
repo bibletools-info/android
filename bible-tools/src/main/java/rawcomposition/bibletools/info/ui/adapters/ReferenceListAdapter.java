@@ -1,6 +1,6 @@
 package rawcomposition.bibletools.info.ui.adapters;
 
-import android.content.Context;
+import android.app.Activity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -12,14 +12,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
+import io.realm.Realm;
+import rawcomposition.bibletools.info.BibleToolsApplication;
 import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.model.json.Reference;
 import rawcomposition.bibletools.info.ui.callbacks.OnNavigationListener;
 import rawcomposition.bibletools.info.util.AnimUtil;
+import rawcomposition.bibletools.info.util.FavouritesUtil;
 import rawcomposition.bibletools.info.util.TextViewUtil;
+import rawcomposition.bibletools.info.util.ToastUtil;
 
 /**
  * Created by tinashe on 2015/02/15.
@@ -34,13 +39,13 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
     private List<Reference> mReferences;
 
-    private Context context;
+    private Activity context;
 
     private int mLastAnimatedPosition = -1;
 
     private OnNavigationListener mListener;
 
-    public ReferenceListAdapter(Context context, List<Reference> references, OnNavigationListener listener) {
+    public ReferenceListAdapter(Activity context, List<Reference> references, OnNavigationListener listener) {
         this.mReferences = references;
         this.context = context;
         this.mListener = listener;
@@ -120,6 +125,19 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
                 });
             }
 
+            boolean isInFav = FavouritesUtil.isInFavourites(getRealm(), reference.getTitle());
+
+            if(isInFav){
+                holder.toggleFav.setImageResource(R.drawable.ic_favorite_white);
+
+                setUnFavouriteListener(holder.toggleFav, reference);
+
+            } else {
+                holder.toggleFav.setImageResource(R.drawable.ic_favorite_outline);
+
+                setFavouriteListener(holder.toggleFav, reference);
+            }
+
         } else {
 
             content.setText(Html.fromHtml(reference.getContent()));
@@ -160,6 +178,8 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
         private ImageView refOptions;
 
+        private ImageView toggleFav;
+
         public ReferenceViewHolder(View itemView) {
             super(itemView);
 
@@ -170,6 +190,8 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
             navigateNext = itemView.findViewById(R.id.navigate_next);
 
             refOptions = (ImageView) itemView.findViewById(R.id.action_options);
+
+            toggleFav = (ImageView) itemView.findViewById(R.id.action_favourite);
         }
     }
 
@@ -199,14 +221,54 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
                             case R.id.action_copy:
                                 TextViewUtil.copyText(context, subject + "\n" + text);
                                 return true;
-                            case R.id.action_favourite:
-                                return true;
                         }
                         return false;
                     }
                 });
 
                 popupMenu.show();
+            }
+        });
+    }
+
+    private Realm getRealm(){
+        return ((BibleToolsApplication)context.getApplication())
+                .getRealm();
+    }
+
+    private void showToast(String message){
+        ToastUtil.show(context, message);
+    }
+
+    private void setFavouriteListener(final ImageView view, final Reference reference){
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FavouritesUtil.addFavourite(getRealm(),
+                        reference.getTitle(),
+                        reference.getText());
+
+                showToast("Added to Favourites");
+
+                view.setImageResource(R.drawable.ic_favorite_white);
+
+                setUnFavouriteListener(view, reference);
+            }
+        });
+    }
+
+    private void setUnFavouriteListener(final ImageView view, final Reference reference){
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FavouritesUtil.unFavourite(getRealm(),
+                        reference.getTitle());
+
+                showToast("Removed from Favourites");
+
+                view.setImageResource(R.drawable.ic_favorite_outline);
+
+                setFavouriteListener(view, reference);
             }
         });
     }

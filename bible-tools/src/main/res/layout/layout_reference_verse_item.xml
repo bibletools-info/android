@@ -30,6 +30,12 @@
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:id="@+id/action_favourite"
+                    style="@style/selectableItem.verseNavigation"
+                    android:src="@drawable/ic_favorite_outline"
+                    />
+
+                <ImageView
                     android:id="@+id/navigate_previous"
                     style="@style/selectableItem.verseNavigation"
                     android:src="@drawable/ic_chevron_left_white"
