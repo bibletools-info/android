@@ -1,25 +1,15 @@
 package rawcomposition.bibletools.info.ui;
 
-import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
 
 import rawcomposition.bibletools.info.BuildConfig;
 import rawcomposition.bibletools.info.R;
 
-@TargetApi(11)
 public class SettingsActivity extends BaseActivity {
 
     @Override
