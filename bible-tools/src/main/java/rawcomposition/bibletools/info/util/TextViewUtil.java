@@ -268,11 +268,13 @@ public class TextViewUtil {
                     if(url.contains(reference)){
                         url = url.replace(reference, "");
 
-                        Log.d(TAG, url);
+                        Log.d(TAG, "Contains Ref:\n" +url);
+
+                        Log.d(TAG, BibleQueryUtil.stripClickQuery(textView.getContext(), url));
 
                     } else {
-
-                        Log.d(TAG, url);
+                        ///books/iv-vol1/Ge35.19
+                        Log.d(TAG, "No Ref:\n" +url);
                     }
                 }
             }

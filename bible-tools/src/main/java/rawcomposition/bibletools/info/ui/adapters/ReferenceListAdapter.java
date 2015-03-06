@@ -145,6 +145,20 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
             setOptionsListener(holder.refOptions, reference);
 
             TextViewUtil.setVerseClickListener(content, mListener);
+
+            content.setClickable(true);
+            content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(reference.isCollapsed()){
+                        content.setMaxLines(Integer.MAX_VALUE);
+                        reference.setCollapsed(false);
+                    } else {
+                        content.setMaxLines(4);
+                        reference.setCollapsed(true);
+                    }
+                }
+            });
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

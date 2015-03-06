@@ -50,6 +50,26 @@ public class BibleQueryUtil {
         return queries;
     }
 
+    public static List<String> getAllQueries(Context context, String[] booksArray){
+
+        List<String> queries = new ArrayList<>();
+
+        int[] chapters = context.getResources().getIntArray(R.array.book_num_of_chapters_array);
+
+        int pstn = 0;
+        for(String book: booksArray){
+            int numOfChapters = chapters[pstn];
+
+            for(int i = 1; i <= numOfChapters; i++){
+                queries.add(book + i);
+            }
+
+            pstn++;
+        }
+
+        return queries;
+    }
+
     public static void stripQuery(Context context, String query, SearchQueryStripListener listener){
         List<String> titles = Arrays.asList(context.getResources().getStringArray(R.array.bible_books_full));
 
@@ -153,70 +173,63 @@ public class BibleQueryUtil {
         return bookCode >= 40;
     }
 
-    public static void stripClickQuery(Context context, String query, SearchQueryStripListener listener){
-        List<String> titles = Arrays.asList(context.getResources().getStringArray(R.array.bible_books_short));
+    public static String stripClickQuery(Context context, String query){
+       String[] titles = context.getResources().getStringArray(R.array.bible_books_short);
 
         /*
-            Gen 1:2
-            2 Samuel 2:3
-            1 Samuel 3:4
+            Ge35.19
+            1Sa16.1
          */
         String bookTitle;
 
-        String arr[] = query.split(" ");
-        String temp = arr[0];
-        if(TextUtils.isDigitsOnly(temp)){
-            bookTitle = temp + " " + extractWord(query);
-        } else {
-            bookTitle = extractWord(query);
-        }
+        String parts[] = query.split("\\.");
+        if(parts.length > 0){
+            String first = parts[0];
 
-        Log.d(TAG, "Extracted: [ " + bookTitle + " ]");
+            int bookCode = 0;
 
-        if(TextUtils.isEmpty(bookTitle)){
-            listener.onError();
+            for(String ti: titles){
+                bookCode ++;
+                if(first.toLowerCase().contains(ti.toLowerCase())){
+                    break;
+                }
+            }
 
-            return;
-        }
+            if(bookCode > 0){
+                bookTitle = context.getResources().getStringArray(R.array.bible_books_full)[bookCode - 1];
 
-        int bookCode = 0;
-        boolean found = false;
-        for(String book: titles){
-            bookCode++;
+                List<String> possibilities = getAllQueries(context, titles);
 
-            if(book.toLowerCase().contains(bookTitle.toLowerCase())){
-                found = true;
-                break;
+                int chapter = 1;
+                int verse = 1;
+
+                for(String bk: possibilities){
+
+                    if(first.toLowerCase().equals(bk.toLowerCase())){
+                        break;
+                    }
+                    chapter++;
+                }
+
+                if(!TextUtils.isEmpty(parts[1])){
+                    try{
+                        String vs = parts[1];
+                        String[] vss = vs.split("\\-");
+                        verse = Integer.parseInt(vss[0]);
+                    }catch (NumberFormatException ex){
+                        Log.d(TAG, "NumberFormatException");
+                    }
+                }
+
+                return bookTitle + " " + chapter + ":" + verse;
+
             }
 
         }
 
-        if(!found){
-            listener.onError();
-
-            return;
-        }
+        return null;
 
 
-        if(TextUtils.isEmpty(query.replace(bookTitle, ""))){
-            listener.onSuccess(bookCode, 1, 1);
-
-            return;
-        }
-
-        String nums = query.replace(bookTitle, "");
-        if(nums.contains(":")){
-            arr = nums.split(":");
-
-            int chapter = getNumber(arr[0]);
-            int verse = getNumber(arr[1]);
-
-            listener.onSuccess(bookCode, chapter, verse);
-        } else {
-            int chapter = getNumber(nums);
-
-            listener.onSuccess(bookCode, chapter, 1);
-        }
     }
 
     public static int getNumber(String text){
