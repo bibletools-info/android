@@ -33,7 +33,7 @@
             android:title="@string/action_send_feedback"
             android:persistent="false"/>
 
-        <Preference
+      <!--  <Preference
             android:title="@string/settings_web_app_title"
             android:summary="@string/settings_web_app_summary"
             android:persistent="false">
@@ -41,7 +41,7 @@
                 android:action="android.intent.action.VIEW"
                 android:data="http://www.bibletools.info"
                 />
-            </Preference>
+            </Preference>-->
     </PreferenceCategory>
 
 

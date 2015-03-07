@@ -41,7 +41,7 @@
         </activity>
         <activity
             android:name=".ui.FavouritesActivity"
-            android:label="@string/title_activity_favourites"
+            android:label="@string/title_favourites"
             android:parentActivityName=".ui.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

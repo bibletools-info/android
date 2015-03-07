@@ -213,6 +213,7 @@ public class TextViewUtil {
         String end = "</a>";
         String regex = "class=\\\"bibleref\\\">(.*?)<\\/a>";
 
+
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(reference);
 
@@ -270,11 +271,27 @@ public class TextViewUtil {
 
                         Log.d(TAG, "Contains Ref:\n" +url);
 
-                        Log.d(TAG, BibleQueryUtil.stripClickQuery(textView.getContext(), url));
+                        String ref = BibleQueryUtil.stripClickQuery(textView.getContext(), url);
+
+                        if(!TextUtils.isEmpty(ref)){
+                            listener.onVerseClick(ref);
+                        }
 
                     } else {
                         ///books/iv-vol1/Ge35.19
                         Log.d(TAG, "No Ref:\n" +url);
+
+                        String [] arr = url.split("/");
+                        if(arr.length > 1){
+                            url = arr[arr.length - 1];
+
+                            String ref = BibleQueryUtil.stripClickQuery(textView.getContext(), url);
+
+                            if(!TextUtils.isEmpty(ref)){
+                                listener.onVerseClick(ref);
+                            }
+                        }
+
                     }
                 }
             }

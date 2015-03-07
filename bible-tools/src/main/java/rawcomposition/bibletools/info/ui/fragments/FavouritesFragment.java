@@ -51,6 +51,11 @@ public class FavouritesFragment extends BaseFragment {
 
         mRecycler.setAdapter(mAdapter);
 
+        if(mAdapter.getItemCount() == 0){
+            rootView.findViewById(R.id.txt_empty)
+                    .setVisibility(View.VISIBLE);
+        }
+
 
     }
 

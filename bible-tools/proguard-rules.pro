@@ -15,3 +15,34 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-keepnames public class * extends io.realm.RealmObject
+-keep class io.realm.** { *; }
+-dontwarn javax.**
+-dontwarn io.realm.**
+
+# ABC
+# Need to keep classes unobfuscated from v7.**, not v7.appcompat.**, because other packages directly under
+# v7.** get obfuscated. eg. v7.internal.** and v7.widget.** cause errors if obfuscated.
+-keep class android.support.v7.** { *; }
+-keep interface android.support.v7.** { *; }
+
+#Wasp
+-keepattributes *Annotation*
+-keep class com.orhanobut.wasp.** { *; }
+-keepclassmembernames interface * {
+    @com.orhanobut.wasp.http.* <methods>;
+}
+
+#Gson
+-keep class com.google.gson.** { *; }
+-keepattributes Signature
+
+#OkHttp
+-dontwarn com.squareup.okhttp.**
+-dontwarn java.nio.file.*
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+
+# nineoldandroids
+-keep class com.nineoldandroids.** { *; }
+-keep interface com.nineoldandroids.** { *; }

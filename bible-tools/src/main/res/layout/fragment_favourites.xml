@@ -1,13 +1,28 @@
-
-<android.support.v7.widget.RecyclerView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/recycler"
-    android:padding="@dimen/margin_small"
-    tools:context=".MainActivity$ReferencesFragment"
-    android:scrollbarStyle="outsideOverlay"
-    android:clipToPadding="false"
-    android:scrollbars="vertical" />
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recycler"
+        android:padding="@dimen/margin_small"
+        tools:context=".MainActivity$ReferencesFragment"
+        android:scrollbarStyle="outsideOverlay"
+        android:clipToPadding="false"
+        android:scrollbars="vertical" />
+
+    <TextView
+        android:id="@+id/txt_empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_empty_favourites"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:textSize="@dimen/text_medium"/>
+
+</RelativeLayout>
+
 

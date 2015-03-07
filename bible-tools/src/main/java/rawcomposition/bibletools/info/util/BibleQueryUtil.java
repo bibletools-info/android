@@ -187,28 +187,28 @@ public class BibleQueryUtil {
             String first = parts[0];
 
             int bookCode = 0;
+            String strChap = null;
 
             for(String ti: titles){
                 bookCode ++;
                 if(first.toLowerCase().contains(ti.toLowerCase())){
+                    strChap = first.toLowerCase().replace(ti.toLowerCase(), "");
+
                     break;
                 }
             }
 
-            if(bookCode > 0){
+            if(bookCode > 0 && !TextUtils.isEmpty(strChap)){
                 bookTitle = context.getResources().getStringArray(R.array.bible_books_full)[bookCode - 1];
-
-                List<String> possibilities = getAllQueries(context, titles);
 
                 int chapter = 1;
                 int verse = 1;
 
-                for(String bk: possibilities){
 
-                    if(first.toLowerCase().equals(bk.toLowerCase())){
-                        break;
-                    }
-                    chapter++;
+                try{
+                    chapter = Integer.parseInt(strChap);
+                }catch (NumberFormatException ex){
+                    //
                 }
 
                 if(!TextUtils.isEmpty(parts[1])){

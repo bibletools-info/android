@@ -74,10 +74,13 @@ public class FavouriteVersesAdapter extends RecyclerView.Adapter<FavouriteVerses
             public void onClick(View v) {
 
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("bibletools://path?verse=" + verse.getVerseCode()));
+                intent.setData(Uri.parse(context.getString(R.string.app_scheme)
+                        + "://"+ context.getString(R.string.app_host)
+                        + "?verse=" + verse.getVerseCode()));
 
                 if (intent.resolveActivity(context.getPackageManager()) != null) {
                     context.startActivity(intent);
+                    context.finish();
                 }
             }
         });

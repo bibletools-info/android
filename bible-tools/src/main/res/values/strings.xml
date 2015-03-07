@@ -25,6 +25,8 @@
     <string name="title_ot">Old Testament</string>
     <string name="title_nt">New Testament</string>
     <string name="title_empty_favourites">No Favourites</string>
+    <string name="title_information">Information</string>
+    <string name="title_how_it_works">How It Works</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -43,7 +45,9 @@
     <string name="settings_version">Version</string>
     <string name="settings_web_app_title">Web App</string>
     <string name="settings_web_app_summary">Open the Web App</string>
-    <string name="title_activity_favourites">Favourites</string>
-    <string name="hello_world">Hello world!</string>
 
+    <string name="msg_how_it_works">
+        Enter any Bible verse in the format <b>\'Genesis 1:1\'</b> and click on the Search icon on your keyboard to perform the search.\n
+        All References will load up as collapsed cards, Tap on the card to expand or collapse it.\n
+    </string>
 </resources>

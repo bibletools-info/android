@@ -42,6 +42,7 @@ import rawcomposition.bibletools.info.util.CacheUtil;
 import rawcomposition.bibletools.info.util.DeviceUtil;
 import rawcomposition.bibletools.info.util.GSonUtil;
 import rawcomposition.bibletools.info.util.KeyBoardUtil;
+import rawcomposition.bibletools.info.util.PreferenceUtil;
 
 public class MainActivity extends BaseActivity implements
         OnNavigationListener, NavigationDrawerFragment.NavigationDrawerCallbacks{
@@ -85,6 +86,11 @@ public class MainActivity extends BaseActivity implements
         initSearchView();
 
         initRecyclerStuff();
+
+        if(!PreferenceUtil.getValue(this, getString(R.string.pref_tut_shown), false)){
+            PreferenceUtil.updateValue(this, getString(R.string.pref_tut_shown), true);
+            showHowItWorks();
+        }
     }
 
     private void initSearchView(){
@@ -305,9 +311,14 @@ public class MainActivity extends BaseActivity implements
             @Override
             public void onSuccess(ReferencesResponse response) {
 
-                CacheUtil.save(MainActivity.this,
-                        CacheUtil.getFileName(MainActivity.this, book, chapter, verse),
-                        GSonUtil.getInstance().toJson(response));
+                if(PreferenceUtil.getValue(MainActivity.this,
+                        getString(R.string.pref_key_cache),
+                        true)){
+
+                    CacheUtil.save(MainActivity.this,
+                            CacheUtil.getFileName(MainActivity.this, book, chapter, verse),
+                            GSonUtil.getInstance().toJson(response));
+                }
 
                  displayReferences(response, true);
 
@@ -380,19 +391,22 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void showHistoryDialog(List<String> history){
-        List<String> temp;
-        if(history.size() > 10){
-            temp = history.subList(0, 9);
-        } else {
-            temp = history;
+
+        int max = Integer.valueOf(PreferenceUtil.getValue(this,
+                getString(R.string.pref_key_history_entries),
+                "10"));
+
+        if(history.size() > max){
+            history = history.subList(0, max);
         }
-        final List<String> list = temp;
+
+        final List<String> list = history;
 
         MaterialDialog.Builder builder = new MaterialDialog.Builder(this);
         builder.title(R.string.title_history)
                 .titleColorRes(R.color.theme_primary)
                 .iconRes(R.drawable.ic_history_color)
-                .items(history.toArray(new String[history.size()]))
+                .items(list.toArray(new String[list.size()]))
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
                     public void onSelection(MaterialDialog materialDialog, View view, int position, CharSequence charSequence) {
@@ -406,4 +420,11 @@ public class MainActivity extends BaseActivity implements
 
 
 
+    private void showHowItWorks(){
+        new MaterialDialog.Builder(this)
+                .title(R.string.title_how_it_works)
+                .content(R.string.msg_how_it_works)
+                .positiveText(R.string.action_ok)
+                .show();
+    }
 }

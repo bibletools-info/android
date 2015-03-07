@@ -9,6 +9,7 @@ import android.view.Menu;
 
 import rawcomposition.bibletools.info.BuildConfig;
 import rawcomposition.bibletools.info.R;
+import rawcomposition.bibletools.info.util.PreferenceUtil;
 
 public class SettingsActivity extends BaseActivity {
 
@@ -28,14 +29,14 @@ public class SettingsActivity extends BaseActivity {
         }
     }
 
-    @Override
+   /* @Override
     public boolean onCreateOptionsMenu(Menu menu){
 
         getMenuInflater().inflate(R.menu.menu_settings, menu);
 
         return super.onCreateOptionsMenu(menu);
     }
-
+*/
 
     public static class SettingsFragment extends PreferenceFragment implements
             SharedPreferences.OnSharedPreferenceChangeListener{
@@ -55,9 +56,7 @@ public class SettingsActivity extends BaseActivity {
                     .findPreference(getString(R.string.pref_key_version))
                     .setSummary(BuildConfig.VERSION_NAME);
 
-            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-
-            String entries = pref.getString(getString(R.string.pref_key_history_entries), "10");
+            String entries = PreferenceUtil.getValue(getActivity(), getString(R.string.pref_key_history_entries), "10");
             getPreferenceManager()
                     .findPreference(getString(R.string.pref_key_history_entries))
                     .setTitle(getString(R.string.settings_history_count_title) + " :" + entries);
@@ -80,6 +79,12 @@ public class SettingsActivity extends BaseActivity {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
+            if(key.equals(getString(R.string.pref_key_history_entries))){
+                String entries = PreferenceUtil.getValue(getActivity(), getString(R.string.pref_key_history_entries), "10");
+                getPreferenceManager()
+                        .findPreference(getString(R.string.pref_key_history_entries))
+                        .setTitle(getString(R.string.settings_history_count_title) + " :" + entries);
+            }
         }
 
         @Override
