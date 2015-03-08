@@ -42,12 +42,9 @@
     <string name="settings_cat_preference">PREFERENCES</string>
     <string name="settings_history_count_title">History Entries</string>
     <string name="settings_history_count_summary">Number of entries to show in History</string>
-    <string name="settings_version">Version</string>
+    <string name="settings_version">Build version</string>
     <string name="settings_web_app_title">Web App</string>
     <string name="settings_web_app_summary">Open the Web App</string>
 
-    <string name="msg_how_it_works">
-        Enter any Bible verse in the format <b>\'Genesis 1:1\'</b> and click on the Search icon on your keyboard to perform the search.\n
-        All References will load up as collapsed cards, Tap on the card to expand or collapse it.\n
-    </string>
+    <string name="msg_how_it_works">Enter any Bible verse in the format <b>\'Genesis 1:1\'</b> and click on the Search icon on your keyboard to perform the search.\nAll References will load up as collapsed cards, Tap on the card to expand or collapse it.\n</string>
 </resources>
