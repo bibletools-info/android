@@ -12,14 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
 import io.realm.Realm;
-import rawcomposition.bibletools.info.BibleToolsApplication;
 import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.model.json.Reference;
+import rawcomposition.bibletools.info.ui.MainActivity;
 import rawcomposition.bibletools.info.ui.callbacks.OnNavigationListener;
 import rawcomposition.bibletools.info.util.AnimUtil;
 import rawcomposition.bibletools.info.util.FavouritesUtil;
@@ -246,7 +245,7 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
     }
 
     private Realm getRealm(){
-        return ((BibleToolsApplication)context.getApplication())
+        return ((MainActivity)context)
                 .getRealm();
     }
 

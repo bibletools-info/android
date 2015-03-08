@@ -26,10 +26,12 @@ import com.orhanobut.wasp.WaspError;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
 import rawcomposition.bibletools.info.BibleToolsApplication;
 import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.api.BibleToolsApi;
 import rawcomposition.bibletools.info.custom.ClearAutoCompleteTextView;
+import rawcomposition.bibletools.info.custom.ScrollManager;
 import rawcomposition.bibletools.info.custom.SearchTextWatcher;
 import rawcomposition.bibletools.info.model.json.Reference;
 import rawcomposition.bibletools.info.model.json.ReferencesResponse;
@@ -70,10 +72,13 @@ public class MainActivity extends BaseActivity implements
 
     private RecyclerView mRecycler;
 
+    private Realm mRealm;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mRealm = Realm.getInstance(this);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -147,12 +152,16 @@ public class MainActivity extends BaseActivity implements
        mAdapter = new ReferenceListAdapter(MainActivity.this, mReferences, this);
        mRecycler.setAdapter(mAdapter);
 
+      // ScrollManager manager = new ScrollManager();
+     //  manager.addView(mHeaderView, ScrollManager.Direction.UP);
+      // manager.attach(mRecycler);
+
 
        Intent intent = getIntent();
        Uri data = intent.getData();
 
        if(data != null){
-           String verse = data.getQueryParameter("verse");
+           String verse = data.getQueryParameter(VERSE_KEY);
 
            Log.d(TAG, "VERSE: " + verse);
 
@@ -426,5 +435,15 @@ public class MainActivity extends BaseActivity implements
                 .content(R.string.msg_how_it_works)
                 .positiveText(R.string.action_ok)
                 .show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mRealm.close();
+        super.onDestroy();
+    }
+
+    public Realm getRealm() {
+        return mRealm;
     }
 }

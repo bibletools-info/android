@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
 
+import io.realm.Realm;
 import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.ui.fragments.FavouritesFragment;
 import rawcomposition.bibletools.info.util.enums.ViewType;
@@ -28,9 +29,13 @@ public class FavouritesActivity extends BaseActivity {
         return R.layout.activity_favourites;
     }
 
+    private Realm mRealm;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mRealm = Realm.getInstance(this);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -116,6 +121,16 @@ public class FavouritesActivity extends BaseActivity {
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        mRealm.close();
+        super.onDestroy();
+    }
+
+    public Realm getRealm() {
+        return mRealm;
     }
 
 

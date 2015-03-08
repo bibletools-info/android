@@ -9,6 +9,7 @@ import android.view.View;
 import io.realm.Realm;
 import rawcomposition.bibletools.info.BibleToolsApplication;
 import rawcomposition.bibletools.info.R;
+import rawcomposition.bibletools.info.ui.FavouritesActivity;
 import rawcomposition.bibletools.info.ui.adapters.FavouriteVersesAdapter;
 import rawcomposition.bibletools.info.util.DeviceUtil;
 import rawcomposition.bibletools.info.util.FavouritesUtil;
@@ -72,7 +73,7 @@ public class FavouritesFragment extends BaseFragment {
     }
 
     private Realm getRealm(){
-        return ((BibleToolsApplication)getActivity().getApplication())
+        return ((FavouritesActivity)getActivity())
                 .getRealm();
     }
 

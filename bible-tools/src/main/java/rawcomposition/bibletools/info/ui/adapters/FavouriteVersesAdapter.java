@@ -1,7 +1,6 @@
 package rawcomposition.bibletools.info.ui.adapters;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
@@ -14,9 +13,9 @@ import android.widget.TextView;
 import java.util.List;
 
 import io.realm.Realm;
-import rawcomposition.bibletools.info.BibleToolsApplication;
 import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.model.FavouriteVerse;
+import rawcomposition.bibletools.info.ui.FavouritesActivity;
 import rawcomposition.bibletools.info.util.AnimUtil;
 import rawcomposition.bibletools.info.util.FavouritesUtil;
 
@@ -62,7 +61,7 @@ public class FavouriteVersesAdapter extends RecyclerView.Adapter<FavouriteVerses
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Realm realm = ((BibleToolsApplication)context.getApplication())
+                Realm realm = ((FavouritesActivity)context)
                         .getRealm();
                 FavouritesUtil.unFavourite(realm, verse.getVerseCode());
                 setVerses(FavouritesUtil.getAllFavourites(realm));

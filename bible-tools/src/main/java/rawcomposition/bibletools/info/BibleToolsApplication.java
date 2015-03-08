@@ -15,8 +15,6 @@ public class BibleToolsApplication extends Application {
 
     private BibleToolsApi mApi;
 
-    private Realm mRealm;
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -26,29 +24,10 @@ public class BibleToolsApplication extends Application {
                 .setWaspHttpStack(new OkHttpStack())
                 .build()
                 .create(BibleToolsApi.class);
-
-        mRealm = Realm.getInstance(this);
     }
 
     public BibleToolsApi getApi(){
         return mApi;
     }
 
-    public Realm getRealm() {
-        return mRealm;
-    }
-
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-
-        mRealm.close();
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-
-        mRealm.close();
-    }
 }
