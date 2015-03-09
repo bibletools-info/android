@@ -186,7 +186,12 @@ public class MainActivity extends BaseActivity implements
         mAdapter.notifyDataSetChanged();
 
         if(smoothScroll){
-            mRecycler.smoothScrollToPosition(0);
+            try{
+                mRecycler.smoothScrollToPosition(0);
+            }catch (UnsupportedOperationException uoe){
+                Log.d(TAG, "Lies Lies lies");
+            }
+
         }
     }
 

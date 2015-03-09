@@ -1,5 +1,5 @@
 
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,29 +10,7 @@
         layout="@layout/search_view"
         android:id="@+id/header"/>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/scroll_view"
-        android:layout_below="@+id/header"
-        android:animateLayoutChanges="true"
-        >
+    <include
+        layout="@layout/fragment_references"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/recycler"
-            android:padding="@dimen/margin_small"
-            tools:context=".MainActivity$ReferencesFragment"
-            android:scrollbarStyle="outsideOverlay"
-            android:clipToPadding="false"
-            android:scrollbars="vertical" />
-
-        <ProgressBar
-            android:id="@+id/progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"/>
-    </RelativeLayout>
-
-</RelativeLayout>
+</LinearLayout>
