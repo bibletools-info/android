@@ -8,8 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,7 +21,8 @@
                 style="@style/referenceTitle"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                tools:text="SDA Bible Commentary"/>
+                tools:text="SDA Bible Commentary"
+                />
 
             <ImageView
                 android:id="@+id/action_options"
@@ -43,6 +43,7 @@
             android:id="@+id/reference_text"
             style="@style/referenceText"
             android:autoLink="none"
+            android:clickable="true"
             tools:text="1. Now. From the Hebrew particle we, which is more commonly translated “and.” This is the first instance of its use at the beginning of a book. All but four of the historical books of the"/>
 
     </LinearLayout>

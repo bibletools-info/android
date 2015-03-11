@@ -5,9 +5,11 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -98,7 +100,10 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
         final TextView content = holder.content;
 
         if(position == TITLE){
+            holder.itemView.setClickable(false);
+
             content.setText(reference.getText());
+            content.setMaxLines(Integer.MAX_VALUE);
 
             if(TextUtils.isEmpty(reference.getPrevious())){
                 holder.navigatePrevious.setVisibility(View.GONE);
@@ -145,35 +150,33 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
             TextViewUtil.setVerseClickListener(content, mListener);
 
-            content.setClickable(true);
             content.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(reference.isCollapsed()){
-                        content.setMaxLines(Integer.MAX_VALUE);
-                        reference.setCollapsed(false);
-                    } else {
-                        content.setMaxLines(4);
-                        reference.setCollapsed(true);
-                    }
+                    toggleReferenceView(reference, content);
                 }
             });
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toggleReferenceView(reference, content);
+                }
+            });
+
         }
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                if(reference.isCollapsed()){
-                    content.setMaxLines(Integer.MAX_VALUE);
-                    reference.setCollapsed(false);
-                } else {
-                    content.setMaxLines(4);
-                    reference.setCollapsed(true);
-                }
-            }
-        });
+    }
 
+    private void toggleReferenceView(Reference reference, TextView content){
+        if(reference.isCollapsed()){
+            content.setMaxLines(Integer.MAX_VALUE);
+            reference.setCollapsed(false);
+        } else {
+            content.setMaxLines(4);
+            reference.setCollapsed(true);
+        }
     }
 
     @Override

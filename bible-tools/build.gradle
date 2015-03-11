@@ -9,7 +9,7 @@ android {
         applicationId "rawcomposition.bibletools.info"
         minSdkVersion 11
         targetSdkVersion 21
-        versionCode 6
+        versionCode 7
         versionName "1.0.1"
     }
     buildTypes {
