@@ -1,15 +1,12 @@
 package rawcomposition.bibletools.info.ui.adapters;
 
 import android.app.Activity;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,6 +16,7 @@ import java.util.List;
 
 import io.realm.Realm;
 import rawcomposition.bibletools.info.R;
+import rawcomposition.bibletools.info.custom.IconizedMenu;
 import rawcomposition.bibletools.info.model.json.Reference;
 import rawcomposition.bibletools.info.ui.MainActivity;
 import rawcomposition.bibletools.info.ui.callbacks.OnNavigationListener;
@@ -95,7 +93,7 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
         final Reference reference = mReferences.get(position);
 
-        holder.title.setText((reference.getTitle()));
+        holder.title.setText(Html.fromHtml(reference.getTitle()));
 
         final TextView content = holder.content;
 
@@ -144,7 +142,11 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
         } else {
 
-            content.setText(Html.fromHtml(reference.getContent()));
+            if(position == 1){
+                content.setText(Html.fromHtml(TextViewUtil.implementBCbold(reference.getContent())));
+            } else {
+                content.setText(Html.fromHtml(reference.getContent()));
+            }
 
             setOptionsListener(holder.refOptions, reference);
 
@@ -222,15 +224,14 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
             @Override
             public void onClick(View v) {
 
-                PopupMenu popupMenu = new PopupMenu(context, imageView);
+                IconizedMenu popupMenu = new IconizedMenu(context, imageView);
                 MenuInflater menuInflater = popupMenu.getMenuInflater();
                 menuInflater.inflate(R.menu.menu_ref_options, popupMenu.getMenu());
 
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                popupMenu.setOnMenuItemClickListener(new IconizedMenu.OnMenuItemClickListener() {
                     @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-
-                        switch (menuItem.getItemId()){
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()){
                             case R.id.action_share:
                                 TextViewUtil.shareOrSearch(context, subject, text, true);
                                 return true;

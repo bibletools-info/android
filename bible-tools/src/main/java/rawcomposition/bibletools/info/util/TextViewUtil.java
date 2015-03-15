@@ -362,4 +362,24 @@ public class TextViewUtil {
         }
     }
 
+
+    public static String implementBCbold(String text){
+        if(text.contains("/span>")){
+
+            String subString = text.substring(0, text.indexOf("/span>") - 2);
+
+            return text.replace(subString, "<b>" + subString + "</b>");
+
+
+
+        } else {
+            return text;
+        }
+    }
+
+    /*
+    <b> <p><span class="head">4. God saw</b>.</span> This expression, repeated six times (<a rel="popup" data-resourcename="iv-vol1" data-content="&lt;div class=\&quot;resourcetext\&quot;&gt;&lt;span class=\&quot;lang-en\&quot;&gt;verses&lt;br /&gt;&lt;/span&gt; &lt;/div&gt;" href="#">vs.</a> <a data-reference="Ge1.10" data-datatype="bible" href="/reference/Ge1.10" class="bibleref">10</a>, <a data-reference="Ge1.12" data-datatype="bible" href="/reference/Ge1.12" class="bibleref">12</a>, <a data-reference="Ge1.18" data-datatype="bible" href="/reference/Ge1.18" class="bibleref">18</a>, <a data-reference="Ge1.21" data-datatype="bible" href="/reference/Ge1.21" class="bibleref">21</a>, <a data-reference="Ge1.25" data-datatype="bible" href="/reference/Ge1.25" class="bibleref">25</a>, <a data-reference="Ge1.31" data-datatype="bible" href="/reference/Ge1.31" class="bibleref">31</a>), conveys in human language an activity of God—the evaluation of each single act of creation as meeting completely the plan and will of its Maker. As we, by beholding and examining the products of our efforts, are prepared to declare that they meet our plans and purpose, so God declares, after every creative act, that His products agree completely with His plan. </p>    <p><span class="head">God divided the light from the darkness.</span> At the outset only darkness existed on this formless earth. A change took place with the entrance of light. Now darkness and light exist side by side, but separate from each other. </p>
+
+     */
+
 }
