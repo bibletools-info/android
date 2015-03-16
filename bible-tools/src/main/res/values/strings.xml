@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Bible Tools</string>
+    <string name="app_name">BibleTools</string>
 
     <string name="action_cancel">Cancel</string>
     <string name="action_copy">Copy</string>
