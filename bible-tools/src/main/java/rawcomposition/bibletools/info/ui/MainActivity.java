@@ -401,6 +401,10 @@ public class MainActivity extends BaseActivity implements
                 //Feedback
                 sendFeedBack();
                 break;
+            case 7:
+                //Donate
+                onDonateButtonClicked();
+                break;
         }
     }
 

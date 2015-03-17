@@ -14,6 +14,7 @@
     <string name="action_share">Share</string>
     <string name="action_send_feedback">Send Feedback</string>
     <string name="action_yes">Yes</string>
+    <string name="action_donate">Donate</string>
 
     <string name="blank"> </string>
 
@@ -27,6 +28,7 @@
     <string name="title_empty_favourites">No Favourites</string>
     <string name="title_information">Information</string>
     <string name="title_how_it_works">How It Works</string>
+    <string name="title_make_donation">Make a Donation</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

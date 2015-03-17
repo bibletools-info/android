@@ -8,6 +8,7 @@
         <item>Settings</item>
         <item>Help</item>
         <item>Send Feedback</item>
+        <item>Donate</item>
     </string-array>
 
     <string-array name="history_entries">
@@ -16,9 +17,21 @@
         <item>15</item>
         <item>20</item>
     </string-array>
-    <!--
 
-    -->
+    <string-array name="available_donations_sku">
+        <item>donate_id_1</item>
+        <item>donate_id_5</item>
+        <item>donate_id_10</item>
+        <item>donate_id_20</item>
+    </string-array>
+
+    <string-array name="available_donations_titles">
+        <item>$1</item>
+        <item>$5</item>
+        <item>$10</item>
+        <item>$20</item>
+    </string-array>
+
     <string-array name="bible_books_short">
         <item>ge</item>
         <item>ex</item>
