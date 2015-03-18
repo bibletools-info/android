@@ -23,6 +23,8 @@
         <item>donate_id_5</item>
         <item>donate_id_10</item>
         <item>donate_id_20</item>
+        <item>donate_id_50</item>
+        <item>donate_id_100</item>
     </string-array>
 
     <string-array name="available_donations_titles">
@@ -30,6 +32,8 @@
         <item>$5</item>
         <item>$10</item>
         <item>$20</item>
+        <item>$50</item>
+        <item>$100</item>
     </string-array>
 
     <string-array name="bible_books_short">

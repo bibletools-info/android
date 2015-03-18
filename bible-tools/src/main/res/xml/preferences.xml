@@ -39,15 +39,11 @@
             android:persistent="false"/>
 
 
-      <!--  <Preference
-            android:title="@string/settings_web_app_title"
-            android:summary="@string/settings_web_app_summary"
-            android:persistent="false">
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:data="http://www.bibletools.info"
-                />
-            </Preference>-->
+      <Preference
+            android:title="@string/action_donate"
+            android:key="pref_donate"
+            android:persistent="false"/>
+
     </PreferenceCategory>
 
 

@@ -81,7 +81,7 @@ public abstract class BaseActivity extends ActionBarActivity{
         mHelper = new IabHelper(this, getString(R.string.app_license_key));
 
         // enable debug logging (for a production application, you should set this to false).
-        mHelper.enableDebugLogging(true);
+        mHelper.enableDebugLogging(false);
 
         // Start setup. This is asynchronous and the specified listener
         // will be called once setup completes.
@@ -92,7 +92,7 @@ public abstract class BaseActivity extends ActionBarActivity{
 
                 if (!result.isSuccess()) {
                     // Oh noes, there was a problem.
-                    showToast("Problem setting up in-app billing: " + result);
+                    Log.d(TAG, "Problem setting up in-app billing: " + result);
                     return;
                 }
 
@@ -196,25 +196,13 @@ public abstract class BaseActivity extends ActionBarActivity{
 
             // Is it a failure?
             if (result.isFailure()) {
-                showToast("Failed to query inventory: " + result);
+                Log.d(TAG,"Failed to query inventory: " + result);
                 return;
             }
 
             Log.d(TAG, "Query inventory was successful.");
 
 
-
-            // Check for gas delivery -- if we own gas, we should fill up the tank immediately
-         /*   Purchase gasPurchase = inventory.getPurchase(SKU_DONATION);
-            if (gasPurchase != null && verifyDeveloperPayload(gasPurchase)) {
-                Log.d(TAG, "We have gas. Consuming it.");
-                mHelper.consumeAsync(inventory.getPurchase(SKU_DONATION), mConsumeFinishedListener);
-                return;
-            }*/
-
-            //updateUi();
-            //setWaitScreen(false);
-            Log.d(TAG, "Initial inventory query finished; enabling main UI.");
         }
     };
 
@@ -243,6 +231,7 @@ public abstract class BaseActivity extends ActionBarActivity{
                     }
                 })
                 .positiveText(R.string.action_donate)
+                .negativeText(R.string.action_cancel)
                 .build().show();
 
 
@@ -258,51 +247,22 @@ public abstract class BaseActivity extends ActionBarActivity{
             if (mHelper == null) return;
 
             if (result.isFailure()) {
-                showToast("Error purchasing: " + result);
+                showToast("There was an Error, please try again. ");
                // setWaitScreen(false);
                 return;
             }
             if (!verifyDeveloperPayload(purchase)) {
-                showToast("Error purchasing. Authenticity verification failed.");
-                //setWaitScreen(false);
+                showToast("There was an Error, please try again. ");
                 return;
             }
 
             Log.d(TAG, "Purchase successful.");
 
-           /* if (purchase.getSku().equals(SKU_DONATION)) {
-                // bought 1/4 tank of gas. So consume it.
-                Log.d(TAG, "Purchase is gas. Starting gas consumption.");
-                mHelper.consumeAsync(purchase, mConsumeFinishedListener);
-            }*/
+
 
         }
     };
 
-    // Called when consumption is complete
-    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
-        public void onConsumeFinished(Purchase purchase, IabResult result) {
-            Log.d(TAG, "Consumption finished. Purchase: " + purchase + ", result: " + result);
-
-            // if we were disposed of in the meantime, quit.
-            if (mHelper == null) return;
-
-            // We know this is the "gas" sku because it's the only one we consume,
-            // so we don't check which sku was consumed. If you have more than one
-            // sku, you probably should check...
-            if (result.isSuccess()) {
-                // successfully consumed, so we apply the effects of the item in our
-                // game world's logic, which in our case means filling the gas tank a bit
-                Log.d(TAG, "Consumption successful. Provisioning.");
-
-            }
-            else {
-                showToast("Error while consuming: " + result);
-            }
-
-            Log.d(TAG, "End consumption flow.");
-        }
-    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -67,8 +67,20 @@ public class SettingsActivity extends BaseActivity {
                         @Override
                         public boolean onPreferenceClick(Preference preference) {
 
-                            ((BaseActivity)getActivity())
+                            ((BaseActivity) getActivity())
                                     .sendFeedBack();
+
+                            return true;
+                        }
+                    });
+            getPreferenceManager()
+                    .findPreference("pref_donate")
+                    .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                        @Override
+                        public boolean onPreferenceClick(Preference preference) {
+
+                            ((BaseActivity) getActivity())
+                                    .onDonateButtonClicked();
 
                             return true;
                         }

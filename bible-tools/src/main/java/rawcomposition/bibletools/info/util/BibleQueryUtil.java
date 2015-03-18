@@ -101,6 +101,10 @@ public class BibleQueryUtil {
 
         if(bookTitle.equals("Psalms")){
             bookTitle = "Psalm";
+        } else {
+            if(bookTitle.equalsIgnoreCase("SongofSolomon")){
+                bookTitle = "Song of Solomon";
+            }
         }
 
         for(String book: titles){
@@ -127,7 +131,7 @@ public class BibleQueryUtil {
         }
 
         String nums = query.replace(bookTitle, "");
-        if(nums.contains(":")){
+        if (nums.contains(":")){
             arr = nums.split(":");
 
             int chapter = getNumber(arr[0]);
