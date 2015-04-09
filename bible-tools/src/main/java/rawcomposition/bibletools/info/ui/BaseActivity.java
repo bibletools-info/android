@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import rawcomposition.bibletools.info.BuildConfig;
 import rawcomposition.bibletools.info.R;
+import rawcomposition.bibletools.info.util.ThemeUtil;
 import rawcomposition.bibletools.info.util.ToastUtil;
 import rawcomposition.bibletools.info.util.billing.IabHelper;
 import rawcomposition.bibletools.info.util.billing.IabResult;
@@ -55,6 +56,8 @@ public abstract class BaseActivity extends ActionBarActivity{
     @Override
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
+
+       // ThemeUtil.setAppTheme(this, isSettings());
 
         setContentView(getLayoutResource());
 
@@ -109,6 +112,10 @@ public abstract class BaseActivity extends ActionBarActivity{
 
     public Toolbar getToolbar(){
         return mToolbar;
+    }
+
+    protected boolean isSettings(){
+        return false;
     }
 
     @Override
@@ -222,12 +229,12 @@ public abstract class BaseActivity extends ActionBarActivity{
         MaterialDialog.Builder builder = new MaterialDialog.Builder(this);
         builder.title(R.string.title_make_donation)
                 .items(getResources().getStringArray(R.array.available_donations_titles))
-                .itemsCallbackSingleChoice(1, new MaterialDialog.ListCallback() {
+                .itemsCallbackSingleChoice(1, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
-                    public void onSelection(MaterialDialog materialDialog, View view, int position, CharSequence charSequence) {
-
+                    public boolean onSelection(MaterialDialog materialDialog, View view, int position, CharSequence charSequence) {
                         mHelper.launchPurchaseFlow(BaseActivity.this, skuArray[position], RC_REQUEST,
                                 mPurchaseFinishedListener, payload);
+                        return true;
                     }
                 })
                 .positiveText(R.string.action_donate)
@@ -247,16 +254,16 @@ public abstract class BaseActivity extends ActionBarActivity{
             if (mHelper == null) return;
 
             if (result.isFailure()) {
-                showToast("There was an Error, please try again. ");
+              //  showToast("There was an Error, please try again. ");
                // setWaitScreen(false);
                 return;
             }
             if (!verifyDeveloperPayload(purchase)) {
-                showToast("There was an Error, please try again. ");
+              //  showToast("There was an Error, please try again. ");
                 return;
             }
 
-            Log.d(TAG, "Purchase successful.");
+            showToast("Donation successful :-)");
 
 
 

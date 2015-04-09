@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.speech.RecognizerIntent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -151,6 +152,7 @@ public class MainActivity extends BaseActivity implements
 
        mAdapter = new ReferenceListAdapter(MainActivity.this, mReferences, this);
        mRecycler.setAdapter(mAdapter);
+       mRecycler.setItemAnimator(new DefaultItemAnimator());
 
       // ScrollManager manager = new ScrollManager();
      //  manager.addView(mHeaderView, ScrollManager.Direction.UP);
@@ -422,8 +424,8 @@ public class MainActivity extends BaseActivity implements
 
         MaterialDialog.Builder builder = new MaterialDialog.Builder(this);
         builder.title(R.string.title_history)
-                .titleColorRes(R.color.theme_primary)
-                .iconRes(R.drawable.ic_history_color)
+               // .titleColorRes(R.color.theme_primary)
+                .iconRes(R.drawable.ic_history_grey)
                 .items(list.toArray(new String[list.size()]))
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override

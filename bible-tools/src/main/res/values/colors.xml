@@ -16,4 +16,6 @@
     <color name="dividers">#DADADA</color>
 
 
+    <color name="screen_background_holo_light">#fff3f3f3</color>
+    <color name="screen_background_holo_dark">#ff000000</color>
 </resources>

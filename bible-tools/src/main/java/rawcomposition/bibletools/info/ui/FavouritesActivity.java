@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import io.realm.Realm;
 import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.ui.fragments.FavouritesFragment;
@@ -79,48 +81,67 @@ public class FavouritesActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        FavouritesFragment fragment = (FavouritesFragment)
-                getSupportFragmentManager().findFragmentByTag(FavouritesFragment.class.getName());
-
-        if(fragment != null){
-
             switch (item.getItemId()){
-                case R.id.action_show_all:
-                    fragment.setViewType(ViewType.ALL);
-
-                    return true;
-                case R.id.action_ot:
-                    fragment.setViewType(ViewType.OLD_TESTAMENT);
-
-                    return true;
-                case R.id.action_nt:
-                    fragment.setViewType(ViewType.NEW_TESTAMENT);
-
-                    return true;
-
                 case R.id.action_filter:
-                    Menu menu = item.getSubMenu();
-                    switch (fragment.getViewType()){
-                        case ALL:
-                            menu.findItem(R.id.action_show_all)
-                                    .setChecked(true);
-                            return true;
-                        case NEW_TESTAMENT:
+                    showFilterOptions();
 
-                            menu.findItem(R.id.action_nt)
-                                    .setChecked(true);
-                            break;
-                        case OLD_TESTAMENT:
-                            menu.findItem(R.id.action_ot)
-                                    .setChecked(true);
-                            break;
-                    }
                     return true;
             }
-        }
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showFilterOptions(){
+
+        final FavouritesFragment fragment = (FavouritesFragment)
+                getSupportFragmentManager().findFragmentByTag(FavouritesFragment.class.getName());
+
+        if(fragment == null){
+            return;
+        }
+
+        int pstn;
+
+        switch (fragment.getViewType()){
+            case OLD_TESTAMENT:
+                pstn = 1;
+                break;
+            case NEW_TESTAMENT:
+                pstn = 2;
+                break;
+            default:
+                pstn = 0;
+                break;
+        }
+
+        String[] arr = {getString(R.string.title_all), getString(R.string.title_ot), getString(R.string.title_nt)};
+
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(this);
+        builder
+                .items(arr)
+                .itemsCallbackSingleChoice(pstn, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog materialDialog, View view, int position, CharSequence charSequence) {
+                        Log.d(TAG, "onSelection() " + position);
+
+                        switch (position){
+                            case 1:
+                                fragment.setViewType(ViewType.OLD_TESTAMENT);
+                                break;
+                            case 2:
+                                fragment.setViewType(ViewType.NEW_TESTAMENT);
+                                break;
+                            default:
+                                fragment.setViewType(ViewType.ALL);
+                                break;
+                        }
+                        return true;
+                    }
+                })
+                .positiveText(R.string.action_filter)
+                .negativeText(R.string.action_cancel)
+                .build().show();
     }
 
     @Override

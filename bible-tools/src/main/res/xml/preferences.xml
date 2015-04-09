@@ -5,6 +5,14 @@
         android:title="@string/settings_cat_preference">
 
         <com.afollestad.materialdialogs.prefs.MaterialListPreference
+            android:key="@string/pref_theme_type"
+            android:title="@string/title_base_theme"
+            android:summary="@string/summary_base_theme"
+            android:entries="@array/base_theme_entries"
+            android:entryValues="@array/base_theme_values"
+            android:defaultValue="zero"/>
+
+        <com.afollestad.materialdialogs.prefs.MaterialListPreference
             android:key="@string/pref_key_history_entries"
             android:title="@string/settings_history_count_title"
             android:summary="@string/settings_history_count_summary"

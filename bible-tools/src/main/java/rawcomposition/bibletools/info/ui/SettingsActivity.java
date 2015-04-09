@@ -1,5 +1,6 @@
 package rawcomposition.bibletools.info.ui;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -29,17 +30,13 @@ public class SettingsActivity extends BaseActivity {
         }
     }
 
-   /* @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-
-        getMenuInflater().inflate(R.menu.menu_settings, menu);
-
-        return super.onCreateOptionsMenu(menu);
+    @Override
+    protected boolean isSettings() {
+        return true;
     }
-*/
 
     public static class SettingsFragment extends PreferenceFragment implements
-            SharedPreferences.OnSharedPreferenceChangeListener{
+            SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceChangeListener{
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -86,6 +83,9 @@ public class SettingsActivity extends BaseActivity {
                         }
                     });
 
+            findPreference(getString(R.string.pref_theme_type))
+                    .setOnPreferenceChangeListener(this);
+
         }
 
         @Override
@@ -110,6 +110,18 @@ public class SettingsActivity extends BaseActivity {
             super.onPause();
             getPreferenceScreen().getSharedPreferences()
                     .unregisterOnSharedPreferenceChangeListener(this);
+        }
+
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object o) {
+
+            if(preference.getKey().equals(getString(R.string.pref_theme_type))){
+                startActivity(new Intent(getActivity(), MainActivity.class));
+                getActivity().finish();
+
+                return true;
+            }
+            return false;
         }
     }
 }

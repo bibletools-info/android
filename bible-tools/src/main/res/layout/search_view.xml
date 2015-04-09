@@ -37,7 +37,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_medium"
-                android:textColor="@color/text"
+                android:textColor="?android:textColor"
                 android:background="@android:color/transparent"
                 android:hint="@string/search_hint"
                 android:layout_marginLeft="@dimen/margin_small"

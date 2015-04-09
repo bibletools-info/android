@@ -25,7 +25,7 @@
         android:layout_weight="1"
         android:layout_marginLeft="@dimen/margin_medium"
         tools:text="Favourites"
-        android:textColor="@color/text"
+        android:textColor="?android:textColor"
         android:textSize="@dimen/text_medium"
         app:fontStyle="@string/font_medium"/>
 

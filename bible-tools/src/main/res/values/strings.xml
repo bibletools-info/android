@@ -6,6 +6,7 @@
     <string name="action_delete">Delete</string>
     <string name="action_edit">Edit</string>
     <string name="action_favourite">Favourite</string>
+    <string name="action_filter">Filter</string>
     <string name="action_no">No</string>
     <string name="action_ok">OK</string>
     <string name="action_save">Save</string>
@@ -29,6 +30,7 @@
     <string name="title_information">Information</string>
     <string name="title_how_it_works">How It Works</string>
     <string name="title_make_donation">Make a Donation</string>
+    <string name="title_base_theme">Base Theme</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -47,6 +49,8 @@
     <string name="settings_version">Build version</string>
     <string name="settings_web_app_title">Web App</string>
     <string name="settings_web_app_summary">Open the Web App</string>
+
+    <string name="summary_base_theme">Choose your base theme (light/dark)</string>
 
     <string name="msg_how_it_works">Enter any Bible verse in the format <b>\'Genesis 1:1\'</b> and click on the Search icon on your keyboard to perform the search.\nAll References will load up as collapsed cards, Tap on the card to expand or collapse it.\n</string>
 </resources>

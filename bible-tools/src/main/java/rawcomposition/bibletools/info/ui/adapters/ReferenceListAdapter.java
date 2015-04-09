@@ -1,9 +1,13 @@
 package rawcomposition.bibletools.info.ui.adapters;
 
 import android.app.Activity;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,6 +27,7 @@ import rawcomposition.bibletools.info.ui.callbacks.OnNavigationListener;
 import rawcomposition.bibletools.info.util.AnimUtil;
 import rawcomposition.bibletools.info.util.FavouritesUtil;
 import rawcomposition.bibletools.info.util.TextViewUtil;
+import rawcomposition.bibletools.info.util.ThemeUtil;
 import rawcomposition.bibletools.info.util.ToastUtil;
 
 /**
@@ -94,6 +99,18 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
         final Reference reference = mReferences.get(position);
 
         holder.title.setText(Html.fromHtml(reference.getTitle()));
+
+        if(position != 0 && !ThemeUtil.isDarkTheme(context)){
+          //  holder.referenceTop.setBackgroundColor(context.getResources().getColor(R.color.reference_title_background));
+        }
+
+      //  TypedValue typedValue = new TypedValue();
+       // Resources.Theme theme = context.getTheme();
+       // theme.resolveAttribute(R.attr.cardBackgroundColor, typedValue, true);
+       // int color = typedValue.data;
+       // CardView cardView = (CardView) holder.itemView;
+       // cardView.setBackgroundColor(color);
+
 
         final TextView content = holder.content;
 
@@ -198,6 +215,8 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
         private ImageView toggleFav;
 
+        private View referenceTop;
+
         public ReferenceViewHolder(View itemView) {
             super(itemView);
 
@@ -210,6 +229,8 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
             refOptions = (ImageView) itemView.findViewById(R.id.action_options);
 
             toggleFav = (ImageView) itemView.findViewById(R.id.action_favourite);
+
+            referenceTop = itemView.findViewById(R.id.reference_top);
         }
     }
 

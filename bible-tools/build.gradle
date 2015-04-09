@@ -37,6 +37,6 @@ dependencies {
     compile 'com.orhanobut:wasp:1.6-SNAPSHOT'
     compile 'com.google.code.gson:gson:2.3.+'
     compile 'com.nineoldandroids:library:2.4.0'
-    compile 'com.afollestad:material-dialogs:0.6.3.1'
-    compile 'io.realm:realm-android:0.79.1'
+    compile 'com.afollestad:material-dialogs:0.7.1.0'
+    compile 'io.realm:realm-android:0.80.0'
 }

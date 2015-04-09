@@ -11,6 +11,18 @@
         <item>Donate</item>
     </string-array>
 
+    <string-array name="base_theme_entries">
+        <item>Light</item>
+        <item>Dark</item>
+        <item>Automatic</item>
+    </string-array>
+
+    <string-array name="base_theme_values">
+        <item>zero</item>
+        <item>one</item>
+        <item>two</item>
+    </string-array>
+
     <string-array name="history_entries">
         <item>5</item>
         <item>10</item>
