@@ -9,8 +9,8 @@ android {
         applicationId "rawcomposition.bibletools.info"
         minSdkVersion 11
         targetSdkVersion 22
-        versionCode 12
-        versionName "1.0.3"
+        versionCode 13
+        versionName "1.0.4"
     }
     buildTypes {
         release {
@@ -39,4 +39,5 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.afollestad:material-dialogs:0.7.1.0'
     compile 'io.realm:realm-android:0.80.0'
+    compile('de.psdev.licensesdialog:licensesdialog:1.7.0')
 }

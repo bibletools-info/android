@@ -2,9 +2,9 @@
 <resources>
 
     <style name="Theme"/>
+    <style name="BaseTheme"/>
 
-    <style name="Theme.Light" parent="Theme.AppCompat.Light.NoActionBar">
-
+    <style name="BaseTheme.Light" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/theme_primary</item>
         <item name="colorPrimaryDark">@color/theme_primary_dark</item>
         <item name="colorAccent">@color/theme_accent</item>
@@ -28,9 +28,11 @@
         <item name="md_positive_color">@color/theme_primary</item>
         <item name="md_neutral_color">@color/theme_primary</item>
         <item name="md_negative_color">@color/theme_primary</item>
+        <item name="md_dark_theme">false</item>
+        <item name="md_item_color">@color/primary_material_dark</item>
     </style>
 
-    <style name="Theme.Dark" parent="Theme.AppCompat.NoActionBar">
+    <style name="BaseTheme.Dark" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/theme_primary</item>
         <item name="colorPrimaryDark">@color/theme_primary_dark</item>
         <item name="colorAccent">@color/theme_accent</item>
@@ -58,6 +60,10 @@
         <item name="md_dark_theme">true</item>
     </style>
 
+
+    <style name="Theme.Light" parent="BaseTheme.Light"/>
+    <style name="Theme.Dark" parent="BaseTheme.Dark"/>
+
     <style name="Theme.Light.Settings">
         <item name="colorAccent">@color/theme_primary</item>
     </style>
@@ -65,5 +71,6 @@
     <style name="Theme.Dark.Settings">
         <item name="colorAccent">@color/theme_primary</item>
     </style>
+
 
 </resources>

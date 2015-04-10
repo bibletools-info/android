@@ -13,6 +13,14 @@
             android:defaultValue="zero"/>
 
         <com.afollestad.materialdialogs.prefs.MaterialListPreference
+            android:key="@string/pref_font_weight"
+            android:title="@string/title_font_weght"
+            android:summary="@string/summary_font_weight"
+            android:entries="@array/font_weight_entries"
+            android:entryValues="@array/font_weight_values"
+            android:defaultValue="lig"/>
+
+        <com.afollestad.materialdialogs.prefs.MaterialListPreference
             android:key="@string/pref_key_history_entries"
             android:title="@string/settings_history_count_title"
             android:summary="@string/settings_history_count_summary"
@@ -28,6 +36,21 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:title="@string/settings_support">
+
+        <Preference
+            android:key="@string/pref_feedback"
+            android:title="@string/action_send_feedback"
+            android:persistent="false"/>
+
+
+        <Preference
+            android:title="@string/action_donate"
+            android:key="pref_donate"
+            android:persistent="false"/>
+
+    </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/settings_about_preference">
@@ -41,16 +64,24 @@
                 android:data="https://play.google.com/store/apps/details?id=rawcomposition.bibletools.info"
                 />
         </Preference>
+
         <Preference
-            android:key="@string/pref_feedback"
-            android:title="@string/action_send_feedback"
+            android:title="Open Source Licenses"
+            android:key="pref_open_source"
+            android:summary="License details for open source software"
             android:persistent="false"/>
 
 
-      <Preference
-            android:title="@string/action_donate"
-            android:key="pref_donate"
-            android:persistent="false"/>
+        <Preference
+            android:title="Developer"
+            android:summary="Tinashe Mzondiwa"
+            android:persistent="false">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://plus.google.com/u/0/+TinasheMzondiwa/"
+                />
+
+        </Preference>
 
     </PreferenceCategory>
 

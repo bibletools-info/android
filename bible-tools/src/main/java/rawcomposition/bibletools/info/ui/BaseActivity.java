@@ -1,11 +1,14 @@
 package rawcomposition.bibletools.info.ui;
 
+import android.annotation.TargetApi;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.internal.VersionUtils;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -57,7 +60,7 @@ public abstract class BaseActivity extends ActionBarActivity{
     public void onCreate(Bundle savedInstance){
         super.onCreate(savedInstance);
 
-       // ThemeUtil.setAppTheme(this, isSettings());
+        ThemeUtil.setAppTheme(this, isSettings());
 
         setContentView(getLayoutResource());
 
@@ -118,11 +121,23 @@ public abstract class BaseActivity extends ActionBarActivity{
         return false;
     }
 
+    @TargetApi(21)
+    public void startAnActivity(Intent intent){
+
+        if(VersionUtils.isAtLeastL()){
+            startActivity(intent,
+                    ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+        } else {
+            startActivity(intent);
+        }
+
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+                onBackPressed();
                 return true;
         }
 

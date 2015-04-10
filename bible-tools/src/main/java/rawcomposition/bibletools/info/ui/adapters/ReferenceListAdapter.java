@@ -3,6 +3,7 @@ package rawcomposition.bibletools.info.ui.adapters;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -37,6 +38,8 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
     private static final String TAG = ReferenceListAdapter.class.getName();
 
+    private static final String FONT_DIRECTORY = "fonts/";
+
     private static final int TITLE = 0;
     private static final int NON_TITLE = 1;
 
@@ -48,6 +51,8 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
     private int mLastAnimatedPosition = -1;
 
     private OnNavigationListener mListener;
+
+    private Typeface typeface;
 
     public ReferenceListAdapter(Activity context, List<Reference> references, OnNavigationListener listener) {
         this.mReferences = references;
@@ -98,18 +103,39 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
         final Reference reference = mReferences.get(position);
 
-        holder.title.setText(Html.fromHtml(reference.getTitle()));
+        String fontPath = "";
 
-        if(position != 0 && !ThemeUtil.isDarkTheme(context)){
-          //  holder.referenceTop.setBackgroundColor(context.getResources().getColor(R.color.reference_title_background));
+        switch (ThemeUtil.getFontWeight(context)){
+            case REGULAR:
+                fontPath = context.getString(R.string.pref_font_regular);
+                break;
+            case MEDIUM:
+                fontPath = context.getString(R.string.pref_font_medium);
+                break;
+            case HEAVY:
+                fontPath = context.getString(R.string.pref_font_heavy);
+                break;
         }
 
-      //  TypedValue typedValue = new TypedValue();
-       // Resources.Theme theme = context.getTheme();
-       // theme.resolveAttribute(R.attr.cardBackgroundColor, typedValue, true);
-       // int color = typedValue.data;
-       // CardView cardView = (CardView) holder.itemView;
-       // cardView.setBackgroundColor(color);
+        if(!TextUtils.isEmpty(fontPath)){
+            typeface = Typeface.createFromAsset(context.getAssets(), FONT_DIRECTORY + fontPath);
+            holder.title.setTypeface(typeface);
+            holder.title.setText(Html.fromHtml("<b>" + reference.getTitle() + "</b>"));
+            holder.content.setTypeface(typeface);
+        }else {
+            holder.title.setText(Html.fromHtml(reference.getTitle()));
+        }
+
+
+        if(!ThemeUtil.isDarkTheme(context)){
+            if(position != 0 ){
+                holder.referenceTop.setBackgroundColor(context.getResources().getColor(R.color.reference_title_background));
+
+            }
+
+            holder.referenceWhiteView.setBackgroundColor(Color.WHITE);
+
+        }
 
 
         final TextView content = holder.content;
@@ -216,6 +242,7 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
         private ImageView toggleFav;
 
         private View referenceTop;
+        private View referenceWhiteView;
 
         public ReferenceViewHolder(View itemView) {
             super(itemView);
@@ -231,6 +258,7 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
             toggleFav = (ImageView) itemView.findViewById(R.id.action_favourite);
 
             referenceTop = itemView.findViewById(R.id.reference_top);
+            referenceWhiteView = itemView.findViewById(R.id.reference_white_view);
         }
     }
 

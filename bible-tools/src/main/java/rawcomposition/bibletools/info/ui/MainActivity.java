@@ -385,7 +385,7 @@ public class MainActivity extends BaseActivity implements
         switch (position){
             case 1:
                 //Favourites
-                startActivity(new Intent(this, FavouritesActivity.class));
+                startAnActivity(new Intent(this, FavouritesActivity.class));
                 break;
             case 2:
                 //History
@@ -393,7 +393,7 @@ public class MainActivity extends BaseActivity implements
                break;
             case 4:
                 //Settings
-                startActivity(new Intent(this, SettingsActivity.class));
+                startAnActivity(new Intent(this, SettingsActivity.class));
                 break;
             case 5:
                 //Help

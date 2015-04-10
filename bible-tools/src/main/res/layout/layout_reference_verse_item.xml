@@ -50,14 +50,21 @@
         </LinearLayout>
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/reference_white_view">
 
-        <include
-            layout="@layout/divider_reference"/>
+            <include
+                layout="@layout/divider_reference"/>
 
-        <rawcomposition.bibletools.info.custom.AppTextView
-            android:id="@+id/reference_text"
-            style="@style/referenceText"
-            tools:text="In the beginning God created the heaven and earth"/>
+            <rawcomposition.bibletools.info.custom.AppTextView
+                android:id="@+id/reference_text"
+                style="@style/referenceText"
+                tools:text="In the beginning God created the heaven and earth"/>
+        </LinearLayout>
+
 
     </LinearLayout>
 

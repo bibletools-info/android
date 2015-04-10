@@ -23,6 +23,20 @@
         <item>two</item>
     </string-array>
 
+    <string-array name="font_weight_entries">
+        <item>@string/title_font_light</item>
+        <item>@string/title_font_regular</item>
+        <item>@string/title_font_medium</item>
+        <item>@string/title_font_heavy</item>
+    </string-array>
+
+    <string-array name="font_weight_values">
+        <item>lig</item>
+        <item>reg</item>
+        <item>med</item>
+        <item>hev</item>
+    </string-array>
+
     <string-array name="history_entries">
         <item>5</item>
         <item>10</item>

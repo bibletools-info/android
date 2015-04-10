@@ -8,11 +8,14 @@ import android.preference.PreferenceManager;
 import android.os.Bundle;
 import android.view.Menu;
 
+import de.psdev.licensesdialog.LicensesDialog;
 import rawcomposition.bibletools.info.BuildConfig;
 import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.util.PreferenceUtil;
 
 public class SettingsActivity extends BaseActivity {
+
+    private boolean mSettingChanged = false;
 
     @Override
     protected int getLayoutResource() {
@@ -33,6 +36,21 @@ public class SettingsActivity extends BaseActivity {
     @Override
     protected boolean isSettings() {
         return true;
+    }
+
+    public void setSettingChanged(boolean mSettingChanged) {
+        this.mSettingChanged = mSettingChanged;
+    }
+
+    @Override
+    public void onBackPressed(){
+        if(mSettingChanged){
+            startAnActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
+
+        super.onBackPressed();
+
     }
 
     public static class SettingsFragment extends PreferenceFragment implements
@@ -86,6 +104,24 @@ public class SettingsActivity extends BaseActivity {
             findPreference(getString(R.string.pref_theme_type))
                     .setOnPreferenceChangeListener(this);
 
+            findPreference(getString(R.string.pref_font_weight))
+                    .setOnPreferenceChangeListener(this);
+
+            findPreference("pref_open_source")
+                    .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                        @Override
+                        public boolean onPreferenceClick(Preference preference) {
+                            new LicensesDialog.Builder(getActivity())
+                                    .setNotices(R.raw.notices)
+                                    .setIncludeOwnLicense(true)
+                                    //.setThemeResourceId(R.style.custom_theme)
+                                   // .setDividerColorId(R.color.custom_divider_color)
+                                   .build().show();
+
+                            return true;
+                        }
+                    });
+
         }
 
         @Override
@@ -120,7 +156,15 @@ public class SettingsActivity extends BaseActivity {
                 getActivity().finish();
 
                 return true;
+            } else if(preference.getKey().equals(getString(R.string.pref_font_weight))){
+
+                ((SettingsActivity)getActivity())
+                        .setSettingChanged(true);
+
+                return true;
             }
+
+
             return false;
         }
     }

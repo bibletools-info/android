@@ -6,6 +6,11 @@
     <string name="font_regular">Lato-Light.ttf</string>
     <string name="font_medium">Lato-Regular.ttf</string>
 
+    <string name="pref_font_light">Lato-Light.ttf</string>
+    <string name="pref_font_regular">Lato-Regular.ttf</string>
+    <string name="pref_font_medium">Lato-Medium.ttf</string>
+    <string name="pref_font_heavy">Lato-Heavy.ttf</string>
+
     <string name="app_email">akjackson1@gmail.com</string>
     <string name="app_full_name">Bible Tools.info</string>
     <string name="app_help">http://bibletools.info/about</string>
@@ -19,4 +24,5 @@
     <string name="pref_feedback">send_feedback</string>
     <string name="pref_tut_shown">tut_shown</string>
     <string name="pref_theme_type">pref_theme</string>
+    <string name="pref_font_weight">font_weight</string>
 </resources>

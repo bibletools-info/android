@@ -2,8 +2,12 @@ package rawcomposition.bibletools.info.ui.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,17 +22,22 @@ import rawcomposition.bibletools.info.model.FavouriteVerse;
 import rawcomposition.bibletools.info.ui.FavouritesActivity;
 import rawcomposition.bibletools.info.util.AnimUtil;
 import rawcomposition.bibletools.info.util.FavouritesUtil;
+import rawcomposition.bibletools.info.util.ThemeUtil;
 
 /**
  * Created by tinashe on 2015/03/05.
  */
 public class FavouriteVersesAdapter extends RecyclerView.Adapter<FavouriteVersesAdapter.VerseViewHolder>{
 
+    private static final String FONT_DIRECTORY = "fonts/";
+
     private List<FavouriteVerse> mVerses;
 
     private Activity context;
 
     private int mLastAnimatedPosition = -1;
+
+    private Typeface typeface;
 
     public FavouriteVersesAdapter(List<FavouriteVerse> verses, Activity context) {
         this.mVerses = verses;
@@ -55,7 +64,30 @@ public class FavouriteVersesAdapter extends RecyclerView.Adapter<FavouriteVerses
 
         final FavouriteVerse verse = mVerses.get(position);
 
-        holder.title.setText(verse.getVerseCode());
+        String fontPath = "";
+
+        switch (ThemeUtil.getFontWeight(context)){
+            case REGULAR:
+                fontPath = context.getString(R.string.pref_font_regular);
+                break;
+            case MEDIUM:
+                fontPath = context.getString(R.string.pref_font_medium);
+                break;
+            case HEAVY:
+                fontPath = context.getString(R.string.pref_font_heavy);
+                break;
+        }
+
+        if(!TextUtils.isEmpty(fontPath)){
+            typeface = Typeface.createFromAsset(context.getAssets(), FONT_DIRECTORY + fontPath);
+            holder.title.setTypeface(typeface);
+            holder.title.setText(Html.fromHtml("<b>" + verse.getVerseCode() + "</b>"));
+            holder.content.setTypeface(typeface);
+        }else {
+            holder.title.setText(verse.getVerseCode());
+        }
+
+
         holder.content.setText(verse.getVerseText());
 
         holder.delete.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +115,12 @@ public class FavouriteVersesAdapter extends RecyclerView.Adapter<FavouriteVerses
                 }
             }
         });
+
+        if(!ThemeUtil.isDarkTheme(context)){
+
+            holder.referenceWhiteView.setBackgroundColor(Color.WHITE);
+
+        }
     }
 
     @Override
@@ -106,6 +144,8 @@ public class FavouriteVersesAdapter extends RecyclerView.Adapter<FavouriteVerses
 
         ImageView delete;
 
+        private View referenceWhiteView;
+
         public VerseViewHolder(View itemView) {
             super(itemView);
 
@@ -120,6 +160,9 @@ public class FavouriteVersesAdapter extends RecyclerView.Adapter<FavouriteVerses
             delete.setImageResource(R.drawable.ic_delete);
             itemView.findViewById(R.id.action_favourite)
                     .setVisibility(View.GONE);
+
+            referenceWhiteView = itemView.findViewById(R.id.reference_white_view);
+
         }
     }
 }
