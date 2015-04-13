@@ -454,6 +454,15 @@ public class MainActivity extends BaseActivity implements
         super.onDestroy();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent mainActivity = new Intent(Intent.ACTION_MAIN);
+        mainActivity.addCategory(Intent.CATEGORY_HOME);
+        mainActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(mainActivity);
+        finish();
+    }
+
     public Realm getRealm() {
         return mRealm;
     }
