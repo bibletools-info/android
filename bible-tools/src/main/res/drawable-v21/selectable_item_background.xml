@@ -4,6 +4,6 @@
 
     <item
         android:id="@android:id/mask"
-        android:drawable="@color/theme_accent"/>
+        android:drawable="@color/theme_accent" />
 
 </ripple>

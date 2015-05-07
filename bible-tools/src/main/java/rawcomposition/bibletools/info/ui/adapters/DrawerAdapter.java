@@ -42,19 +42,19 @@ public class DrawerAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-       ViewHolder holder;
+        ViewHolder holder;
 
-        if(position == 3){
+        if (position == 3) {
             return mInflater.inflate(R.layout.drawer_divider, parent, false);
         }
 
-        if(position > 3){
-            TextView textView = (TextView)mInflater.inflate(R.layout.drawer_text_item, parent, false);
+        if (position > 3) {
+            TextView textView = (TextView) mInflater.inflate(R.layout.drawer_text_item, parent, false);
             textView.setText(getItem(position - 1));
             return textView;
         }
 
-        if(convertView == null){
+        if (convertView == null) {
             holder = new ViewHolder();
 
             convertView = mInflater.inflate(R.layout.drawer_item, parent, false);
@@ -67,7 +67,7 @@ public class DrawerAdapter extends BaseAdapter {
         }
 
         holder.textView.setText(getItem(position));
-        switch (position){
+        switch (position) {
             case 0:
                 holder.icon.setImageResource(R.drawable.ic_home);
                 break;
@@ -81,7 +81,7 @@ public class DrawerAdapter extends BaseAdapter {
         return convertView;
     }
 
-    class ViewHolder{
+    class ViewHolder {
         ImageView icon;
         TextView textView;
     }

@@ -1,16 +1,28 @@
-
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <include
+        android:id="@+id/header"
         layout="@layout/search_view"
-        android:id="@+id/header"/>
+        tools:visibility="gone" />
 
-    <include
-        layout="@layout/fragment_references"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/fragment_references" />
+
+        <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+            android:id="@+id/smooth_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-5dp"
+            android:background="@android:color/transparent"
+            android:visibility="gone"
+            tools:visibility="visible" />
+    </FrameLayout>
 
 </LinearLayout>

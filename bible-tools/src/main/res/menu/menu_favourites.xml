@@ -3,15 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="rawcomposition.bibletools.info.ui.FavouritesActivity">
 
-    <item android:id="@+id/action_search"
-        android:title="@string/action_settings"
+    <item
+        android:id="@+id/action_search"
         android:icon="@drawable/ic_search"
-        app:showAsAction="ifRoom|collapseActionView"
-        app:actionViewClass="android.support.v7.widget.SearchView"/>
+        android:title="@string/action_settings"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView" />
 
-    <item android:id="@+id/action_filter"
-        android:title="@string/action_filter"
+    <item
+        android:id="@+id/action_filter"
         android:icon="@drawable/ic_filter_list"
+        android:title="@string/action_filter"
         app:showAsAction="ifRoom" />
 
 

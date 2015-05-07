@@ -5,9 +5,11 @@ package rawcomposition.bibletools.info.ui.callbacks;
  */
 public interface OnNavigationListener {
 
-    public abstract void onPrevious(String text);
+    void onPrevious(String text);
 
-    public abstract void onNext(String text);
+    void onNext(String text);
 
-    public abstract void onVerseClick(String verse);
+    void onVerseClick(String verse);
+
+    void onScrollRequired(int position);
 }

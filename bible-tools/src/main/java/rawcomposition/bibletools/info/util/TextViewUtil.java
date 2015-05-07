@@ -45,11 +45,10 @@ public class TextViewUtil {
     private static final String TAG = TextViewUtil.class.getName();
 
 
-
     @TargetApi(11)
-    public static void setTextViewCallBack(final Activity activity, final TextView mTextView){
+    public static void setTextViewCallBack(final Activity activity, final TextView mTextView) {
 
-        if(Build.VERSION.SDK_INT < 11){
+        if (Build.VERSION.SDK_INT < 11) {
             return;
         }
 
@@ -91,7 +90,7 @@ public class TextViewUtil {
                     case R.id.action_share:
                         CharSequence text = computeSelectedText(mTextView);
 
-                        if(!TextUtils.isEmpty(text)){
+                        if (!TextUtils.isEmpty(text)) {
                             shareOrSearch(activity, null, text, true);
                         }
                         // Finish and close the ActionMode
@@ -100,7 +99,7 @@ public class TextViewUtil {
                     case R.id.action_search:
                         text = computeSelectedText(mTextView);
 
-                        if(!TextUtils.isEmpty(text)){
+                        if (!TextUtils.isEmpty(text)) {
                             shareOrSearch(activity, null, text, false);
                         }
                         // Finish and close the ActionMode
@@ -117,7 +116,7 @@ public class TextViewUtil {
 
     }
 
-    private static CharSequence computeSelectedText(TextView mTextView){
+    private static CharSequence computeSelectedText(TextView mTextView) {
 
         int min = 0;
         int max = mTextView.getText().length();
@@ -134,14 +133,14 @@ public class TextViewUtil {
 
     }
 
-    public static void shareOrSearch(Context context, CharSequence subject, CharSequence text, boolean share){
+    public static void shareOrSearch(Context context, CharSequence subject, CharSequence text, boolean share) {
 
-        if(share){
+        if (share) {
 
             Intent sharingIntent = new Intent(Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
             sharingIntent.putExtra(Intent.EXTRA_TEXT, text.toString());
-            if(!TextUtils.isEmpty(subject)){
+            if (!TextUtils.isEmpty(subject)) {
                 sharingIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
             }
             context.startActivity(sharingIntent);
@@ -157,7 +156,7 @@ public class TextViewUtil {
         }
     }
 
-    public static void copyText(Context context, String text){
+    public static void copyText(Context context, String text) {
         ClipboardManager clipboard = (ClipboardManager)
                 context.getSystemService(Context.CLIPBOARD_SERVICE);
 
@@ -165,8 +164,6 @@ public class TextViewUtil {
         Toast.makeText(context, "Copied to Clipboard", Toast.LENGTH_SHORT)
                 .show();
     }
-
-
 
 
     public static void clickify(TextView view, String clickableText, ClickSpan.OnClickListener listener) {
@@ -180,7 +177,7 @@ public class TextViewUtil {
         if (start == -1) return;
 
         if (text instanceof Spannable) {
-            ((Spannable)text).setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ((Spannable) text).setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         } else {
             SpannableString s = SpannableString.valueOf(text);
             s.setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -196,7 +193,7 @@ public class TextViewUtil {
     }
 
 
-    public static void setCustomFontTitle(Context context, TextView textView){
+    public static void setCustomFontTitle(Context context, TextView textView) {
         String text = "Bible Tools.info";
 
         Typeface t1 = Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Heavy.ttf");
@@ -208,7 +205,7 @@ public class TextViewUtil {
         textView.setText(sb);
     }
 
-    public static void stripVerses(String reference){
+    public static void stripVerses(String reference) {
         String start = "class=\"bibleref\">";
         String end = "</a>";
         String regex = "class=\\\"bibleref\\\">(.*?)<\\/a>";
@@ -219,42 +216,41 @@ public class TextViewUtil {
 
         List<String> allMatches = new ArrayList<>();
 
-        while (matcher.find()){
+        while (matcher.find()) {
             allMatches.add(matcher.group().replace(start, "").replace(end, ""));
 
         }
 
-        for(String verse: allMatches){
+        for (String verse : allMatches) {
             Log.d(TAG, verse);
         }
 
     }
 
-    public static void setVerseClickListener(final TextView textView, final OnNavigationListener listener){
+    public static void setVerseClickListener(final TextView textView, final OnNavigationListener listener) {
         final String reference = "/reference/";
         final String publication = "publication.php";
 
-        Spannable formattedContent = replaceAll((Spanned)textView.getText(), URLSpan.class, new URLSpanConverter(), new CustomClickableSpan.OnClickListener() {
+        Spannable formattedContent = replaceAll((Spanned) textView.getText(), URLSpan.class, new URLSpanConverter(), new CustomClickableSpan.OnClickListener() {
             @Override
             public void onClick(String url) {
 
-                if(url.contains(publication)){
+                if (url.contains(publication)) {
                     Uri data = Uri.parse(url);
 
                     String book = data.getQueryParameter("bookSubCode");
                     String chapter = data.getQueryParameter("chapter");
                     String verse = data.getQueryParameter("verse");
 
-                    if(!TextUtils.isEmpty(book) && !TextUtils.isEmpty(chapter)){
+                    if (!TextUtils.isEmpty(book) && !TextUtils.isEmpty(chapter)) {
 
-                        if(TextUtils.isEmpty(verse)){
+                        if (TextUtils.isEmpty(verse)) {
                             verse = "1";
                         }
 
-                        String ref = book + " " + chapter +":" + verse;
+                        String ref = book + " " + chapter + ":" + verse;
 
                         Log.d(TAG, ref);
-
 
 
                         listener.onVerseClick(ref);
@@ -266,28 +262,28 @@ public class TextViewUtil {
 
                 } else {
 
-                    if(url.contains(reference)){
+                    if (url.contains(reference)) {
                         url = url.replace(reference, "");
 
-                        Log.d(TAG, "Contains Ref:\n" +url);
+                        Log.d(TAG, "Contains Ref:\n" + url);
 
                         String ref = BibleQueryUtil.stripClickQuery(textView.getContext(), url);
 
-                        if(!TextUtils.isEmpty(ref)){
+                        if (!TextUtils.isEmpty(ref)) {
                             listener.onVerseClick(ref);
                         }
 
                     } else {
                         ///books/iv-vol1/Ge35.19
-                        Log.d(TAG, "No Ref:\n" +url);
+                        Log.d(TAG, "No Ref:\n" + url);
 
-                        String [] arr = url.split("/");
-                        if(arr.length > 1){
+                        String[] arr = url.split("/");
+                        if (arr.length > 1) {
                             url = arr[arr.length - 1];
 
                             String ref = BibleQueryUtil.stripClickQuery(textView.getContext(), url);
 
-                            if(!TextUtils.isEmpty(ref)){
+                            if (!TextUtils.isEmpty(ref)) {
                                 listener.onVerseClick(ref);
                             }
                         }
@@ -327,6 +323,19 @@ public class TextViewUtil {
         return (result);
     }
 
+    public static String implementBCbold(String text) {
+        if (text.contains("/span>")) {
+
+            String subString = text.substring(0, text.indexOf("/span>") - 2);
+
+            return text.replace(subString, "<b>" + subString + "</b>");
+
+
+        } else {
+            return text;
+        }
+    }
+
     public interface SpanConverter<A extends CharacterStyle, B extends CharacterStyle> {
         B convert(A span, CustomClickableSpan.OnClickListener listener);
     }
@@ -359,21 +368,6 @@ public class TextViewUtil {
         @Override
         public CustomClickableSpan convert(URLSpan span, CustomClickableSpan.OnClickListener listener) {
             return new CustomClickableSpan(span.getURL(), listener);
-        }
-    }
-
-
-    public static String implementBCbold(String text){
-        if(text.contains("/span>")){
-
-            String subString = text.substring(0, text.indexOf("/span>") - 2);
-
-            return text.replace(subString, "<b>" + subString + "</b>");
-
-
-
-        } else {
-            return text;
         }
     }
 

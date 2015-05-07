@@ -5,7 +5,7 @@ package rawcomposition.bibletools.info.ui.callbacks;
  */
 public interface SearchQueryStripListener {
 
-    public abstract void onSuccess(int book, int chapter, int verse);
+    void onSuccess(int book, int chapter, int verse);
 
-    public abstract void onError();
+    void onError();
 }

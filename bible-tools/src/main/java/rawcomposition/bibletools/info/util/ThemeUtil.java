@@ -2,11 +2,10 @@ package rawcomposition.bibletools.info.util;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.TypedValue;
-
+import android.graphics.drawable.Drawable;
+import android.support.v4.graphics.drawable.DrawableCompat;
 
 import java.util.Calendar;
 
@@ -20,22 +19,22 @@ public class ThemeUtil {
 
     private static final String TAG = ThemeUtil.class.getName();
 
-    public static void setAppTheme(Activity activity, boolean settings){
+    public static void setAppTheme(Activity activity, boolean settings) {
 
-        if(isDarkTheme(activity)){
+        if (isDarkTheme(activity)) {
             activity.setTheme(settings ? R.style.Theme_Dark_Settings : R.style.Theme_Dark);
             activity.getWindow().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
         }
 
     }
 
-    public static boolean isDarkTheme(Context context){
+    public static boolean isDarkTheme(Context context) {
         String val = PreferenceUtil.getValue(context,
                 context.getString(R.string.pref_theme_type), "zero");
 
-        if(val.equals("zero")){
+        if (val.equals("zero")) {
             return false;
-        } else if(val.equals("one")){
+        } else if (val.equals("one")) {
             return true;
         } else {
             Calendar calendar = Calendar.getInstance();
@@ -46,20 +45,32 @@ public class ThemeUtil {
     }
 
 
-    public static FontWeight getFontWeight(Context context){
+    public static FontWeight getFontWeight(Context context) {
         String val = PreferenceUtil.getValue(context,
                 context.getString(R.string.pref_font_weight),
                 "lig");
 
-        if(val.equals("reg")){
+        if (val.equals("reg")) {
             return FontWeight.REGULAR;
-        } else if(val.equals("med")){
+        } else if (val.equals("med")) {
             return FontWeight.MEDIUM;
-        } else if(val.equals("lig")){
+        } else if (val.equals("lig")) {
             return FontWeight.LIGHT;
         } else {
             return FontWeight.HEAVY;
         }
 
+    }
+
+    public static void tintDrawable(Drawable drawable, int color) {
+        if (drawable == null) {
+            return;
+        }
+
+        drawable = DrawableCompat.wrap(drawable);
+
+        DrawableCompat.setTint(drawable, color);
+
+        DrawableCompat.unwrap(drawable);
     }
 }

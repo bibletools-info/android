@@ -7,7 +7,7 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Created by tinashe on 2015/03/05.
  */
-public class FavouriteVerse extends RealmObject{
+public class FavouriteVerse extends RealmObject {
 
     @PrimaryKey
     @Index

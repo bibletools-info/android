@@ -1,10 +1,10 @@
 package rawcomposition.bibletools.info.ui.fragments;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +55,7 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View  view = inflater.inflate(
+        View view = inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
         mDrawerListView = (ListView) view.findViewById(R.id.drawer_list);
 
@@ -78,9 +78,9 @@ public class NavigationDrawerFragment extends Fragment {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
     }
 
-    public void toggleDrawer(){
+    public void toggleDrawer() {
 
-        if(isDrawerOpen()){
+        if (isDrawerOpen()) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         } else {
             mDrawerLayout.openDrawer(mFragmentContainerView);

@@ -5,7 +5,6 @@ import android.app.Application;
 import com.orhanobut.wasp.OkHttpStack;
 import com.orhanobut.wasp.Wasp;
 
-import io.realm.Realm;
 import rawcomposition.bibletools.info.api.BibleToolsApi;
 
 /**
@@ -26,7 +25,7 @@ public class BibleToolsApplication extends Application {
                 .create(BibleToolsApi.class);
     }
 
-    public BibleToolsApi getApi(){
+    public BibleToolsApi getApi() {
         return mApi;
     }
 

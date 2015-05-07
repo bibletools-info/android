@@ -6,48 +6,45 @@
     android:descendantFocusability="blocksDescendants">
 
     <LinearLayout
+        android:id="@+id/reference_white_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/reference_white_view">
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/reference_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:background="?android:colorBackground"
             android:gravity="center_vertical"
-            android:background="?android:colorBackground">
+            android:orientation="horizontal">
+
             <rawcomposition.bibletools.info.custom.AppTextView
                 android:id="@+id/reference_title"
                 style="@style/referenceTitle"
-                android:layout_weight="1"
                 android:layout_width="0dp"
-                tools:text="SDA Bible Commentary"
-                />
+                android:layout_weight="1"
+                tools:text="SDA Bible Commentary" />
 
             <ImageView
                 android:id="@+id/action_options"
+                style="@style/selectableItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/selectableItem"
-                android:src="@drawable/ic_more_vert"
                 android:contentDescription="@string/blank"
                 android:padding="@dimen/margin_tiny"
-                />
+                android:src="@drawable/ic_more_vert" />
         </LinearLayout>
 
 
-
-        <include
-            layout="@layout/divider_reference"/>
+        <include layout="@layout/divider_reference" />
 
         <rawcomposition.bibletools.info.custom.AppTextView
             android:id="@+id/reference_text"
             style="@style/referenceText"
             android:autoLink="none"
             android:clickable="true"
-            tools:text="1. Now. From the Hebrew particle we, which is more commonly translated “and.” This is the first instance of its use at the beginning of a book. All but four of the historical books of the"/>
+            tools:text="1. Now. From the Hebrew particle we, which is more commonly translated “and.” This is the first instance of its use at the beginning of a book. All but four of the historical books of the" />
 
     </LinearLayout>
 

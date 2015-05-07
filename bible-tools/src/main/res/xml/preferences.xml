@@ -1,85 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory
-        android:title="@string/settings_cat_preference">
+    <PreferenceCategory android:title="@string/settings_cat_preference">
 
         <com.afollestad.materialdialogs.prefs.MaterialListPreference
-            android:key="@string/pref_theme_type"
-            android:title="@string/title_base_theme"
-            android:summary="@string/summary_base_theme"
+            android:defaultValue="zero"
             android:entries="@array/base_theme_entries"
             android:entryValues="@array/base_theme_values"
-            android:defaultValue="zero"/>
+            android:key="@string/pref_theme_type"
+            android:summary="@string/summary_base_theme"
+            android:title="@string/title_base_theme" />
 
         <com.afollestad.materialdialogs.prefs.MaterialListPreference
-            android:key="@string/pref_font_weight"
-            android:title="@string/title_font_weght"
-            android:summary="@string/summary_font_weight"
+            android:defaultValue="lig"
             android:entries="@array/font_weight_entries"
             android:entryValues="@array/font_weight_values"
-            android:defaultValue="lig"/>
+            android:key="@string/pref_font_weight"
+            android:summary="@string/summary_font_weight"
+            android:title="@string/title_font_weght" />
 
         <com.afollestad.materialdialogs.prefs.MaterialListPreference
-            android:key="@string/pref_key_history_entries"
-            android:title="@string/settings_history_count_title"
-            android:summary="@string/settings_history_count_summary"
-            android:entries="@array/history_entries"
             android:defaultValue="10"
-            android:entryValues="@array/history_entries"/>
+            android:entries="@array/history_entries"
+            android:entryValues="@array/history_entries"
+            android:key="@string/pref_key_history_entries"
+            android:summary="@string/settings_history_count_summary"
+            android:title="@string/settings_history_count_title" />
 
         <CheckBoxPreference
+            android:defaultValue="true"
             android:key="@string/pref_key_cache"
-            android:title="@string/settings_cache_pref_title"
             android:summary="@string/settings_cache_pref_summary"
-            android:defaultValue="true"/>
+            android:title="@string/settings_cache_pref_title" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/settings_support">
+    <PreferenceCategory android:title="@string/settings_support">
 
         <Preference
             android:key="@string/pref_feedback"
-            android:title="@string/action_send_feedback"
-            android:persistent="false"/>
+            android:persistent="false"
+            android:title="@string/action_send_feedback" />
 
 
         <Preference
-            android:title="@string/action_donate"
             android:key="pref_donate"
-            android:persistent="false"/>
+            android:persistent="false"
+            android:title="@string/action_donate" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/settings_about_preference">
+    <PreferenceCategory android:title="@string/settings_about_preference">
 
         <Preference
             android:key="@string/pref_key_version"
-            android:title="@string/settings_version"
-            android:persistent="false">
+            android:persistent="false"
+            android:title="@string/settings_version">
             <intent
                 android:action="android.intent.action.VIEW"
-                android:data="https://play.google.com/store/apps/details?id=rawcomposition.bibletools.info"
-                />
+                android:data="https://play.google.com/store/apps/details?id=rawcomposition.bibletools.info" />
         </Preference>
 
         <Preference
-            android:title="Open Source Licenses"
             android:key="pref_open_source"
+            android:persistent="false"
             android:summary="License details for open source software"
-            android:persistent="false"/>
+            android:title="Open Source Licenses" />
 
 
         <Preference
-            android:title="Developer"
+            android:persistent="false"
             android:summary="Tinashe Mzondiwa"
-            android:persistent="false">
+            android:title="Developer">
             <intent
                 android:action="android.intent.action.VIEW"
-                android:data="https://plus.google.com/u/0/+TinasheMzondiwa/"
-                />
+                android:data="https://plus.google.com/u/0/+TinasheMzondiwa/" />
 
         </Preference>
 

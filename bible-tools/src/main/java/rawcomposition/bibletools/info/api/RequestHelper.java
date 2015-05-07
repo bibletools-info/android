@@ -17,25 +17,11 @@ import java.util.Set;
 public class RequestHelper {
 
     public static final String TAG = RequestHelper.class.getName();
-
-    private RequestQueue mRequestQueue;
-
-    private ImageLoader mImageLoader;
-
     private static RequestHelper ourInstance;
-
     private static Context mCtx;
-
+    private RequestQueue mRequestQueue;
+    private ImageLoader mImageLoader;
     private RemoteImageCache mImageCache;
-
-    public static synchronized RequestHelper getInstance(Context context) {
-
-        if(ourInstance == null){
-            ourInstance = new RequestHelper(context);
-        }
-
-        return ourInstance;
-    }
 
     private RequestHelper(Context context) {
         mCtx = context;
@@ -46,6 +32,15 @@ public class RequestHelper {
 
         mImageLoader = new ImageLoader(mRequestQueue, mImageCache);
 
+    }
+
+    public static synchronized RequestHelper getInstance(Context context) {
+
+        if (ourInstance == null) {
+            ourInstance = new RequestHelper(context);
+        }
+
+        return ourInstance;
     }
 
     private RequestQueue getRequestQueue() {
@@ -64,11 +59,9 @@ public class RequestHelper {
         getRequestQueue().add(req);
     }
 
-    public RemoteImageCache getImageCache(){
+    public RemoteImageCache getImageCache() {
         return mImageCache;
     }
-
-
 
 
     public class RemoteImageCache implements ImageLoader.ImageCache {

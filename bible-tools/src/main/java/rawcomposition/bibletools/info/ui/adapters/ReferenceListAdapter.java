@@ -1,14 +1,11 @@
 package rawcomposition.bibletools.info.ui.adapters;
 
 import android.app.Activity;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,7 +31,7 @@ import rawcomposition.bibletools.info.util.ToastUtil;
 /**
  * Created by tinashe on 2015/02/15.
  */
-public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdapter.ReferenceViewHolder>{
+public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdapter.ReferenceViewHolder> {
 
     private static final String TAG = ReferenceListAdapter.class.getName();
 
@@ -68,7 +65,7 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
     @Override
     public int getItemViewType(int position) {
-        if(position == TITLE){
+        if (position == TITLE) {
             return super.getItemViewType(position);
         } else {
             return NON_TITLE;
@@ -80,7 +77,7 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
     public ReferenceViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View itemView;
 
-        if(viewType == TITLE){
+        if (viewType == TITLE) {
             itemView = LayoutInflater.from(context)
                     .inflate(R.layout.layout_reference_verse_item, viewGroup, false);
         } else {
@@ -93,9 +90,9 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
     }
 
     @Override
-    public void onBindViewHolder(ReferenceViewHolder holder, int position) {
+    public void onBindViewHolder(ReferenceViewHolder holder, final int position) {
 
-        if(position > mLastAnimatedPosition){
+        if (position > mLastAnimatedPosition) {
             mLastAnimatedPosition = position;
 
             AnimUtil.slideInEnterAnimation(context, holder.itemView);
@@ -105,7 +102,7 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
         String fontPath = "";
 
-        switch (ThemeUtil.getFontWeight(context)){
+        switch (ThemeUtil.getFontWeight(context)) {
             case REGULAR:
                 fontPath = context.getString(R.string.pref_font_regular);
                 break;
@@ -117,18 +114,18 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
                 break;
         }
 
-        if(!TextUtils.isEmpty(fontPath)){
+        if (!TextUtils.isEmpty(fontPath)) {
             typeface = Typeface.createFromAsset(context.getAssets(), FONT_DIRECTORY + fontPath);
             holder.title.setTypeface(typeface);
             holder.title.setText(Html.fromHtml("<b>" + reference.getTitle() + "</b>"));
             holder.content.setTypeface(typeface);
-        }else {
+        } else {
             holder.title.setText(Html.fromHtml(reference.getTitle()));
         }
 
 
-        if(!ThemeUtil.isDarkTheme(context)){
-            if(position != 0 ){
+        if (!ThemeUtil.isDarkTheme(context)) {
+            if (position != 0) {
                 holder.referenceTop.setBackgroundColor(context.getResources().getColor(R.color.reference_title_background));
 
             }
@@ -140,13 +137,13 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
         final TextView content = holder.content;
 
-        if(position == TITLE){
+        if (position == TITLE) {
             holder.itemView.setClickable(false);
 
             content.setText(reference.getText());
             content.setMaxLines(Integer.MAX_VALUE);
 
-            if(TextUtils.isEmpty(reference.getPrevious())){
+            if (TextUtils.isEmpty(reference.getPrevious())) {
                 holder.navigatePrevious.setVisibility(View.GONE);
             } else {
                 holder.navigatePrevious.setVisibility(View.VISIBLE);
@@ -158,7 +155,7 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
                 });
             }
 
-            if(TextUtils.isEmpty(reference.getNext())){
+            if (TextUtils.isEmpty(reference.getNext())) {
                 holder.navigateNext.setVisibility(View.GONE);
             } else {
                 holder.navigateNext.setVisibility(View.VISIBLE);
@@ -172,7 +169,7 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
             boolean isInFav = FavouritesUtil.isInFavourites(getRealm(), reference.getTitle());
 
-            if(isInFav){
+            if (isInFav) {
                 holder.toggleFav.setImageResource(R.drawable.ic_favorite_white);
 
                 setUnFavouriteListener(holder.toggleFav, reference);
@@ -185,7 +182,7 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
         } else {
 
-            if(position == 1){
+            if (position == 1) {
                 content.setText(Html.fromHtml(TextViewUtil.implementBCbold(reference.getContent())));
             } else {
                 content.setText(Html.fromHtml(reference.getContent()));
@@ -198,14 +195,14 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
             content.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    toggleReferenceView(reference, content);
+                    toggleReferenceView(reference, content, position);
                 }
             });
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    toggleReferenceView(reference, content);
+                    toggleReferenceView(reference, content, position);
                 }
             });
 
@@ -214,13 +211,14 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
     }
 
-    private void toggleReferenceView(Reference reference, TextView content){
-        if(reference.isCollapsed()){
+    private void toggleReferenceView(Reference reference, TextView content, int position) {
+        if (reference.isCollapsed()) {
             content.setMaxLines(Integer.MAX_VALUE);
             reference.setCollapsed(false);
         } else {
             content.setMaxLines(4);
             reference.setCollapsed(true);
+            mListener.onScrollRequired(position);
         }
     }
 
@@ -229,7 +227,93 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
         return mReferences.size();
     }
 
-    public static class ReferenceViewHolder extends RecyclerView.ViewHolder{
+    private void setOptionsListener(final ImageView imageView, final Reference item) {
+
+        if (ThemeUtil.isDarkTheme(context)) {
+            ThemeUtil.tintDrawable(imageView.getDrawable(), Color.WHITE);
+        }
+
+        final String subject = mReferences.get(0).getTitle()
+                + " - " + item.getTitle();
+
+        final CharSequence text = Html.fromHtml(item.getContent());
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                IconizedMenu popupMenu = new IconizedMenu(context, imageView);
+                MenuInflater menuInflater = popupMenu.getMenuInflater();
+                menuInflater.inflate(R.menu.menu_ref_options, popupMenu.getMenu());
+
+                if (ThemeUtil.isDarkTheme(context)) {
+                    ThemeUtil.tintDrawable(popupMenu.getMenu().findItem(R.id.action_share).getIcon(), Color.WHITE);
+                    ThemeUtil.tintDrawable(popupMenu.getMenu().findItem(R.id.action_copy).getIcon(), Color.WHITE);
+                }
+
+                popupMenu.setOnMenuItemClickListener(new IconizedMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.action_share:
+                                TextViewUtil.shareOrSearch(context, subject, text, true);
+                                return true;
+                            case R.id.action_copy:
+                                TextViewUtil.copyText(context, subject + "\n" + text);
+                                return true;
+                        }
+                        return false;
+                    }
+                });
+
+                popupMenu.show();
+            }
+        });
+    }
+
+    private Realm getRealm() {
+        return ((MainActivity) context)
+                .getRealm();
+    }
+
+    private void showToast(String message) {
+        ToastUtil.show(context, message);
+    }
+
+    private void setFavouriteListener(final ImageView view, final Reference reference) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FavouritesUtil.addFavourite(getRealm(),
+                        reference.getTitle(),
+                        reference.getText());
+
+                showToast("Added to Favourites");
+
+                view.setImageResource(R.drawable.ic_favorite_white);
+
+                setUnFavouriteListener(view, reference);
+            }
+        });
+    }
+
+    private void setUnFavouriteListener(final ImageView view, final Reference reference) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FavouritesUtil.unFavourite(getRealm(),
+                        reference.getTitle());
+
+                showToast("Removed from Favourites");
+
+                view.setImageResource(R.drawable.ic_favorite_outline);
+
+                setFavouriteListener(view, reference);
+            }
+        });
+    }
+
+    public static class ReferenceViewHolder extends RecyclerView.ViewHolder {
 
         private TextView title;
         private TextView content;
@@ -260,82 +344,5 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
             referenceTop = itemView.findViewById(R.id.reference_top);
             referenceWhiteView = itemView.findViewById(R.id.reference_white_view);
         }
-    }
-
-    private void setOptionsListener(final ImageView imageView, final Reference item){
-
-        final String subject = mReferences.get(0).getTitle()
-                + " - " + item.getTitle();
-
-        final CharSequence text = Html.fromHtml(item.getContent());
-
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                IconizedMenu popupMenu = new IconizedMenu(context, imageView);
-                MenuInflater menuInflater = popupMenu.getMenuInflater();
-                menuInflater.inflate(R.menu.menu_ref_options, popupMenu.getMenu());
-
-                popupMenu.setOnMenuItemClickListener(new IconizedMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()){
-                            case R.id.action_share:
-                                TextViewUtil.shareOrSearch(context, subject, text, true);
-                                return true;
-                            case R.id.action_copy:
-                                TextViewUtil.copyText(context, subject + "\n" + text);
-                                return true;
-                        }
-                        return false;
-                    }
-                });
-
-                popupMenu.show();
-            }
-        });
-    }
-
-    private Realm getRealm(){
-        return ((MainActivity)context)
-                .getRealm();
-    }
-
-    private void showToast(String message){
-        ToastUtil.show(context, message);
-    }
-
-    private void setFavouriteListener(final ImageView view, final Reference reference){
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FavouritesUtil.addFavourite(getRealm(),
-                        reference.getTitle(),
-                        reference.getText());
-
-                showToast("Added to Favourites");
-
-                view.setImageResource(R.drawable.ic_favorite_white);
-
-                setUnFavouriteListener(view, reference);
-            }
-        });
-    }
-
-    private void setUnFavouriteListener(final ImageView view, final Reference reference){
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FavouritesUtil.unFavourite(getRealm(),
-                        reference.getTitle());
-
-                showToast("Removed from Favourites");
-
-                view.setImageResource(R.drawable.ic_favorite_outline);
-
-                setFavouriteListener(view, reference);
-            }
-        });
     }
 }

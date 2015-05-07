@@ -28,16 +28,16 @@ public abstract class BaseFragment extends Fragment {
         initialize(view);
     }
 
-    protected void initialize(View rootView){
+    protected void initialize(View rootView) {
 
     }
 
 
-    protected void onDownScrolling(){
-        ActionBar ab = ((ActionBarActivity)getActivity())
+    protected void onDownScrolling() {
+        ActionBar ab = ((ActionBarActivity) getActivity())
                 .getSupportActionBar();
 
-        if(ab == null){
+        if (ab == null) {
             return;
         }
 
@@ -47,12 +47,12 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
-    protected void onUpScrolling(){
+    protected void onUpScrolling() {
 
-        ActionBar ab = ((ActionBarActivity)getActivity())
+        ActionBar ab = ((ActionBarActivity) getActivity())
                 .getSupportActionBar();
 
-        if(ab == null){
+        if (ab == null) {
             return;
         }
 

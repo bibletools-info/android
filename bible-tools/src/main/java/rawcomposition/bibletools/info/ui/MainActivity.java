@@ -1,9 +1,10 @@
 package rawcomposition.bibletools.info.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
-import android.speech.RecognizerIntent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,12 +28,12 @@ import com.orhanobut.wasp.WaspError;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 import io.realm.Realm;
 import rawcomposition.bibletools.info.BibleToolsApplication;
 import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.api.BibleToolsApi;
 import rawcomposition.bibletools.info.custom.ClearAutoCompleteTextView;
-import rawcomposition.bibletools.info.custom.ScrollManager;
 import rawcomposition.bibletools.info.custom.SearchTextWatcher;
 import rawcomposition.bibletools.info.model.json.Reference;
 import rawcomposition.bibletools.info.model.json.ReferencesResponse;
@@ -46,34 +47,54 @@ import rawcomposition.bibletools.info.util.DeviceUtil;
 import rawcomposition.bibletools.info.util.GSonUtil;
 import rawcomposition.bibletools.info.util.KeyBoardUtil;
 import rawcomposition.bibletools.info.util.PreferenceUtil;
+import rawcomposition.bibletools.info.util.ThemeUtil;
 
 public class MainActivity extends BaseActivity implements
-        OnNavigationListener, NavigationDrawerFragment.NavigationDrawerCallbacks{
+        OnNavigationListener, NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private static final int REQUEST_CODE = 1234;
 
     private static final String TAG = MainActivity.class.getName();
 
     private static final String VERSE_KEY = "verse";
+    private ClearAutoCompleteTextView mSearchView;
+    private NavigationDrawerFragment mNavigationDrawerFragment;
+    private ReferenceListAdapter mAdapter;
+    private ProgressBar mProgress;
+    private SmoothProgressBar mSmoothProgressBar;
+    private List<Reference> mReferences = new ArrayList<>();
+    private RecyclerView mRecycler;
+    private Realm mRealm;
+
+
+    private View.OnTouchListener mVoiceListener = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+
+            if (mSearchView.getCompoundDrawables()[2] == null)
+                return false;
+
+            if (event.getAction() != MotionEvent.ACTION_UP)
+                return false;
+
+            if (event.getX() > mSearchView.getWidth() - mSearchView.getPaddingRight() - mSearchView.getVoiceBtn().getIntrinsicWidth()) {
+                startVoiceRecognitionActivity();
+            }
+            return false;
+        }
+    };
+    private View.OnClickListener mDrawerToggleListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            KeyBoardUtil.hideKeyboard(MainActivity.this, mSearchView);
+            mNavigationDrawerFragment.toggleDrawer();
+        }
+    };
 
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_main;
     }
-
-    private ClearAutoCompleteTextView mSearchView;
-
-    private NavigationDrawerFragment mNavigationDrawerFragment;
-
-    private ReferenceListAdapter mAdapter;
-
-    private ProgressBar mProgress;
-
-    private List<Reference> mReferences = new ArrayList<>();
-
-    private RecyclerView mRecycler;
-
-    private Realm mRealm;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -93,19 +114,23 @@ public class MainActivity extends BaseActivity implements
 
         initRecyclerStuff();
 
-        if(!PreferenceUtil.getValue(this, getString(R.string.pref_tut_shown), false)){
+        if (!PreferenceUtil.getValue(this, getString(R.string.pref_tut_shown), false)) {
             PreferenceUtil.updateValue(this, getString(R.string.pref_tut_shown), true);
             showHowItWorks();
         }
     }
 
-    private void initSearchView(){
+    private void initSearchView() {
 
         mSearchView = (ClearAutoCompleteTextView) findViewById(R.id.searchView);
         mSearchView.showVoiceButton(mVoiceListener);
         mSearchView.setVoiceTouchListener(mVoiceListener);
         ImageView imageView = (ImageView) findViewById(R.id.drawerToggle);
         imageView.setOnClickListener(mDrawerToggleListener);
+        //change drawable colors if needed
+        if (ThemeUtil.isDarkTheme(this)) {
+            ThemeUtil.tintDrawable(imageView.getDrawable(), Color.WHITE);
+        }
 
         mSearchView.addTextChangedListener(new SearchTextWatcher(mSearchView, imageView, mDrawerToggleListener));
 
@@ -134,103 +159,69 @@ public class MainActivity extends BaseActivity implements
 
     }
 
-   private void initRecyclerStuff(){
-       mHeaderView = findViewById(R.id.header);
+    private void initRecyclerStuff() {
+        mHeaderView = findViewById(R.id.header);
 
-       mRecycler = (RecyclerView) findViewById(R.id.recycler);
+        mRecycler = (RecyclerView) findViewById(R.id.recycler);
 
-       if(DeviceUtil.isTablet(this)){
-           StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-           manager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
-           mRecycler.setLayoutManager(manager);
+        if (DeviceUtil.isTablet(this)) {
+            StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+            manager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+            mRecycler.setLayoutManager(manager);
 
-       } else {
-           mRecycler.setLayoutManager(new LinearLayoutManager(this));
-       }
+        } else {
+            mRecycler.setLayoutManager(new LinearLayoutManager(this));
+        }
 
-       mProgress = (ProgressBar) findViewById(R.id.progress);
+        mProgress = (ProgressBar) findViewById(R.id.progress);
 
-       mAdapter = new ReferenceListAdapter(MainActivity.this, mReferences, this);
-       mRecycler.setAdapter(mAdapter);
-       mRecycler.setItemAnimator(new DefaultItemAnimator());
+        mAdapter = new ReferenceListAdapter(MainActivity.this, mReferences, this);
+        mRecycler.setAdapter(mAdapter);
+        mRecycler.setItemAnimator(new DefaultItemAnimator());
 
-      // ScrollManager manager = new ScrollManager();
-     //  manager.addView(mHeaderView, ScrollManager.Direction.UP);
-      // manager.attach(mRecycler);
+        mSmoothProgressBar = (SmoothProgressBar) findViewById(R.id.smooth_progress);
 
+        Intent intent = getIntent();
+        Uri data = intent.getData();
 
-       Intent intent = getIntent();
-       Uri data = intent.getData();
+        if (data != null) {
+            String verse = data.getQueryParameter(VERSE_KEY);
 
-       if(data != null){
-           String verse = data.getQueryParameter(VERSE_KEY);
+            Log.d(TAG, "VERSE: " + verse);
 
-           Log.d(TAG, "VERSE: " + verse);
+            if (!TextUtils.isEmpty(verse)) {
+                performQuery(verse);
+            } else {
+                performQuery(CacheUtil.getRecentReference(this));
+            }
 
-           if(!TextUtils.isEmpty(verse)){
-               performQuery(verse);
-           } else {
-               performQuery(CacheUtil.getRecentReference(this));
-           }
+        } else {
+            performQuery(CacheUtil.getRecentReference(this));
+        }
 
-       } else {
-           performQuery(CacheUtil.getRecentReference(this));
-       }
+    }
 
-   }
-
-
-    public void displayReferences(ReferencesResponse referencesResponse, boolean smoothScroll){
+    public void displayReferences(ReferencesResponse referencesResponse, boolean smoothScroll) {
         mProgress.setVisibility(View.GONE);
 
         this.mReferences = referencesResponse.getResources();
         mAdapter.setReferences(mReferences);
         mAdapter.notifyDataSetChanged();
 
-        if(smoothScroll){
-            try{
+        if (smoothScroll) {
+            try {
                 mRecycler.smoothScrollToPosition(0);
-            }catch (UnsupportedOperationException uoe){
+            } catch (UnsupportedOperationException uoe) {
                 Log.d(TAG, "Lies Lies lies");
             }
 
         }
     }
 
-
-
-    private View.OnTouchListener mVoiceListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-
-
-            if (mSearchView.getCompoundDrawables()[2] == null)
-                return false;
-
-            if (event.getAction() != MotionEvent.ACTION_UP)
-                return false;
-
-            if (event.getX() > mSearchView.getWidth() - mSearchView.getPaddingRight()	- mSearchView.mVoiceBtn.getIntrinsicWidth()) {
-                startVoiceRecognitionActivity();
-            }
-            return false;
-        }
-    };
-
-
-    private View.OnClickListener mDrawerToggleListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            KeyBoardUtil.hideKeyboard(MainActivity.this, mSearchView);
-            mNavigationDrawerFragment.toggleDrawer();
-        }
-    };
-
     /**
      * Fire an intent to start the voice recognition activity.
      */
-    private void startVoiceRecognitionActivity()
-    {
+    private void startVoiceRecognitionActivity() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -247,22 +238,20 @@ public class MainActivity extends BaseActivity implements
      * Handle the results from the voice recognition activity.
      */
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK)
-        {
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
 
             ArrayList<String> matches = data.getStringArrayListExtra(
                     RecognizerIntent.EXTRA_RESULTS);
 
-            if(!matches.isEmpty()){
+            if (!matches.isEmpty()) {
                 boolean matched = false;
 
-                for(String item: matches){
-                    for(String book: getResources().getStringArray(R.array.bible_books_full)){
-                        if (book.toLowerCase().contains(item.toLowerCase())){
+                for (String item : matches) {
+                    for (String book : getResources().getStringArray(R.array.bible_books_full)) {
+                        if (book.toLowerCase().contains(item.toLowerCase())) {
                             matched = true;
 
                             mSearchView.setText(book);
@@ -273,7 +262,7 @@ public class MainActivity extends BaseActivity implements
                     }
                 }
 
-                if(!matched){
+                if (!matched) {
                     mSearchView.setText(matches.get(0));
                     mSearchView.setSelection(mSearchView.getText().toString().length());
                 }
@@ -284,7 +273,7 @@ public class MainActivity extends BaseActivity implements
 
     }
 
-    public void performQuery(String query){
+    public void performQuery(String query) {
 
         BibleQueryUtil.stripQuery(this, query, new SearchQueryStripListener() {
             @Override
@@ -300,50 +289,59 @@ public class MainActivity extends BaseActivity implements
 
     }
 
-    private void performRequest(final int book, final int chapter, final int verse){
+    private void performRequest(final int book, final int chapter, final int verse) {
 
         String jsonString = CacheUtil.find(this, CacheUtil.getFileName(this, book, chapter, verse));
 
-        if(!TextUtils.isEmpty(jsonString)){
+        if (!TextUtils.isEmpty(jsonString)) {
 
             ReferencesResponse referencesResponse = GSonUtil.getInstance().fromJson(jsonString, ReferencesResponse.class);
 
-            if(referencesResponse != null){
+            if (referencesResponse != null) {
                 displayReferences(referencesResponse, true);
 
                 return;
             }
         }
 
-        if(!DeviceUtil.isConnected(this)){
+        if (!DeviceUtil.isConnected(this)) {
             showToast(getString(R.string.error_no_connection));
             return;
         }
 
-        BibleToolsApi api = ((BibleToolsApplication)getApplication())
+        mSmoothProgressBar.progressiveStart();
+        mSmoothProgressBar.setVisibility(View.VISIBLE);
+
+        BibleToolsApi api = ((BibleToolsApplication) getApplication())
                 .getApi();
 
         api.deliverReferences(book, chapter, verse, new CallBack<ReferencesResponse>() {
             @Override
             public void onSuccess(ReferencesResponse response) {
 
-                if(PreferenceUtil.getValue(MainActivity.this,
+                mSmoothProgressBar.progressiveStop();
+                mSmoothProgressBar.setVisibility(View.GONE);
+
+                if (PreferenceUtil.getValue(MainActivity.this,
                         getString(R.string.pref_key_cache),
-                        true)){
+                        true)) {
 
                     CacheUtil.save(MainActivity.this,
                             CacheUtil.getFileName(MainActivity.this, book, chapter, verse),
                             GSonUtil.getInstance().toJson(response));
                 }
 
-                 displayReferences(response, true);
+                displayReferences(response, true);
 
             }
 
             @Override
             public void onError(WaspError waspError) {
                 Log.d(TAG, waspError.getErrorMessage());
+
                 mProgress.setVisibility(View.GONE);
+                mSmoothProgressBar.progressiveStop();
+                mSmoothProgressBar.setVisibility(View.GONE);
 
                 showToast(getString(R.string.api_default_error));
             }
@@ -351,13 +349,12 @@ public class MainActivity extends BaseActivity implements
     }
 
 
-
     @Override
     public void onPrevious(String text) {
 
-       int[] arr = BibleQueryUtil.stripRequest(text);
+        int[] arr = BibleQueryUtil.stripRequest(text);
 
-        if(arr.length == 3){
+        if (arr.length == 3) {
             KeyBoardUtil.hideKeyboard(this, mSearchView);
             performRequest(arr[0], arr[1], arr[2]);
         }
@@ -367,22 +364,31 @@ public class MainActivity extends BaseActivity implements
     public void onNext(String text) {
         int[] arr = BibleQueryUtil.stripRequest(text);
 
-        if(arr.length == 3){
+        if (arr.length == 3) {
             KeyBoardUtil.hideKeyboard(this, mSearchView);
             performRequest(arr[0], arr[1], arr[2]);
         }
     }
 
     @Override
-    public void onVerseClick(String verse){
+    public void onVerseClick(String verse) {
         performQuery(verse);
+    }
+
+    @Override
+    public void onScrollRequired(int position) {
+        try {
+            mRecycler.smoothScrollToPosition(position);
+        } catch (UnsupportedOperationException uoe) {
+            Log.d(TAG, "Lies Lies lies");
+        }
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         Log.d(TAG, "Position: " + position);
 
-        switch (position){
+        switch (position) {
             case 1:
                 //Favourites
                 startAnActivity(new Intent(this, FavouritesActivity.class));
@@ -390,7 +396,7 @@ public class MainActivity extends BaseActivity implements
             case 2:
                 //History
                 showHistoryDialog(CacheUtil.getCachedReferences(this));
-               break;
+                break;
             case 4:
                 //Settings
                 startAnActivity(new Intent(this, SettingsActivity.class));
@@ -410,13 +416,13 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-    private void showHistoryDialog(List<String> history){
+    private void showHistoryDialog(List<String> history) {
 
         int max = Integer.valueOf(PreferenceUtil.getValue(this,
                 getString(R.string.pref_key_history_entries),
                 "10"));
 
-        if(history.size() > max){
+        if (history.size() > max) {
             history = history.subList(0, max);
         }
 
@@ -424,8 +430,7 @@ public class MainActivity extends BaseActivity implements
 
         MaterialDialog.Builder builder = new MaterialDialog.Builder(this);
         builder.title(R.string.title_history)
-               // .titleColorRes(R.color.theme_primary)
-                .iconRes(R.drawable.ic_history_grey)
+                .iconRes(ThemeUtil.isDarkTheme(this) ? R.drawable.ic_history_color : R.drawable.ic_history_grey)
                 .items(list.toArray(new String[list.size()]))
                 .itemsCallback(new MaterialDialog.ListCallback() {
                     @Override
@@ -439,8 +444,7 @@ public class MainActivity extends BaseActivity implements
     }
 
 
-
-    private void showHowItWorks(){
+    private void showHowItWorks() {
         new MaterialDialog.Builder(this)
                 .title(R.string.title_how_it_works)
                 .content(R.string.msg_how_it_works)

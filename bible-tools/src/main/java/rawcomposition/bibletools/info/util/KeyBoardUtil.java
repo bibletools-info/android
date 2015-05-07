@@ -10,13 +10,13 @@ import android.view.inputmethod.InputMethodManager;
  */
 public class KeyBoardUtil {
 
-    public static void hideKeyboard(Context context, View view){
-        InputMethodManager imm = (InputMethodManager)context.getSystemService(Service.INPUT_METHOD_SERVICE);
+    public static void hideKeyboard(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Service.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    public static void showKeyBoard(Context context, View view){
-        InputMethodManager imm = (InputMethodManager)context.getSystemService(Service.INPUT_METHOD_SERVICE);
+    public static void showKeyBoard(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Service.INPUT_METHOD_SERVICE);
         imm.showSoftInput(view, 0);
     }
 }

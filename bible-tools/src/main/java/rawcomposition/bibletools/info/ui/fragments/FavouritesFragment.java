@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.view.View;
 
 import io.realm.Realm;
-import rawcomposition.bibletools.info.BibleToolsApplication;
 import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.ui.FavouritesActivity;
 import rawcomposition.bibletools.info.ui.adapters.FavouriteVersesAdapter;
@@ -52,7 +51,7 @@ public class FavouritesFragment extends BaseFragment {
 
         mRecycler.setAdapter(mAdapter);
 
-        if(mAdapter.getItemCount() == 0){
+        if (mAdapter.getItemCount() == 0) {
             rootView.findViewById(R.id.txt_empty)
                     .setVisibility(View.VISIBLE);
         }
@@ -60,9 +59,9 @@ public class FavouritesFragment extends BaseFragment {
 
     }
 
-    public void performSearch(String query){
+    public void performSearch(String query) {
 
-        if(!TextUtils.isEmpty(query)){
+        if (!TextUtils.isEmpty(query)) {
             mAdapter.setVerses(FavouritesUtil.queryFavourites(getRealm(),
                     query));
         } else {
@@ -72,8 +71,8 @@ public class FavouritesFragment extends BaseFragment {
 
     }
 
-    private Realm getRealm(){
-        return ((FavouritesActivity)getActivity())
+    private Realm getRealm() {
+        return ((FavouritesActivity) getActivity())
                 .getRealm();
     }
 

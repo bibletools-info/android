@@ -22,7 +22,7 @@ public class CacheUtil {
 
     private static final String FILE_PRE = "CACHE_";
 
-    public static String getFileName(Context context, int book, int chapter, int verse){
+    public static String getFileName(Context context, int book, int chapter, int verse) {
         String[] books = context.getResources().getStringArray(R.array.bible_books_full);
 
         String shortBook = books[book - 1];
@@ -110,7 +110,7 @@ public class CacheUtil {
         return dir.delete();
     }
 
-    public static List<String> getCachedReferences(Context context){
+    public static List<String> getCachedReferences(Context context) {
         List<String> references = new ArrayList<>();
         String fileName;
 
@@ -119,7 +119,7 @@ public class CacheUtil {
             for (File file : dir.listFiles()) {
                 fileName = file.getName();
 
-                if(fileName.contains(FILE_PRE)){
+                if (fileName.contains(FILE_PRE)) {
                     references.add(fileName.replace(FILE_PRE, "").replace("_", " "));
                 }
             }
@@ -130,7 +130,7 @@ public class CacheUtil {
         return references;
     }
 
-    public static String getRecentReference(Context context){
+    public static String getRecentReference(Context context) {
 
         return getCachedReferences(context).isEmpty() ? "Genesis 1:1" : getCachedReferences(context).get(0);
     }

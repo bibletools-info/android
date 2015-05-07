@@ -25,7 +25,7 @@
     <notice>
         <name>Google-Gson</name>
         <url>https://code.google.com/p/google-gson/</url>
-        <copyright/>
+        <copyright />
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
@@ -44,6 +44,12 @@
         <name>Realm</name>
         <url>http://realm.io/</url>
         <!--<copyright>Copyright (C) 2010 The Android Open Source Project</copyright>-->
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>SmoothProgressBar</name>
+        <url>https://github.com/castorflex/SmoothProgressBar</url>
+        <copyright>Copyright (C) 2014 Antoine Merle</copyright>
         <license>Apache Software License 2.0</license>
     </notice>
 

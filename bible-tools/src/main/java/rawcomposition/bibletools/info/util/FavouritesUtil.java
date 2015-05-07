@@ -14,7 +14,7 @@ import rawcomposition.bibletools.info.util.enums.ViewType;
  */
 public class FavouritesUtil {
 
-    public static void addFavourite(Realm realm, final String code, final String text){
+    public static void addFavourite(Realm realm, final String code, final String text) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -25,14 +25,14 @@ public class FavouritesUtil {
         });
     }
 
-    public static void unFavourite(Realm realm, String code){
+    public static void unFavourite(Realm realm, String code) {
         final FavouriteVerse verse = realm.where(FavouriteVerse.class)
                 .beginGroup()
                 .equalTo("verseCode", code)
                 .endGroup()
                 .findFirst();
 
-        if(verse != null){
+        if (verse != null) {
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
@@ -42,7 +42,7 @@ public class FavouritesUtil {
         }
     }
 
-    public static boolean isInFavourites(Realm realm, String code){
+    public static boolean isInFavourites(Realm realm, String code) {
         FavouriteVerse verse = realm.where(FavouriteVerse.class)
                 .beginGroup()
                 .equalTo("verseCode", code)
@@ -53,7 +53,7 @@ public class FavouritesUtil {
         return verse != null;
     }
 
-    public static List<FavouriteVerse> queryFavourites(Realm realm, String query){
+    public static List<FavouriteVerse> queryFavourites(Realm realm, String query) {
 
         return realm.where(FavouriteVerse.class)
                 .beginGroup()
@@ -62,20 +62,20 @@ public class FavouritesUtil {
                 .findAll();
     }
 
-    public static List<FavouriteVerse> getAllFavourites(Realm realm){
+    public static List<FavouriteVerse> getAllFavourites(Realm realm) {
         return realm.where(FavouriteVerse.class)
                 .findAll();
     }
 
-    public static List<FavouriteVerse> filterList(Context context, Realm realm, ViewType viewType){
+    public static List<FavouriteVerse> filterList(Context context, Realm realm, ViewType viewType) {
         List<FavouriteVerse> verses = getAllFavourites(realm);
         List<FavouriteVerse> filtered;
 
-        switch (viewType){
+        switch (viewType) {
             case OLD_TESTAMENT:
                 filtered = new ArrayList<>();
-                for(FavouriteVerse verse: verses){
-                    if(!BibleQueryUtil.isNewTestament(context, verse.getVerseCode())){
+                for (FavouriteVerse verse : verses) {
+                    if (!BibleQueryUtil.isNewTestament(context, verse.getVerseCode())) {
                         filtered.add(verse);
                     }
                 }
@@ -83,14 +83,15 @@ public class FavouritesUtil {
                 return filtered;
             case NEW_TESTAMENT:
                 filtered = new ArrayList<>();
-                for(FavouriteVerse verse: verses){
-                    if(BibleQueryUtil.isNewTestament(context, verse.getVerseCode())){
+                for (FavouriteVerse verse : verses) {
+                    if (BibleQueryUtil.isNewTestament(context, verse.getVerseCode())) {
                         filtered.add(verse);
                     }
                 }
 
                 return filtered;
-            default:return verses;
+            default:
+                return verses;
         }
     }
 }

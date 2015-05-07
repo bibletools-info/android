@@ -2,11 +2,9 @@ package rawcomposition.bibletools.info.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
-import android.os.Bundle;
-import android.view.Menu;
 
 import de.psdev.licensesdialog.LicensesDialog;
 import rawcomposition.bibletools.info.BuildConfig;
@@ -43,8 +41,8 @@ public class SettingsActivity extends BaseActivity {
     }
 
     @Override
-    public void onBackPressed(){
-        if(mSettingChanged){
+    public void onBackPressed() {
+        if (mSettingChanged) {
             startAnActivity(new Intent(this, MainActivity.class));
             finish();
         }
@@ -54,7 +52,7 @@ public class SettingsActivity extends BaseActivity {
     }
 
     public static class SettingsFragment extends PreferenceFragment implements
-            SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceChangeListener{
+            SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceChangeListener {
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -65,7 +63,7 @@ public class SettingsActivity extends BaseActivity {
             initialize();
         }
 
-        private void initialize(){
+        private void initialize() {
 
             getPreferenceManager()
                     .findPreference(getString(R.string.pref_key_version))
@@ -114,9 +112,9 @@ public class SettingsActivity extends BaseActivity {
                             new LicensesDialog.Builder(getActivity())
                                     .setNotices(R.raw.notices)
                                     .setIncludeOwnLicense(true)
-                                    //.setThemeResourceId(R.style.custom_theme)
-                                   // .setDividerColorId(R.color.custom_divider_color)
-                                   .build().show();
+                                            //.setThemeResourceId(R.style.custom_theme)
+                                            // .setDividerColorId(R.color.custom_divider_color)
+                                    .build().show();
 
                             return true;
                         }
@@ -127,7 +125,7 @@ public class SettingsActivity extends BaseActivity {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
-            if(key.equals(getString(R.string.pref_key_history_entries))){
+            if (key.equals(getString(R.string.pref_key_history_entries))) {
                 String entries = PreferenceUtil.getValue(getActivity(), getString(R.string.pref_key_history_entries), "10");
                 getPreferenceManager()
                         .findPreference(getString(R.string.pref_key_history_entries))
@@ -141,6 +139,7 @@ public class SettingsActivity extends BaseActivity {
             getPreferenceScreen().getSharedPreferences()
                     .registerOnSharedPreferenceChangeListener(this);
         }
+
         @Override
         public void onPause() {
             super.onPause();
@@ -151,14 +150,18 @@ public class SettingsActivity extends BaseActivity {
         @Override
         public boolean onPreferenceChange(Preference preference, Object o) {
 
-            if(preference.getKey().equals(getString(R.string.pref_theme_type))){
-                startActivity(new Intent(getActivity(), MainActivity.class));
+            if (preference.getKey().equals(getString(R.string.pref_theme_type))) {
+
+                getActivity().startActivity(
+                        new Intent(getActivity(),
+                                MainActivity.class));
+
                 getActivity().finish();
 
                 return true;
-            } else if(preference.getKey().equals(getString(R.string.pref_font_weight))){
+            } else if (preference.getKey().equals(getString(R.string.pref_font_weight))) {
 
-                ((SettingsActivity)getActivity())
+                ((SettingsActivity) getActivity())
                         .setSettingChanged(true);
 
                 return true;

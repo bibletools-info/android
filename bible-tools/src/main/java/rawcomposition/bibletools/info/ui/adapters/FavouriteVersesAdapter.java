@@ -27,7 +27,7 @@ import rawcomposition.bibletools.info.util.ThemeUtil;
 /**
  * Created by tinashe on 2015/03/05.
  */
-public class FavouriteVersesAdapter extends RecyclerView.Adapter<FavouriteVersesAdapter.VerseViewHolder>{
+public class FavouriteVersesAdapter extends RecyclerView.Adapter<FavouriteVersesAdapter.VerseViewHolder> {
 
     private static final String FONT_DIRECTORY = "fonts/";
 
@@ -56,7 +56,7 @@ public class FavouriteVersesAdapter extends RecyclerView.Adapter<FavouriteVerses
 
     @Override
     public void onBindViewHolder(VerseViewHolder holder, int position) {
-        if(position > mLastAnimatedPosition){
+        if (position > mLastAnimatedPosition) {
             mLastAnimatedPosition = position;
 
             AnimUtil.slideInEnterAnimation(context, holder.itemView);
@@ -66,7 +66,7 @@ public class FavouriteVersesAdapter extends RecyclerView.Adapter<FavouriteVerses
 
         String fontPath = "";
 
-        switch (ThemeUtil.getFontWeight(context)){
+        switch (ThemeUtil.getFontWeight(context)) {
             case REGULAR:
                 fontPath = context.getString(R.string.pref_font_regular);
                 break;
@@ -78,12 +78,12 @@ public class FavouriteVersesAdapter extends RecyclerView.Adapter<FavouriteVerses
                 break;
         }
 
-        if(!TextUtils.isEmpty(fontPath)){
+        if (!TextUtils.isEmpty(fontPath)) {
             typeface = Typeface.createFromAsset(context.getAssets(), FONT_DIRECTORY + fontPath);
             holder.title.setTypeface(typeface);
             holder.title.setText(Html.fromHtml("<b>" + verse.getVerseCode() + "</b>"));
             holder.content.setTypeface(typeface);
-        }else {
+        } else {
             holder.title.setText(verse.getVerseCode());
         }
 
@@ -93,7 +93,7 @@ public class FavouriteVersesAdapter extends RecyclerView.Adapter<FavouriteVerses
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Realm realm = ((FavouritesActivity)context)
+                Realm realm = ((FavouritesActivity) context)
                         .getRealm();
                 FavouritesUtil.unFavourite(realm, verse.getVerseCode());
                 setVerses(FavouritesUtil.getAllFavourites(realm));
@@ -106,7 +106,7 @@ public class FavouriteVersesAdapter extends RecyclerView.Adapter<FavouriteVerses
 
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(context.getString(R.string.app_scheme)
-                        + "://"+ context.getString(R.string.app_host)
+                        + "://" + context.getString(R.string.app_host)
                         + "?verse=" + verse.getVerseCode()));
 
                 if (intent.resolveActivity(context.getPackageManager()) != null) {
@@ -116,7 +116,7 @@ public class FavouriteVersesAdapter extends RecyclerView.Adapter<FavouriteVerses
             }
         });
 
-        if(!ThemeUtil.isDarkTheme(context)){
+        if (!ThemeUtil.isDarkTheme(context)) {
 
             holder.referenceWhiteView.setBackgroundColor(Color.WHITE);
 
@@ -128,22 +128,20 @@ public class FavouriteVersesAdapter extends RecyclerView.Adapter<FavouriteVerses
         return mVerses.size();
     }
 
+    public List<FavouriteVerse> getVerses() {
+        return mVerses;
+    }
+
     public void setVerses(List<FavouriteVerse> mVerses) {
         this.mVerses = mVerses;
         this.notifyDataSetChanged();
     }
 
-    public List<FavouriteVerse> getVerses() {
-        return mVerses;
-    }
-
-    public static class VerseViewHolder extends RecyclerView.ViewHolder{
-
-        private TextView title;
-        private TextView content;
+    public static class VerseViewHolder extends RecyclerView.ViewHolder {
 
         ImageView delete;
-
+        private TextView title;
+        private TextView content;
         private View referenceWhiteView;
 
         public VerseViewHolder(View itemView) {

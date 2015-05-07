@@ -13,16 +13,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:background="@color/theme_primary"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
             <rawcomposition.bibletools.info.custom.AppTextView
                 android:id="@+id/reference_title"
                 style="@style/referenceTitle.verse"
-                android:layout_weight="1"
                 android:layout_width="0dp"
-                tools:text="Genesis 1:1"
-                android:textColor="@android:color/white"/>
+                android:layout_weight="1"
+                android:textColor="@android:color/white"
+                tools:text="Genesis 1:1" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -32,37 +33,34 @@
                 <ImageView
                     android:id="@+id/action_favourite"
                     style="@style/selectableItem.verseNavigation"
-                    android:src="@drawable/ic_favorite_outline"
-                    />
+                    android:src="@drawable/ic_favorite_outline" />
 
                 <ImageView
                     android:id="@+id/navigate_previous"
                     style="@style/selectableItem.verseNavigation"
-                    android:src="@drawable/ic_chevron_left_white"
-                    />
+                    android:src="@drawable/ic_chevron_left_white" />
 
                 <ImageView
                     android:id="@+id/navigate_next"
                     style="@style/selectableItem.verseNavigation"
-                    android:src="@drawable/ic_chevron_right_white"/>
+                    android:src="@drawable/ic_chevron_right_white" />
 
             </LinearLayout>
         </LinearLayout>
 
 
         <LinearLayout
+            android:id="@+id/reference_white_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/reference_white_view">
+            android:orientation="vertical">
 
-            <include
-                layout="@layout/divider_reference"/>
+            <include layout="@layout/divider_reference" />
 
             <rawcomposition.bibletools.info.custom.AppTextView
                 android:id="@+id/reference_text"
                 style="@style/referenceText"
-                tools:text="In the beginning God created the heaven and earth"/>
+                tools:text="In the beginning God created the heaven and earth" />
         </LinearLayout>
 
 

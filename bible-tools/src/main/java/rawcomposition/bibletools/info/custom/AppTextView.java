@@ -39,7 +39,7 @@ public class AppTextView extends TextView {
 
     private void init(Context ctx, AttributeSet attrs) {
 
-        if(attrs == null){
+        if (attrs == null) {
             return;
         }
 

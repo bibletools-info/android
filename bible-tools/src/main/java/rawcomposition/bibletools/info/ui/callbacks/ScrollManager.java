@@ -37,8 +37,6 @@ public class ScrollManager extends RecyclerView.OnScrollListener {
     private int initialOffset = 0;
     private HashMap<View, Direction> viewsToHide = new HashMap<>();
 
-    public static enum Direction {UP, DOWN}
-
     public ScrollManager() {
     }
 
@@ -102,18 +100,18 @@ public class ScrollManager extends RecyclerView.OnScrollListener {
                 .postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        if(view.getVisibility() == View.VISIBLE){
+                        if (view.getVisibility() == View.VISIBLE) {
                             view.setVisibility(View.GONE);
                         }
                     }
                 }, view.getContext().getResources().getInteger(android.R.integer.config_mediumAnimTime));
 
 
-
     }
 
     /**
      * Takes height + margins
+     *
      * @param view View to translate
      * @return translation in pixels
      */
@@ -127,7 +125,7 @@ public class ScrollManager extends RecyclerView.OnScrollListener {
     }
 
     private void showView(View view) {
-        if(view.getVisibility() == ViewGroup.GONE){
+        if (view.getVisibility() == ViewGroup.GONE) {
             view.setVisibility(View.VISIBLE);
         }
 
@@ -142,4 +140,6 @@ public class ScrollManager extends RecyclerView.OnScrollListener {
 
         slideInAnimation.start();
     }
+
+    public static enum Direction {UP, DOWN}
 }

@@ -1,19 +1,12 @@
 package rawcomposition.bibletools.info.ui;
 
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -25,13 +18,12 @@ import rawcomposition.bibletools.info.util.enums.ViewType;
 public class FavouritesActivity extends BaseActivity {
 
     private static final String TAG = FavouritesActivity.class.getName();
+    private Realm mRealm;
 
     @Override
     protected int getLayoutResource() {
         return R.layout.activity_favourites;
     }
-
-    private Realm mRealm;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,7 +59,7 @@ public class FavouritesActivity extends BaseActivity {
                 FavouritesFragment fragment = (FavouritesFragment)
                         getSupportFragmentManager().findFragmentByTag(FavouritesFragment.class.getName());
 
-                if(fragment != null){
+                if (fragment != null) {
                     fragment.performSearch(s);
                 }
 
@@ -81,29 +73,29 @@ public class FavouritesActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-            switch (item.getItemId()){
-                case R.id.action_filter:
-                    showFilterOptions();
+        switch (item.getItemId()) {
+            case R.id.action_filter:
+                showFilterOptions();
 
-                    return true;
-            }
+                return true;
+        }
 
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void showFilterOptions(){
+    private void showFilterOptions() {
 
         final FavouritesFragment fragment = (FavouritesFragment)
                 getSupportFragmentManager().findFragmentByTag(FavouritesFragment.class.getName());
 
-        if(fragment == null){
+        if (fragment == null) {
             return;
         }
 
         int pstn;
 
-        switch (fragment.getViewType()){
+        switch (fragment.getViewType()) {
             case OLD_TESTAMENT:
                 pstn = 1;
                 break;
@@ -125,7 +117,7 @@ public class FavouritesActivity extends BaseActivity {
                     public boolean onSelection(MaterialDialog materialDialog, View view, int position, CharSequence charSequence) {
                         Log.d(TAG, "onSelection() " + position);
 
-                        switch (position){
+                        switch (position) {
                             case 1:
                                 fragment.setViewType(ViewType.OLD_TESTAMENT);
                                 break;

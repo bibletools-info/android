@@ -27,18 +27,18 @@ public class CustomRecycler extends RecyclerView {
     @Override
     public void smoothScrollToPosition(int position) {
 
-        try{
+        try {
             super.smoothScrollToPosition(position);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             Log.d(TAG, "Exception: smoothScrollToPosition");
         }
     }
 
     @Override
     public void scrollTo(int x, int y) {
-        try{
+        try {
             super.scrollTo(x, y);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             Log.d(TAG, "Exception: scrollTo");
         }
 

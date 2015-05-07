@@ -19,9 +19,9 @@ public class AnimUtil {
      * @param context
      * @param view
      */
-    public static void slideInEnterAnimation(Context context, View view){
+    public static void slideInEnterAnimation(Context context, View view) {
         DisplayMetrics display = context.getResources().getDisplayMetrics();
-        int screenHeight =  display.heightPixels;
+        int screenHeight = display.heightPixels;
 
         ViewHelper.setTranslationY(view, screenHeight);
         ViewPropertyAnimator

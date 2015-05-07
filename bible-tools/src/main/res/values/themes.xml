@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme"/>
-    <style name="BaseTheme"/>
+    <style name="Theme" />
+
+    <style name="BaseTheme" />
 
     <style name="BaseTheme.Light" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/theme_primary</item>
@@ -30,6 +31,8 @@
         <item name="md_negative_color">@color/theme_primary</item>
         <item name="md_dark_theme">false</item>
         <item name="md_item_color">@color/primary_material_dark</item>
+
+        <item name="spbStyle">@style/ProgressBar.Light</item>
     </style>
 
     <style name="BaseTheme.Dark" parent="Theme.AppCompat.NoActionBar">
@@ -58,11 +61,14 @@
         <item name="md_negative_color">@android:color/white</item>
         <item name="md_item_color">@android:color/white</item>
         <item name="md_dark_theme">true</item>
+
+        <item name="spbStyle">@style/ProgressBar.Dark</item>
     </style>
 
 
-    <style name="Theme.Light" parent="BaseTheme.Light"/>
-    <style name="Theme.Dark" parent="BaseTheme.Dark"/>
+    <style name="Theme.Light" parent="BaseTheme.Light" />
+
+    <style name="Theme.Dark" parent="BaseTheme.Dark" />
 
     <style name="Theme.Light.Settings">
         <item name="colorAccent">@color/theme_primary</item>
@@ -70,6 +76,14 @@
 
     <style name="Theme.Dark.Settings">
         <item name="colorAccent">@color/theme_primary</item>
+    </style>
+
+    <style name="ProgressBar.Light">
+        <item name="spb_colors">@array/progress_colors</item>
+    </style>
+
+    <style name="ProgressBar.Dark">
+        <item name="spb_colors">@array/progress_colors_dark</item>
     </style>
 
 

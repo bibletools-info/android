@@ -18,4 +18,17 @@
 
     <color name="screen_background_holo_light">#fff3f3f3</color>
     <color name="screen_background_holo_dark">#ff000000</color>
+
+    <integer-array name="progress_colors">
+        <item>@color/theme_primary</item>
+        <item>@color/theme_accent</item>
+        <item>@color/theme_primary</item>
+        <item>@color/theme_accent</item>
+    </integer-array>
+    <integer-array name="progress_colors_dark">
+        <item>@color/theme_primary</item>
+        <item>@android:color/white</item>
+        <item>@color/theme_primary</item>
+        <item>@android:color/white</item>
+    </integer-array>
 </resources>

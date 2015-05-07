@@ -9,8 +9,8 @@ public class GSonUtil {
 
     private static Gson mGSon;
 
-    public static Gson getInstance(){
-        if(mGSon == null){
+    public static Gson getInstance() {
+        if (mGSon == null) {
             mGSon = new Gson();
         }
 

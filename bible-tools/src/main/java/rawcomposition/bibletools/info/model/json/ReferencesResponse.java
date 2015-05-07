@@ -20,8 +20,8 @@ public class ReferencesResponse extends JSONModel {
     public List<Reference> getResources() {
         List<Reference> temp = new ArrayList<>();
 
-        for(Reference reference: resources){
-            if(!TextUtils.isEmpty(reference.getTitle())){
+        for (Reference reference : resources) {
+            if (!TextUtils.isEmpty(reference.getTitle())) {
                 temp.add(reference);
             }
         }

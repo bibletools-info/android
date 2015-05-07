@@ -40,9 +40,15 @@ public class ScrollManager extends RecyclerView.OnScrollListener {
     private HashMap<View, Direction> viewsToHide = new HashMap<>();
 
 
-    public static enum Direction {UP, DOWN}
-
     public ScrollManager() {
+    }
+
+    public static void setMargins(View v, int t) {
+        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            p.setMargins(0, t, 0, 0);
+            v.requestLayout();
+        }
     }
 
     public void attach(RecyclerView recyclerView) {
@@ -56,7 +62,6 @@ public class ScrollManager extends RecyclerView.OnScrollListener {
     public void setInitialOffset(int initialOffset) {
         this.initialOffset = initialOffset;
     }
-
 
 
     @Override
@@ -108,6 +113,7 @@ public class ScrollManager extends RecyclerView.OnScrollListener {
 
     /**
      * Takes height + margins
+     *
      * @param view View to translate
      * @return translation in pixels
      */
@@ -132,8 +138,8 @@ public class ScrollManager extends RecyclerView.OnScrollListener {
             @Override
             public void onAnimationStart(Animator animation) {
                 Log.d(TAG, "onAnimationStart");
-                if(translateY == 0){
-                    if(view.getVisibility() == View.GONE){
+                if (translateY == 0) {
+                    if (view.getVisibility() == View.GONE) {
                         view.setVisibility(View.VISIBLE);
                     }
                 }
@@ -142,13 +148,13 @@ public class ScrollManager extends RecyclerView.OnScrollListener {
             @Override
             public void onAnimationEnd(Animator animation) {
                 Log.d(TAG, "onAnimationEnd");
-                if(translateY != 0){
-                    if(view.getVisibility() == View.VISIBLE){
+                if (translateY != 0) {
+                    if (view.getVisibility() == View.VISIBLE) {
                         view.setVisibility(View.GONE);
                     }
 
                 } else {
-                    if(view.getVisibility() == View.GONE){
+                    if (view.getVisibility() == View.GONE) {
                         view.setVisibility(View.VISIBLE);
                     }
                 }
@@ -167,11 +173,5 @@ public class ScrollManager extends RecyclerView.OnScrollListener {
         slideInAnimation.start();
     }
 
-    public static void setMargins (View v, int t) {
-        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
-            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
-            p.setMargins(0, t, 0, 0);
-            v.requestLayout();
-        }
-    }
+    public static enum Direction {UP, DOWN}
 }

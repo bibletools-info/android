@@ -5,20 +5,15 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewCompat;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.internal.VersionUtils;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.nineoldandroids.view.ViewPropertyAnimator;
-
-import java.util.ArrayList;
 
 import rawcomposition.bibletools.info.BuildConfig;
 import rawcomposition.bibletools.info.R;
@@ -32,32 +27,63 @@ import rawcomposition.bibletools.info.util.billing.Purchase;
 /**
  * Created by tinashe
  */
-public abstract class BaseActivity extends ActionBarActivity{
-
-    private static final String TAG = BaseActivity.class.getName();
+public abstract class BaseActivity extends AppCompatActivity {
 
     // (arbitrary) request code for the purchase flow
     static final int RC_REQUEST = 10001;
-
-    // Durations for certain animations we use:
-    private static final int HEADER_HIDE_ANIM_DURATION = 300;
-
-    protected abstract int getLayoutResource();
-
+    private static final String TAG = BaseActivity.class.getName();
     protected Toolbar mToolbar;
-
     protected View mHeaderView;
-
-    // When set, these components will be shown/hidden in sync with the action bar
-    // to implement the "quick recall" effect (the Action Bar and the header views disappear
-    // when you scroll down a list, and reappear quickly when you scroll up).
-    private ArrayList<View> mHideableHeaderViews = new ArrayList<View>();
-
     // The helper object
     private IabHelper mHelper;
 
+    // Listener that's called when we finish querying the items and subscriptions we own
+    IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+            Log.d(TAG, "Query inventory finished.");
+
+            // Have we been disposed of in the meantime? If so, quit.
+            if (mHelper == null) return;
+
+            // Is it a failure?
+            if (result.isFailure()) {
+                Log.d(TAG, "Failed to query inventory: " + result);
+                return;
+            }
+
+            Log.d(TAG, "Query inventory was successful.");
+
+
+        }
+    };
+    // Callback for when a purchase is finished
+    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+            Log.d(TAG, "Purchase finished: " + result + ", purchase: " + purchase);
+
+            // if we were disposed of in the meantime, quit.
+            if (mHelper == null) return;
+
+            if (result.isFailure()) {
+                //  showToast("There was an Error, please try again. ");
+                // setWaitScreen(false);
+                return;
+            }
+            if (!verifyDeveloperPayload(purchase)) {
+                //  showToast("There was an Error, please try again. ");
+                return;
+            }
+
+            showToast("Donation successful :-)");
+
+
+        }
+    };
+
+    protected abstract int getLayoutResource();
+
     @Override
-    public void onCreate(Bundle savedInstance){
+    public void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
 
         ThemeUtil.setAppTheme(this, isSettings());
@@ -67,9 +93,9 @@ public abstract class BaseActivity extends ActionBarActivity{
         mToolbar = (Toolbar) findViewById(R.id.app_action_bar);
         mHeaderView = findViewById(R.id.header_view);
         if (mToolbar != null) {
-            try{
+            try {
 
-                if(mHeaderView != null){
+                if (mHeaderView != null) {
                     ViewCompat.setTranslationZ(mHeaderView, getResources().getDimension(R.dimen.toolbar_elevation));
                     ViewCompat.setElevation(mHeaderView, getResources().getDimension(R.dimen.toolbar_elevation));
                 }
@@ -78,7 +104,7 @@ public abstract class BaseActivity extends ActionBarActivity{
                 setSupportActionBar(mToolbar);
 
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            }catch (Throwable ex){
+            } catch (Throwable ex) {
                 //
             }
 
@@ -112,19 +138,18 @@ public abstract class BaseActivity extends ActionBarActivity{
         });
     }
 
-
-    public Toolbar getToolbar(){
+    public Toolbar getToolbar() {
         return mToolbar;
     }
 
-    protected boolean isSettings(){
+    protected boolean isSettings() {
         return false;
     }
 
     @TargetApi(21)
-    public void startAnActivity(Intent intent){
+    public void startAnActivity(Intent intent) {
 
-        if(VersionUtils.isAtLeastL()){
+        if (VersionUtils.isAtLeastL()) {
             startActivity(intent,
                     ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
         } else {
@@ -135,7 +160,7 @@ public abstract class BaseActivity extends ActionBarActivity{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
                 return true;
@@ -144,47 +169,8 @@ public abstract class BaseActivity extends ActionBarActivity{
         return super.onOptionsItemSelected(item);
     }
 
-    public void hideActionBar(){
-        onActionBarAutoShowOrHide(false);
-    }
 
-    public void showActionBar(){
-        onActionBarAutoShowOrHide(true);
-    }
-
-    protected void registerHideableHeaderView(View hideableHeaderView) {
-        if (!mHideableHeaderViews.contains(hideableHeaderView)) {
-            mHideableHeaderViews.add(hideableHeaderView);
-        }
-    }
-
-    protected void deregisterHideableHeaderView(View hideableHeaderView) {
-        if (mHideableHeaderViews.contains(hideableHeaderView)) {
-            mHideableHeaderViews.remove(hideableHeaderView);
-        }
-    }
-
-    protected void onActionBarAutoShowOrHide(boolean shown) {
-
-        for (View view : mHideableHeaderViews) {
-            if (shown) {
-                ViewPropertyAnimator.animate(view)
-                        .translationY(0)
-                        .alpha(1)
-                        .setDuration(HEADER_HIDE_ANIM_DURATION)
-                        .setInterpolator(new DecelerateInterpolator());
-            } else {
-                ViewPropertyAnimator.animate(view)
-                        .translationY(-view.getBottom())
-                        .alpha(0)
-                        .setDuration(HEADER_HIDE_ANIM_DURATION)
-                        .setInterpolator(new DecelerateInterpolator());
-            }
-        }
-    }
-
-
-    protected void sendFeedBack(){
+    protected void sendFeedBack() {
 
         String subject = getString(R.string.app_full_name)
                 + " (Android - " + BuildConfig.VERSION_NAME + ")";
@@ -198,41 +184,18 @@ public abstract class BaseActivity extends ActionBarActivity{
         }
     }
 
-    protected void showHelp(){
+    protected void showHelp() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(getString(R.string.app_help)));
         startActivity(intent);
     }
 
-    protected void showToast(String message){
+    protected void showToast(String message) {
         ToastUtil.show(this, message);
     }
 
-    // Listener that's called when we finish querying the items and subscriptions we own
-    IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
-        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
-            Log.d(TAG, "Query inventory finished.");
-
-            // Have we been disposed of in the meantime? If so, quit.
-            if (mHelper == null) return;
-
-            // Is it a failure?
-            if (result.isFailure()) {
-                Log.d(TAG,"Failed to query inventory: " + result);
-                return;
-            }
-
-            Log.d(TAG, "Query inventory was successful.");
-
-
-        }
-    };
-
     // User clicked the "Donate" button
     public void onDonateButtonClicked() {
-        Log.d(TAG, "Donate button clicked.");
-
-        Log.d(TAG, "Launching donate.");
 
         /* TODO: for security, generate your payload here for verification. See the comments on
          *        verifyDeveloperPayload() for more info. Since this is a SAMPLE, we just use
@@ -257,34 +220,7 @@ public abstract class BaseActivity extends ActionBarActivity{
                 .build().show();
 
 
-
     }
-
-    // Callback for when a purchase is finished
-    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
-        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
-            Log.d(TAG, "Purchase finished: " + result + ", purchase: " + purchase);
-
-            // if we were disposed of in the meantime, quit.
-            if (mHelper == null) return;
-
-            if (result.isFailure()) {
-              //  showToast("There was an Error, please try again. ");
-               // setWaitScreen(false);
-                return;
-            }
-            if (!verifyDeveloperPayload(purchase)) {
-              //  showToast("There was an Error, please try again. ");
-                return;
-            }
-
-            showToast("Donation successful :-)");
-
-
-
-        }
-    };
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -297,13 +233,14 @@ public abstract class BaseActivity extends ActionBarActivity{
             // perform any handling of activity results not related to in-app
             // billing...
             super.onActivityResult(requestCode, resultCode, data);
-        }
-        else {
+        } else {
             Log.d(TAG, "onActivityResult handled by IABUtil.");
         }
     }
 
-    /** Verifies the developer payload of a purchase. */
+    /**
+     * Verifies the developer payload of a purchase.
+     */
     boolean verifyDeveloperPayload(Purchase p) {
         String payload = p.getDeveloperPayload();
 
