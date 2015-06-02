@@ -5,7 +5,10 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +16,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -22,35 +26,37 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.orhanobut.wasp.CallBack;
-import com.orhanobut.wasp.WaspError;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.castorflex.android.smoothprogressbar.SmoothProgressBar;
 import io.realm.Realm;
-import rawcomposition.bibletools.info.BibleToolsApplication;
 import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.api.BibleToolsApi;
+import rawcomposition.bibletools.info.api.BibleToolsService;
 import rawcomposition.bibletools.info.custom.ClearAutoCompleteTextView;
+import rawcomposition.bibletools.info.custom.HidingScrollListener;
 import rawcomposition.bibletools.info.custom.SearchTextWatcher;
 import rawcomposition.bibletools.info.model.json.Reference;
 import rawcomposition.bibletools.info.model.json.ReferencesResponse;
 import rawcomposition.bibletools.info.ui.adapters.ReferenceListAdapter;
 import rawcomposition.bibletools.info.ui.callbacks.OnNavigationListener;
 import rawcomposition.bibletools.info.ui.callbacks.SearchQueryStripListener;
-import rawcomposition.bibletools.info.ui.fragments.NavigationDrawerFragment;
+import rawcomposition.bibletools.info.util.AnimUtil;
 import rawcomposition.bibletools.info.util.BibleQueryUtil;
 import rawcomposition.bibletools.info.util.CacheUtil;
 import rawcomposition.bibletools.info.util.DeviceUtil;
 import rawcomposition.bibletools.info.util.GSonUtil;
 import rawcomposition.bibletools.info.util.KeyBoardUtil;
 import rawcomposition.bibletools.info.util.PreferenceUtil;
+import rawcomposition.bibletools.info.util.TextViewUtil;
 import rawcomposition.bibletools.info.util.ThemeUtil;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class MainActivity extends BaseActivity implements
-        OnNavigationListener, NavigationDrawerFragment.NavigationDrawerCallbacks {
+        OnNavigationListener, SwipeRefreshLayout.OnRefreshListener {
 
     private static final int REQUEST_CODE = 1234;
 
@@ -58,14 +64,13 @@ public class MainActivity extends BaseActivity implements
 
     private static final String VERSE_KEY = "verse";
     private ClearAutoCompleteTextView mSearchView;
-    private NavigationDrawerFragment mNavigationDrawerFragment;
     private ReferenceListAdapter mAdapter;
     private ProgressBar mProgress;
-    private SmoothProgressBar mSmoothProgressBar;
+    private SwipeRefreshLayout mSwipeToRefreshLayout;
     private List<Reference> mReferences = new ArrayList<>();
     private RecyclerView mRecycler;
     private Realm mRealm;
-
+    private DrawerLayout mDrawerLayout;
 
     private View.OnTouchListener mVoiceListener = new View.OnTouchListener() {
         @Override
@@ -87,7 +92,7 @@ public class MainActivity extends BaseActivity implements
         @Override
         public void onClick(View v) {
             KeyBoardUtil.hideKeyboard(MainActivity.this, mSearchView);
-            mNavigationDrawerFragment.toggleDrawer();
+            mDrawerLayout.openDrawer(GravityCompat.START);
         }
     };
 
@@ -102,13 +107,7 @@ public class MainActivity extends BaseActivity implements
 
         mRealm = Realm.getInstance(this);
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-
-        // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
+        initDrawer();
 
         initSearchView();
 
@@ -117,6 +116,50 @@ public class MainActivity extends BaseActivity implements
         if (!PreferenceUtil.getValue(this, getString(R.string.pref_tut_shown), false)) {
             PreferenceUtil.updateValue(this, getString(R.string.pref_tut_shown), true);
             showHowItWorks();
+        }
+    }
+
+    private void initDrawer() {
+        TextView textView = (TextView) findViewById(R.id.app_title);
+        TextViewUtil.setCustomFontTitle(this, textView);
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        if (navigationView != null) {
+            navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(MenuItem menuItem) {
+
+                    switch (menuItem.getItemId()) {
+                        case R.id.nav_fav:
+                            startAnActivity(new Intent(MainActivity.this, FavouritesActivity.class));
+                            break;
+                        case R.id.nav_history:
+                            showHistoryDialog(CacheUtil.getCachedReferences(MainActivity.this));
+                            break;
+                        case R.id.action_settings:
+                            startAnActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                            break;
+                        case R.id.action_feedback:
+                            sendFeedBack();
+                            break;
+                        case R.id.action_help:
+                            showHelp();
+                            break;
+                        case R.id.action_donate:
+                            onDonateButtonClicked();
+                            break;
+                    }
+
+                    mDrawerLayout.closeDrawers();
+                    return true;
+                }
+            });
+
+            //Only Home is checked
+            navigationView.getMenu().findItem(R.id.nam_home)
+                    .setChecked(true);
         }
     }
 
@@ -173,13 +216,40 @@ public class MainActivity extends BaseActivity implements
             mRecycler.setLayoutManager(new LinearLayoutManager(this));
         }
 
+        int paddingTop = DeviceUtil.getToolbarHeight(this) + mRecycler.getPaddingTop();
+        mRecycler.setPadding(mRecycler.getPaddingLeft(), paddingTop, mRecycler.getPaddingRight(), mRecycler.getPaddingBottom());
+        mRecycler.addOnScrollListener(new HidingScrollListener(this) {
+            @Override
+            public void onMoved(int distance) {
+                mHeaderView.setTranslationY(-distance);
+            }
+
+            @Override
+            public void onShow() {
+
+                AnimUtil.slideDown(mHeaderView);
+            }
+
+            @Override
+            public void onHide() {
+                AnimUtil.SlideUp(mHeaderView);
+            }
+        });
+
         mProgress = (ProgressBar) findViewById(R.id.progress);
 
         mAdapter = new ReferenceListAdapter(MainActivity.this, mReferences, this);
         mRecycler.setAdapter(mAdapter);
         mRecycler.setItemAnimator(new DefaultItemAnimator());
 
-        mSmoothProgressBar = (SmoothProgressBar) findViewById(R.id.smooth_progress);
+        mSwipeToRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_to_refresh);
+        mSwipeToRefreshLayout.setColorSchemeResources(
+                R.color.theme_primary_dark,
+                R.color.theme_accent,
+                R.color.theme_primary_dark,
+                R.color.theme_accent
+        );
+        mSwipeToRefreshLayout.setOnRefreshListener(this);
 
         Intent intent = getIntent();
         Uri data = intent.getData();
@@ -309,18 +379,21 @@ public class MainActivity extends BaseActivity implements
             return;
         }
 
-        mSmoothProgressBar.progressiveStart();
-        mSmoothProgressBar.setVisibility(View.VISIBLE);
-
-        BibleToolsApi api = ((BibleToolsApplication) getApplication())
-                .getApi();
-
-        api.deliverReferences(book, chapter, verse, new CallBack<ReferencesResponse>() {
+        mSwipeToRefreshLayout.postDelayed(new Runnable() {
             @Override
-            public void onSuccess(ReferencesResponse response) {
+            public void run() {
+                mSwipeToRefreshLayout.setRefreshing(true);
+            }
+        }, 100);
 
-                mSmoothProgressBar.progressiveStop();
-                mSmoothProgressBar.setVisibility(View.GONE);
+
+        BibleToolsApi api = BibleToolsService.getApi();
+
+        api.deliverReferences(book, chapter, verse, new Callback<ReferencesResponse>() {
+            @Override
+            public void success(ReferencesResponse referencesResponse, Response response) {
+
+                mSwipeToRefreshLayout.setRefreshing(false);
 
                 if (PreferenceUtil.getValue(MainActivity.this,
                         getString(R.string.pref_key_cache),
@@ -328,24 +401,24 @@ public class MainActivity extends BaseActivity implements
 
                     CacheUtil.save(MainActivity.this,
                             CacheUtil.getFileName(MainActivity.this, book, chapter, verse),
-                            GSonUtil.getInstance().toJson(response));
+                            GSonUtil.getInstance().toJson(referencesResponse));
                 }
 
-                displayReferences(response, true);
-
+                displayReferences(referencesResponse, true);
             }
 
             @Override
-            public void onError(WaspError waspError) {
-                Log.d(TAG, waspError.getErrorMessage());
+            public void failure(RetrofitError error) {
+                Log.d(TAG, error.getMessage());
 
                 mProgress.setVisibility(View.GONE);
-                mSmoothProgressBar.progressiveStop();
-                mSmoothProgressBar.setVisibility(View.GONE);
+                mSwipeToRefreshLayout.setRefreshing(false);
 
                 showToast(getString(R.string.api_default_error));
             }
         });
+
+
     }
 
 
@@ -384,37 +457,6 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-    @Override
-    public void onNavigationDrawerItemSelected(int position) {
-        Log.d(TAG, "Position: " + position);
-
-        switch (position) {
-            case 1:
-                //Favourites
-                startAnActivity(new Intent(this, FavouritesActivity.class));
-                break;
-            case 2:
-                //History
-                showHistoryDialog(CacheUtil.getCachedReferences(this));
-                break;
-            case 4:
-                //Settings
-                startAnActivity(new Intent(this, SettingsActivity.class));
-                break;
-            case 5:
-                //Help
-                showHelp();
-                break;
-            case 6:
-                //Feedback
-                sendFeedBack();
-                break;
-            case 7:
-                //Donate
-                onDonateButtonClicked();
-                break;
-        }
-    }
 
     private void showHistoryDialog(List<String> history) {
 
@@ -454,7 +496,9 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     protected void onDestroy() {
-        mRealm.close();
+        if (mRealm != null) {
+            mRealm.close();
+        }
         super.onDestroy();
     }
 
@@ -469,5 +513,15 @@ public class MainActivity extends BaseActivity implements
 
     public Realm getRealm() {
         return mRealm;
+    }
+
+    @Override
+    public void onRefresh() {
+        mSwipeToRefreshLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeToRefreshLayout.setRefreshing(false);
+            }
+        }, 1000);
     }
 }

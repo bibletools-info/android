@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:background="?attr/colorPrimary"
     android:gravity="center"
-    android:padding="@dimen/margin_tiny">
+    android:paddingLeft="@dimen/margin_tiny"
+    android:paddingRight="@dimen/margin_tiny">
 
     <android.support.v7.widget.CardView
         style="@style/AppTheme.CardView"

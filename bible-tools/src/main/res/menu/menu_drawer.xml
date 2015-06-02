@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nam_home"
+            android:icon="@drawable/ic_home"
+            android:title="@string/title_home"/>
+
+        <item
+            android:id="@+id/nav_fav"
+            android:icon="@drawable/ic_favorite_grey"
+            android:title="@string/title_favourites"/>
+
+        <item
+            android:id="@+id/nav_history"
+            android:icon="@drawable/ic_history_grey"
+            android:title="@string/title_history"/>
+    </group>
+
+    <item
+        android:title="@string/blank">
+
+        <menu>
+            <item
+                android:id="@+id/action_settings"
+                android:title="@string/action_settings"/>
+
+            <item
+                android:id="@+id/action_feedback"
+                android:title="@string/action_send_feedback"/>
+
+            <item
+                android:id="@+id/action_help"
+                android:title="@string/title_help"/>
+
+            <item
+                android:id="@+id/action_donate"
+                android:title="@string/action_donate"/>
+        </menu>
+
+    </item>
+
+</menu>

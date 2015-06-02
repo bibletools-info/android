@@ -16,23 +16,23 @@
 #   public *;
 #}
 
+#Realm
 -keepnames public class * extends io.realm.RealmObject
 -keep class io.realm.** { *; }
 -dontwarn javax.**
 -dontwarn io.realm.**
 
-# ABC
+#ABC
 # Need to keep classes unobfuscated from v7.**, not v7.appcompat.**, because other packages directly under
 # v7.** get obfuscated. eg. v7.internal.** and v7.widget.** cause errors if obfuscated.
 -keep class android.support.v7.** { *; }
 -keep interface android.support.v7.** { *; }
 
-#Wasp
--keepattributes *Annotation*
--keep class com.orhanobut.wasp.** { *; }
--keepclassmembernames interface * {
-    @com.orhanobut.wasp.http.* <methods>;
-}
+#Retrofit
+-dontwarn retrofit.**
+-keep class retrofit.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
 
 #Gson
 -keep class com.google.gson.** { *; }
@@ -43,6 +43,6 @@
 -dontwarn java.nio.file.*
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
 
-# nineoldandroids
+#nineoldandroids
 -keep class com.nineoldandroids.** { *; }
 -keep interface com.nineoldandroids.** { *; }

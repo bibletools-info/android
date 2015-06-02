@@ -244,6 +244,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     boolean verifyDeveloperPayload(Purchase p) {
         String payload = p.getDeveloperPayload();
 
+        //Not necessary ATM
         return true;
 
     }

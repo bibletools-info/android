@@ -1,28 +1,42 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_to_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <rawcomposition.bibletools.info.custom.CustomRecycler
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:padding="@dimen/margin_small"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbars="vertical"
+                tools:context=".MainActivity" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+
+    </FrameLayout>
 
     <include
         android:id="@+id/header"
         layout="@layout/search_view"
         tools:visibility="gone" />
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <include layout="@layout/fragment_references" />
-
-        <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
-            android:id="@+id/smooth_progress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-5dp"
-            android:background="@android:color/transparent"
-            android:visibility="gone"
-            tools:visibility="visible" />
-    </FrameLayout>
-
-</LinearLayout>
+</FrameLayout>

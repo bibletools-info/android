@@ -40,13 +40,15 @@
         <Preference
             android:key="@string/pref_feedback"
             android:persistent="false"
-            android:title="@string/action_send_feedback" />
+            android:title="@string/action_send_feedback"
+            android:summary="Queries or Complains?"/>
 
 
         <Preference
             android:key="pref_donate"
             android:persistent="false"
-            android:title="@string/action_donate" />
+            android:title="@string/action_donate"
+            android:summary="Support future releases."/>
 
     </PreferenceCategory>
 

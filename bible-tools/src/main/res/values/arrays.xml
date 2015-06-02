@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="drawer_array">
-        <item>@string/title_home</item>
-        <item>@string/title_favourites</item>
-        <item>@string/title_history</item>
-        <item>Settings</item>
-        <item>Help</item>
-        <item>Send Feedback</item>
-        <item>Donate</item>
-    </string-array>
-
     <string-array name="base_theme_entries">
         <item>Light</item>
         <item>Dark</item>
