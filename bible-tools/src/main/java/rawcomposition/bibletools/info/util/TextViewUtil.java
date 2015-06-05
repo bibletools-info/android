@@ -194,14 +194,14 @@ public class TextViewUtil {
 
 
     public static void setCustomFontTitle(Context context, TextView textView) {
-        String text = "Bible Tools.info";
+        String text = "BibleTools.info";
 
         Typeface t1 = Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Heavy.ttf");
         Typeface t2 = Typeface.createFromAsset(context.getAssets(), "fonts/Lato-Light.ttf");
 
         SpannableString sb = new SpannableString(text);
         sb.setSpan(new CustomTypefaceSpan("", t1), 0, text.indexOf('.'), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
-        sb.setSpan(new CustomTypefaceSpan("", t2), 11, text.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        sb.setSpan(new CustomTypefaceSpan("", t2), text.indexOf('.'), text.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
         textView.setText(sb);
     }
 
