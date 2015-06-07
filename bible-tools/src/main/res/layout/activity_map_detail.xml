@@ -1,0 +1,29 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="rawcomposition.bibletools.info.ui.MapDetailActivity">
+
+
+    <ImageView
+        android:id="@+id/fullscreen_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:keepScreenOn="true"
+        android:textSize="50sp"
+        android:layout_gravity="center"
+        tools:src="#0099cc"
+        tools:layout_height="300dp"/>
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/app_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        app:popupTheme="@style/ActionBarPopupThemeOverlay"
+        app:theme="@style/ActionBarThemeOverlay"
+        app:titleTextAppearance="@style/ActionBar.TitleText" />
+
+</FrameLayout>

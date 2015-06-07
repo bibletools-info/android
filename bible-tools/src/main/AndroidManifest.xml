@@ -47,6 +47,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="rawcomposition.bibletools.info.ui.MainActivity" />
         </activity>
+        <activity
+            android:name=".ui.MapDetailActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/blank"
+            android:parentActivityName=".ui.MainActivity"
+            android:theme="@style/Theme.Dark">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="rawcomposition.bibletools.info.ui.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -2,6 +2,7 @@
 <resources>
 
     <string name="base_api_url">http://bibletools.info</string>
+    <string name="base_maps_url">http://bibletools.info/assets/img/maps/</string>
 
     <string name="font_regular">Lato-Light.ttf</string>
     <string name="font_medium">Lato-Regular.ttf</string>

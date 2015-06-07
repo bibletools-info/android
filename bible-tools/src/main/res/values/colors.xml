@@ -31,4 +31,6 @@
         <item>@color/theme_primary</item>
         <item>@android:color/white</item>
     </integer-array>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

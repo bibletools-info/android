@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Reference extends JSONModel {
 
-    private static final long serialVersionUID = 4279186918761811308L;
+    private static final long serialVersionUID = 7095848971005609205L;
 
     @SerializedName("title")
     private String title;
@@ -23,6 +23,9 @@ public class Reference extends JSONModel {
 
     @SerializedName("next")
     private String next;
+
+    @SerializedName("filename")
+    private String fileName;
 
     private boolean isCollapsed = true;
 
@@ -64,6 +67,14 @@ public class Reference extends JSONModel {
 
     public void setNext(String next) {
         this.next = next;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public boolean isCollapsed() {

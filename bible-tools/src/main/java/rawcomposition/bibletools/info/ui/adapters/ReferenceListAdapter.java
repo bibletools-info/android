@@ -7,20 +7,24 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+
 import java.util.List;
 
 import io.realm.Realm;
 import rawcomposition.bibletools.info.R;
-import rawcomposition.bibletools.info.custom.IconizedMenu;
+import rawcomposition.bibletools.info.model.ReferenceMap;
 import rawcomposition.bibletools.info.model.json.Reference;
 import rawcomposition.bibletools.info.ui.MainActivity;
+import rawcomposition.bibletools.info.ui.MapDetailActivity;
 import rawcomposition.bibletools.info.ui.callbacks.OnNavigationListener;
 import rawcomposition.bibletools.info.util.AnimUtil;
 import rawcomposition.bibletools.info.util.FavouritesUtil;
@@ -90,7 +94,7 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
     }
 
     @Override
-    public void onBindViewHolder(ReferenceViewHolder holder, final int position) {
+    public void onBindViewHolder(final ReferenceViewHolder holder, final int position) {
 
         if (position > mLastAnimatedPosition) {
             mLastAnimatedPosition = position;
@@ -182,29 +186,78 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
         } else {
 
-            if (position == 1) {
-                content.setText(Html.fromHtml(TextViewUtil.implementBCbold(reference.getContent())));
-            } else {
-                content.setText(Html.fromHtml(reference.getContent()));
+            if(TextUtils.isEmpty(reference.getFileName())){
+
+                content.setVisibility(View.VISIBLE);
+                holder.refShareItem.setVisibility(View.VISIBLE);
+                holder.refMap.setVisibility(View.GONE);
+
+                if (position == 1) {
+                    content.setText(Html.fromHtml(TextViewUtil.implementBCbold(reference.getContent())));
+                } else {
+                    content.setText(Html.fromHtml(reference.getContent()));
+                }
+
+                setOptionsListener(holder.refShareItem, reference);
+
+                TextViewUtil.setVerseClickListener(content, mListener);
+
+                content.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        toggleReferenceView(reference, content, position);
+                    }
+                });
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        toggleReferenceView(reference, content, position);
+                    }
+                });
+
+            }else {
+
+                content.setVisibility(View.GONE);
+                holder.refShareItem.setVisibility(View.GONE);
+                holder.refMap.setVisibility(View.VISIBLE);
+
+                final String url = context.getString(R.string.base_maps_url) + reference.getFileName();
+
+                Glide.with(context)
+                        .load(url)
+                        .centerCrop()
+                        .listener(new RequestListener<String, GlideDrawable>() {
+                            @Override
+                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(final GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+                                        ReferenceMap map = new ReferenceMap();
+                                        map.setMapTitle(reference.getTitle());
+                                        map.setMapUrl(url);
+
+                                        MapDetailActivity.launch(
+                                                ((MainActivity) context),
+                                                holder.refMap,
+                                                map);
+                                    }
+                                });
+                                return false;
+                            }
+                        })
+                        .into(holder.refMap);
+
+
             }
 
-            setOptionsListener(holder.refOptions, reference);
 
-            TextViewUtil.setVerseClickListener(content, mListener);
-
-            content.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    toggleReferenceView(reference, content, position);
-                }
-            });
-
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    toggleReferenceView(reference, content, position);
-                }
-            });
 
         }
 
@@ -242,31 +295,7 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
             @Override
             public void onClick(View v) {
 
-                IconizedMenu popupMenu = new IconizedMenu(context, imageView);
-                MenuInflater menuInflater = popupMenu.getMenuInflater();
-                menuInflater.inflate(R.menu.menu_ref_options, popupMenu.getMenu());
-
-                if (ThemeUtil.isDarkTheme(context)) {
-                    ThemeUtil.tintDrawable(popupMenu.getMenu().findItem(R.id.action_share).getIcon(), Color.WHITE);
-                    ThemeUtil.tintDrawable(popupMenu.getMenu().findItem(R.id.action_copy).getIcon(), Color.WHITE);
-                }
-
-                popupMenu.setOnMenuItemClickListener(new IconizedMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.action_share:
-                                TextViewUtil.shareOrSearch(context, subject, text, true);
-                                return true;
-                            case R.id.action_copy:
-                                TextViewUtil.copyText(context, subject + "\n" + text);
-                                return true;
-                        }
-                        return false;
-                    }
-                });
-
-                popupMenu.show();
+                TextViewUtil.shareOrSearch(context, subject, text, true);
             }
         });
     }
@@ -321,8 +350,8 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
         private View navigatePrevious;
         private View navigateNext;
 
-        private ImageView refOptions;
-
+        private ImageView refShareItem;
+        private ImageView refMap;
         private ImageView toggleFav;
 
         private View referenceTop;
@@ -337,8 +366,8 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
             navigatePrevious = itemView.findViewById(R.id.navigate_previous);
             navigateNext = itemView.findViewById(R.id.navigate_next);
 
-            refOptions = (ImageView) itemView.findViewById(R.id.action_options);
-
+            refShareItem = (ImageView) itemView.findViewById(R.id.action_share);
+            refMap = (ImageView) itemView.findViewById(R.id.reference_map);
             toggleFav = (ImageView) itemView.findViewById(R.id.action_favourite);
 
             referenceTop = itemView.findViewById(R.id.reference_top);

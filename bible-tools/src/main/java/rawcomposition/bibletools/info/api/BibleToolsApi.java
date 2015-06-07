@@ -1,9 +1,9 @@
 package rawcomposition.bibletools.info.api;
 
 import rawcomposition.bibletools.info.model.json.ReferencesResponse;
+import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Path;
-import retrofit.Callback;
 
 
 /**
