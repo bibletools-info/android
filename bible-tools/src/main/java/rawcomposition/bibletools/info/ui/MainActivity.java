@@ -35,14 +35,12 @@ import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.api.BibleToolsApi;
 import rawcomposition.bibletools.info.api.BibleToolsService;
 import rawcomposition.bibletools.info.custom.ClearAutoCompleteTextView;
-import rawcomposition.bibletools.info.custom.HidingScrollListener;
 import rawcomposition.bibletools.info.custom.SearchTextWatcher;
 import rawcomposition.bibletools.info.model.json.Reference;
 import rawcomposition.bibletools.info.model.json.ReferencesResponse;
 import rawcomposition.bibletools.info.ui.adapters.ReferenceListAdapter;
 import rawcomposition.bibletools.info.ui.callbacks.OnNavigationListener;
 import rawcomposition.bibletools.info.ui.callbacks.SearchQueryStripListener;
-import rawcomposition.bibletools.info.util.AnimUtil;
 import rawcomposition.bibletools.info.util.BibleQueryUtil;
 import rawcomposition.bibletools.info.util.CacheUtil;
 import rawcomposition.bibletools.info.util.DeviceUtil;
@@ -218,7 +216,7 @@ public class MainActivity extends BaseActivity implements
 
         int paddingTop = DeviceUtil.getToolbarHeight(this) + mRecycler.getPaddingTop();
         mRecycler.setPadding(mRecycler.getPaddingLeft(), paddingTop, mRecycler.getPaddingRight(), mRecycler.getPaddingBottom());
-        mRecycler.addOnScrollListener(new HidingScrollListener(this) {
+       /* mRecycler.addOnScrollListener(new HidingScrollListener(this) {
             @Override
             public void onMoved(int distance) {
                 mHeaderView.setTranslationY(-distance);
@@ -234,7 +232,7 @@ public class MainActivity extends BaseActivity implements
             public void onHide() {
                 AnimUtil.SlideUp(mHeaderView);
             }
-        });
+        });*/
 
         mProgress = (ProgressBar) findViewById(R.id.progress);
 
@@ -250,6 +248,7 @@ public class MainActivity extends BaseActivity implements
                 R.color.theme_accent
         );
         mSwipeToRefreshLayout.setOnRefreshListener(this);
+        mSwipeToRefreshLayout.setProgressViewOffset(true, 155, 205);
 
         Intent intent = getIntent();
         Uri data = intent.getData();
