@@ -152,9 +152,9 @@ public class SettingsActivity extends BaseActivity {
 
             if (preference.getKey().equals(getString(R.string.pref_theme_type))) {
 
-                getActivity().startActivity(
-                        new Intent(getActivity(),
-                                MainActivity.class));
+                Intent main = new Intent(getActivity(), MainActivity.class);
+                main.putExtra(MainActivity.ARG_THEME_CHANGED, true);
+                startActivity(main);
 
                 getActivity().finish();
 

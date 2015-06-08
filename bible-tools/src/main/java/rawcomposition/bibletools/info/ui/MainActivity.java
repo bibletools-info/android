@@ -1,5 +1,6 @@
 package rawcomposition.bibletools.info.ui;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -26,6 +27,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.actions.SearchIntents;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +61,7 @@ public class MainActivity extends BaseActivity implements
     private static final int REQUEST_CODE = 1234;
 
     private static final String TAG = MainActivity.class.getName();
+    public static final String ARG_THEME_CHANGED = "arg:theme_changed";
 
     private static final String VERSE_KEY = "verse";
     private ClearAutoCompleteTextView mSearchView;
@@ -110,6 +113,8 @@ public class MainActivity extends BaseActivity implements
         initSearchView();
 
         initRecyclerStuff();
+
+        getSearchIntentData();
 
         if (!PreferenceUtil.getValue(this, getString(R.string.pref_tut_shown), false)) {
             PreferenceUtil.updateValue(this, getString(R.string.pref_tut_shown), true);
@@ -216,23 +221,6 @@ public class MainActivity extends BaseActivity implements
 
         int paddingTop = DeviceUtil.getToolbarHeight(this) + mRecycler.getPaddingTop();
         mRecycler.setPadding(mRecycler.getPaddingLeft(), paddingTop, mRecycler.getPaddingRight(), mRecycler.getPaddingBottom());
-       /* mRecycler.addOnScrollListener(new HidingScrollListener(this) {
-            @Override
-            public void onMoved(int distance) {
-                mHeaderView.setTranslationY(-distance);
-            }
-
-            @Override
-            public void onShow() {
-
-                AnimUtil.slideDown(mHeaderView);
-            }
-
-            @Override
-            public void onHide() {
-                AnimUtil.SlideUp(mHeaderView);
-            }
-        });*/
 
         mProgress = (ProgressBar) findViewById(R.id.progress);
 
@@ -249,6 +237,18 @@ public class MainActivity extends BaseActivity implements
         );
         mSwipeToRefreshLayout.setOnRefreshListener(this);
         mSwipeToRefreshLayout.setProgressViewOffset(true, 155, 205);
+
+    }
+
+    private void getSearchIntentData(){
+
+        if (getIntent().getAction().equals(SearchIntents.ACTION_SEARCH)) {
+            String query = getIntent().getStringExtra(SearchManager.QUERY);
+            if (!TextUtils.isEmpty(query)) {
+                performQuery(query);
+                return;
+            }
+        }
 
         Intent intent = getIntent();
         Uri data = intent.getData();
@@ -267,7 +267,6 @@ public class MainActivity extends BaseActivity implements
         } else {
             performQuery(CacheUtil.getRecentReference(this));
         }
-
     }
 
     public void displayReferences(ReferencesResponse referencesResponse, boolean smoothScroll) {
@@ -385,37 +384,35 @@ public class MainActivity extends BaseActivity implements
             }
         }, 100);
 
+        BibleToolsService.getApi()
+                .deliverReferences(book, chapter, verse, new Callback<ReferencesResponse>() {
+                    @Override
+                    public void success(ReferencesResponse referencesResponse, Response response) {
 
-        BibleToolsApi api = BibleToolsService.getApi();
+                        mSwipeToRefreshLayout.setRefreshing(false);
 
-        api.deliverReferences(book, chapter, verse, new Callback<ReferencesResponse>() {
-            @Override
-            public void success(ReferencesResponse referencesResponse, Response response) {
+                        if (PreferenceUtil.getValue(MainActivity.this,
+                                getString(R.string.pref_key_cache),
+                                true)) {
 
-                mSwipeToRefreshLayout.setRefreshing(false);
+                            CacheUtil.save(MainActivity.this,
+                                    CacheUtil.getFileName(MainActivity.this, book, chapter, verse),
+                                    GSonUtil.getInstance().toJson(referencesResponse));
+                        }
 
-                if (PreferenceUtil.getValue(MainActivity.this,
-                        getString(R.string.pref_key_cache),
-                        true)) {
+                        displayReferences(referencesResponse, true);
+                    }
 
-                    CacheUtil.save(MainActivity.this,
-                            CacheUtil.getFileName(MainActivity.this, book, chapter, verse),
-                            GSonUtil.getInstance().toJson(referencesResponse));
-                }
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.d(TAG, error.getMessage());
 
-                displayReferences(referencesResponse, true);
-            }
+                        mProgress.setVisibility(View.GONE);
+                        mSwipeToRefreshLayout.setRefreshing(false);
 
-            @Override
-            public void failure(RetrofitError error) {
-                Log.d(TAG, error.getMessage());
-
-                mProgress.setVisibility(View.GONE);
-                mSwipeToRefreshLayout.setRefreshing(false);
-
-                showToast(getString(R.string.api_default_error));
-            }
-        });
+                        showToast(getString(R.string.api_default_error));
+                    }
+                });
 
 
     }
@@ -503,11 +500,16 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onBackPressed() {
-        Intent mainActivity = new Intent(Intent.ACTION_MAIN);
-        mainActivity.addCategory(Intent.CATEGORY_HOME);
-        mainActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(mainActivity);
-        finish();
+
+        if (getIntent().getBooleanExtra(ARG_THEME_CHANGED, false)) {
+            Intent mainActivity = new Intent(Intent.ACTION_MAIN);
+            mainActivity.addCategory(Intent.CATEGORY_HOME);
+            mainActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(mainActivity);
+            finish();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     public Realm getRealm() {
