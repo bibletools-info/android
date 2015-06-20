@@ -8,9 +8,9 @@ android {
     defaultConfig {
         applicationId "rawcomposition.bibletools.info"
         minSdkVersion 11
-        targetSdkVersion 21
-        versionCode 18
-        versionName "1.1.1"
+        targetSdkVersion 22
+        versionCode 19
+        versionName "1.1.2"
     }
     buildTypes {
         release {

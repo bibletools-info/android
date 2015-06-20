@@ -242,13 +242,16 @@ public class MainActivity extends BaseActivity implements
 
     private void getSearchIntentData(){
 
-        if (getIntent().getAction().equals(SearchIntents.ACTION_SEARCH)) {
-            String query = getIntent().getStringExtra(SearchManager.QUERY);
-            if (!TextUtils.isEmpty(query)) {
-                performQuery(query);
-                return;
+        if(getIntent().getAction() != null){
+            if (getIntent().getAction().equals(SearchIntents.ACTION_SEARCH)) {
+                String query = getIntent().getStringExtra(SearchManager.QUERY);
+                if (!TextUtils.isEmpty(query)) {
+                    performQuery(query);
+                    return;
+                }
             }
         }
+
 
         Intent intent = getIntent();
         Uri data = intent.getData();

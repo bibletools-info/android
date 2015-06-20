@@ -17,9 +17,9 @@
   -->
 <notices>
     <notice>
-        <name>Wasp</name>
-        <url>https://github.com/orhanobut/wasp</url>
-        <copyright>Copyright 2014 Orhan Obut</copyright>
+        <name>Retrofit</name>
+        <url>https://github.com/square/retrofit</url>
+        <copyright>Copyright 2013 Square, Inc.</copyright>
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
@@ -47,9 +47,15 @@
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
-        <name>SmoothProgressBar</name>
-        <url>https://github.com/castorflex/SmoothProgressBar</url>
-        <copyright>Copyright (C) 2014 Antoine Merle</copyright>
+        <name>PhotoView</name>
+        <url>https://github.com/chrisbanes/PhotoView</url>
+        <copyright>Copyright 2011, 2012 Chris Banes</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>Glide</name>
+        <url>https://github.com/bumptech/glide</url>
+        <!--<copyright>Copyright 2011, 2012 Chris Banes</copyright>-->
         <license>Apache Software License 2.0</license>
     </notice>
 
