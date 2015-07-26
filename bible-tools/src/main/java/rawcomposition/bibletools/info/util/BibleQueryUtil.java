@@ -127,13 +127,20 @@ public class BibleQueryUtil {
             return;
         }
 
-        String nums = query.replace(bookTitle, "");
+        String nums = query.replace(bookTitle, "").trim();
         if (nums.contains(":")) {
             arr = nums.split(":");
 
             int chapter = getNumber(arr[0]);
             int verse = getNumber(arr[1]);
 
+            listener.onSuccess(bookCode, chapter, verse);
+        } else if (nums.split(" ").length > 1) {
+
+            arr = nums.split(" ");
+
+            int chapter = getNumber(arr[0]);
+            int verse = getNumber(arr[1]);
             listener.onSuccess(bookCode, chapter, verse);
         } else {
             int chapter = getNumber(nums);

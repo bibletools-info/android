@@ -53,3 +53,13 @@
     **[] $VALUES;
     public *;
 }
+
+#To remove debug logs:
+-assumenosideeffects class android.util.Log {
+public static *** d(...);
+public static *** v(...);
+}
+
+#To keep line numbers for crash reports
+-renamesourcefileattribute SourceFile
+-keepattributes SourceFile, LineNumberTable

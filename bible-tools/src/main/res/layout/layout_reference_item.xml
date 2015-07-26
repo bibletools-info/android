@@ -54,7 +54,8 @@
             android:scaleType="centerInside"
             tools:src="@color/theme_accent"
             tools:visibility="visible"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:contentDescription="@string/blank"/>
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

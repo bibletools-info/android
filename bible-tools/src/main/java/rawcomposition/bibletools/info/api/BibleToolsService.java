@@ -17,7 +17,7 @@ public class BibleToolsService {
     private BibleToolsService() {
 
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setLogLevel(RestAdapter.LogLevel.BASIC)
                 .setEndpoint(END_POINT)
                 .setConverter(new GsonConverter(GSonUtil.getInstance()))
                 .build();

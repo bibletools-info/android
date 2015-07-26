@@ -106,7 +106,7 @@ public class MainActivity extends BaseActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mRealm = Realm.getInstance(this);
+        mRealm = Realm.getDefaultInstance();
 
         initDrawer();
 
@@ -280,12 +280,9 @@ public class MainActivity extends BaseActivity implements
         mAdapter.notifyDataSetChanged();
 
         if (smoothScroll) {
-            try {
-                mRecycler.smoothScrollToPosition(0);
-            } catch (UnsupportedOperationException uoe) {
-                Log.d(TAG, "Lies Lies lies");
-            }
 
+            RecyclerView.LayoutManager manager = mRecycler.getLayoutManager();
+            manager.smoothScrollToPosition(mRecycler, null, 0);
         }
     }
 
@@ -376,6 +373,8 @@ public class MainActivity extends BaseActivity implements
         }
 
         if (!DeviceUtil.isConnected(this)) {
+            mProgress.setVisibility(View.GONE);
+            mSwipeToRefreshLayout.setRefreshing(false);
             showToast(getString(R.string.error_no_connection));
             return;
         }
@@ -393,6 +392,13 @@ public class MainActivity extends BaseActivity implements
                     public void success(ReferencesResponse referencesResponse, Response response) {
 
                         mSwipeToRefreshLayout.setRefreshing(false);
+
+                        if (!referencesResponse.getResources().isEmpty() &&
+                                TextUtils.isEmpty(referencesResponse.getResources().get(0).getText())) {
+
+                            showToast(getString(R.string.api_default_error));
+                            return;
+                        }
 
                         if (PreferenceUtil.getValue(MainActivity.this,
                                 getString(R.string.pref_key_cache),
@@ -449,11 +455,9 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onScrollRequired(int position) {
-        try {
-            mRecycler.smoothScrollToPosition(position);
-        } catch (UnsupportedOperationException uoe) {
-            Log.d(TAG, "Lies Lies lies");
-        }
+
+        RecyclerView.LayoutManager manager = mRecycler.getLayoutManager();
+        manager.smoothScrollToPosition(mRecycler, null, position);
     }
 
 

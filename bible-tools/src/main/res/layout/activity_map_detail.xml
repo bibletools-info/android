@@ -9,12 +9,12 @@
     <ImageView
         android:id="@+id/fullscreen_image"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:keepScreenOn="true"
         android:textSize="50sp"
         android:layout_gravity="center"
         tools:src="#0099cc"
-        tools:layout_height="300dp"/>
+        android:contentDescription="@string/blank"/>
 
 
     <android.support.v7.widget.Toolbar

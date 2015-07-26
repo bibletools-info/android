@@ -3,6 +3,7 @@ package rawcomposition.bibletools.info.ui.adapters;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
@@ -99,7 +100,7 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
         if (position > mLastAnimatedPosition) {
             mLastAnimatedPosition = position;
 
-            AnimUtil.slideInEnterAnimation(context, holder.itemView);
+           AnimUtil.slideInEnterAnimation(context, holder.itemView);
         }
 
         final Reference reference = mReferences.get(position);
@@ -216,6 +217,10 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
                     }
                 });
 
+                if(!reference.isCollapsed()){
+                    content.setMaxLines(4);
+                }
+
             }else {
 
                 content.setVisibility(View.GONE);
@@ -264,14 +269,22 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
     }
 
-    private void toggleReferenceView(Reference reference, TextView content, int position) {
+    private void toggleReferenceView(Reference reference, TextView content, final int position) {
+        content.setEllipsize(null);
+        
         if (reference.isCollapsed()) {
-            content.setMaxLines(Integer.MAX_VALUE);
-            reference.setCollapsed(false);
-        } else {
             content.setMaxLines(4);
+            reference.setCollapsed(false);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mListener.onScrollRequired(position);
+                }
+            }, 500);
+
+        } else {
+            content.setMaxLines(Integer.MAX_VALUE);
             reference.setCollapsed(true);
-            mListener.onScrollRequired(position);
         }
     }
 
@@ -288,6 +301,10 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
         final String subject = mReferences.get(0).getTitle()
                 + " - " + item.getTitle();
+
+        /*Maybe expose this method
+        If shared on Facebook, people can be linked to the web app;
+        String link = mReferences.get(0).getLink();*/
 
         final CharSequence text = Html.fromHtml(item.getContent());
 

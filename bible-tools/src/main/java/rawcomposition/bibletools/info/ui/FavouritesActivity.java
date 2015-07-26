@@ -29,7 +29,7 @@ public class FavouritesActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mRealm = Realm.getInstance(this);
+        mRealm = Realm.getDefaultInstance();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()

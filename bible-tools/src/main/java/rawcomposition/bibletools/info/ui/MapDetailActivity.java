@@ -35,10 +35,6 @@ public class MapDetailActivity extends AppCompatActivity {
         if (mToolbar != null) {
             try {
 
-                ViewCompat.setTranslationZ(mToolbar, getResources().getDimension(R.dimen.toolbar_elevation));
-                ViewCompat.setElevation(mToolbar, getResources().getDimension(R.dimen.toolbar_elevation));
-
-
                 setSupportActionBar(mToolbar);
 
                 if (getSupportActionBar() != null)
@@ -50,8 +46,8 @@ public class MapDetailActivity extends AppCompatActivity {
         }
         setTitle("");
 
-        if(getIntent().getExtras() != null){
-            ReferenceMap map = (ReferenceMap)getIntent().getSerializableExtra(MAP_OBJ);
+        if (getIntent().getExtras() != null) {
+            ReferenceMap map = (ReferenceMap) getIntent().getSerializableExtra(MAP_OBJ);
             ImageView imageView = (ImageView) findViewById(R.id.fullscreen_image);
             ViewCompat.setTransitionName(imageView, EXTRA_IMAGE);
 

@@ -27,7 +27,7 @@ public class Reference extends JSONModel {
     @SerializedName("filename")
     private String fileName;
 
-    private boolean isCollapsed = true;
+    private boolean isCollapsed = false;
 
     public String getTitle() {
         return title;

@@ -1,11 +1,11 @@
 package rawcomposition.bibletools.info.util;
 
 import android.content.Context;
-import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 
-import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 
 /**
@@ -23,19 +23,12 @@ public class AnimUtil {
      * @param view
      */
     public static void slideInEnterAnimation(Context context, View view) {
-        DisplayMetrics display = context.getResources().getDisplayMetrics();
-        int screenHeight = display.heightPixels;
 
-        ViewHelper.setTranslationY(view, screenHeight);
-        ViewPropertyAnimator
-                .animate(view)
-                .translationY(0)
-                .setDuration(700)
-                .setInterpolator(new DecelerateInterpolator(3f))
-                .start();
+        Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
+        view.startAnimation(animation);
     }
 
-    public static void SlideUp(View view){
+    public static void SlideUp(View view) {
         ViewPropertyAnimator.animate(view)
                 .translationY(0)
                 .alpha(1)
@@ -43,7 +36,7 @@ public class AnimUtil {
                 .setInterpolator(new DecelerateInterpolator());
     }
 
-    public static void slideDown(View view){
+    public static void slideDown(View view) {
         ViewPropertyAnimator.animate(view)
                 .translationY(-view.getBottom())
                 .alpha(0)
