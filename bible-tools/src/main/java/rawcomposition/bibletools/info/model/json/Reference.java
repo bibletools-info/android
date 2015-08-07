@@ -27,6 +27,9 @@ public class Reference extends JSONModel {
     @SerializedName("filename")
     private String fileName;
 
+    @SerializedName("link")
+    private String link;
+
     private boolean isCollapsed = false;
 
     public String getTitle() {
@@ -83,5 +86,13 @@ public class Reference extends JSONModel {
 
     public void setCollapsed(boolean isCollapsed) {
         this.isCollapsed = isCollapsed;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 }

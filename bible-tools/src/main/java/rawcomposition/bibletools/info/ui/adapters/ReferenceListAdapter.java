@@ -299,14 +299,13 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
             ThemeUtil.tintDrawable(imageView.getDrawable(), Color.WHITE);
         }
 
-        final String subject = mReferences.get(0).getTitle()
+        Reference first = mReferences.get(0);
+
+        final String subject = first.getTitle()
                 + " - " + item.getTitle();
 
-        /*Maybe expose this method
-        If shared on Facebook, people can be linked to the web app;
-        String link = mReferences.get(0).getLink();*/
-
-        final CharSequence text = Html.fromHtml(item.getContent());
+        final CharSequence text = TextUtils.isEmpty(first.getLink()) ? Html.fromHtml(item.getContent())
+                : Html.fromHtml(item.getContent()) + "\n" + first.getLink();
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
