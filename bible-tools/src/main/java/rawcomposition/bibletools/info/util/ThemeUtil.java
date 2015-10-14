@@ -2,7 +2,6 @@ package rawcomposition.bibletools.info.util;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -23,7 +22,7 @@ public class ThemeUtil {
 
         if (isDarkTheme(activity)) {
             activity.setTheme(settings ? R.style.Theme_Dark_Settings : R.style.Theme_Dark);
-            activity.getWindow().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+            activity.getWindow().setBackgroundDrawable(new ColorDrawable(getBackgroundColor(activity)));
         }
 
     }
@@ -42,6 +41,16 @@ public class ThemeUtil {
 
             return hour > 19;
         }
+    }
+
+    public static int getBackgroundColor(Context context) {
+
+        if (isDarkTheme(context)) {
+            return context.getResources().getColor(R.color.dark_window_background);
+        } else {
+            return context.getResources().getColor(R.color.window_background);
+        }
+
     }
 
 

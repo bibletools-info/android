@@ -1,6 +1,7 @@
 package rawcomposition.bibletools.info.ui.adapters;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Handler;
@@ -26,6 +27,7 @@ import rawcomposition.bibletools.info.model.ReferenceMap;
 import rawcomposition.bibletools.info.model.json.Reference;
 import rawcomposition.bibletools.info.ui.MainActivity;
 import rawcomposition.bibletools.info.ui.MapDetailActivity;
+import rawcomposition.bibletools.info.ui.ReferenceActivity;
 import rawcomposition.bibletools.info.ui.callbacks.OnNavigationListener;
 import rawcomposition.bibletools.info.util.AnimUtil;
 import rawcomposition.bibletools.info.util.FavouritesUtil;
@@ -143,7 +145,12 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
         final TextView content = holder.content;
 
         if (position == TITLE) {
-            holder.itemView.setClickable(false);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    context.startActivity(new Intent(context, ReferenceActivity.class));
+                }
+            });
 
             content.setText(reference.getText());
             content.setMaxLines(Integer.MAX_VALUE);

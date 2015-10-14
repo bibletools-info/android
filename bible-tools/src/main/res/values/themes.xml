@@ -6,6 +6,8 @@
     <style name="BaseTheme" />
 
     <style name="BaseTheme.Light" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/window_background</item>
+
         <item name="colorPrimary">@color/theme_primary</item>
         <item name="colorPrimaryDark">@color/theme_primary_dark</item>
         <item name="colorAccent">@color/theme_accent</item>
@@ -32,9 +34,12 @@
         <item name="md_dark_theme">false</item>
         <item name="md_item_color">@color/primary_material_dark</item>
 
+        <item name="cardStyle">@style/Widget.CardView.Light</item>
     </style>
 
     <style name="BaseTheme.Dark" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@color/dark_window_background</item>
+
         <item name="colorPrimary">@color/theme_primary</item>
         <item name="colorPrimaryDark">@color/theme_primary_dark</item>
         <item name="colorAccent">@color/theme_accent</item>
@@ -60,6 +65,8 @@
         <item name="md_negative_color">@android:color/white</item>
         <item name="md_item_color">@android:color/white</item>
         <item name="md_dark_theme">true</item>
+
+        <item name="cardStyle">@style/Widget.CardView.Dark</item>
     </style>
 
 
@@ -76,5 +83,10 @@
     </style>
 
 
-
+    <style name="Theme.Light.Reference">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
 </resources>

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.support.v4.app.NavUtils;
 
 import de.psdev.licensesdialog.LicensesDialog;
 import rawcomposition.bibletools.info.BuildConfig;
@@ -12,8 +13,6 @@ import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.util.PreferenceUtil;
 
 public class SettingsActivity extends BaseActivity {
-
-    private boolean mSettingChanged = false;
 
     @Override
     protected int getLayoutResource() {
@@ -36,18 +35,10 @@ public class SettingsActivity extends BaseActivity {
         return true;
     }
 
-    public void setSettingChanged(boolean mSettingChanged) {
-        this.mSettingChanged = mSettingChanged;
-    }
 
     @Override
     public void onBackPressed() {
-        if (mSettingChanged) {
-            startAnActivity(new Intent(this, MainActivity.class));
-            finish();
-        }
-
-        super.onBackPressed();
+        NavUtils.navigateUpFromSameTask(this);
 
     }
 
@@ -152,17 +143,13 @@ public class SettingsActivity extends BaseActivity {
 
             if (preference.getKey().equals(getString(R.string.pref_theme_type))) {
 
-                Intent main = new Intent(getActivity(), MainActivity.class);
-                main.putExtra(MainActivity.ARG_THEME_CHANGED, true);
-                startActivity(main);
-
-                getActivity().finish();
+                getActivity().recreate();
 
                 return true;
             } else if (preference.getKey().equals(getString(R.string.pref_font_weight))) {
 
-                ((SettingsActivity) getActivity())
-                        .setSettingChanged(true);
+               // ((SettingsActivity) getActivity())
+                        //.setSettingChanged(true);
 
                 return true;
             }

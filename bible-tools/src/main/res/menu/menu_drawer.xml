@@ -18,27 +18,26 @@
             android:title="@string/title_history"/>
     </group>
 
-    <item
-        android:title="@string/blank">
+    <group
+        android:checkableBehavior="none"
+        android:id="@+id/non_check">
 
-        <menu>
-            <item
-                android:id="@+id/action_settings"
-                android:title="@string/action_settings"/>
+        <item
+            android:id="@+id/action_settings"
+            android:title="@string/action_settings"/>
 
-            <item
-                android:id="@+id/action_feedback"
-                android:title="@string/action_send_feedback"/>
+        <item
+            android:id="@+id/action_feedback"
+            android:title="@string/action_send_feedback"/>
 
-            <item
-                android:id="@+id/action_help"
-                android:title="@string/title_help"/>
+        <item
+            android:id="@+id/action_help"
+            android:title="@string/title_help"/>
 
-            <item
-                android:id="@+id/action_donate"
-                android:title="@string/action_donate"/>
-        </menu>
+        <item
+            android:id="@+id/action_donate"
+            android:title="@string/action_donate"/>
 
-    </item>
+    </group>
 
 </menu>
