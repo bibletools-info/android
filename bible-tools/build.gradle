@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "rawcomposition.bibletools.info"
-        minSdkVersion 11
+        minSdkVersion 14
         targetSdkVersion 22
         versionCode 21
         versionName "1.1.4"
@@ -47,4 +47,5 @@ dependencies {
     compile 'com.github.chrisbanes.photoview:library:1.2.3'
     compile 'de.psdev.licensesdialog:licensesdialog:1.7.0'
     compile 'com.sothree.slidinguppanel:library:3.2.0'
+    compile 'org.cryse.widget:persistentsearchview:1.0.3@aar'
 }

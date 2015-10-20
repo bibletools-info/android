@@ -1,12 +1,33 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <org.cryse.widget.persistentsearch.PersistentSearchView
+            android:id="@+id/searchview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:persistentSV_customToolbarHeight="64dp"
+            app:persistentSV_displayMode="toolbar"
+            app:persistentSV_editHintText="Search"
+            app:persistentSV_editTextColor="?android:textColorPrimary"
+            app:persistentSV_homeButtonMode="burger"
+            app:persistentSV_searchCardElevation="2dp"
+            app:persistentSV_searchTextColor="?android:textColorPrimary" />
+    </android.support.design.widget.AppBarLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_to_refresh"
@@ -34,9 +55,5 @@
 
     </FrameLayout>
 
-    <include
-        android:id="@+id/header"
-        layout="@layout/search_view"
-        tools:visibility="gone" />
 
-</FrameLayout>
+</android.support.design.widget.CoordinatorLayout>

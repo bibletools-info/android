@@ -16,28 +16,29 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.actions.SearchIntents;
 
+import org.cryse.widget.persistentsearch.DefaultVoiceRecognizerDelegate;
+import org.cryse.widget.persistentsearch.PersistentSearchView;
+import org.cryse.widget.persistentsearch.SearchItem;
+import org.cryse.widget.persistentsearch.SearchSuggestionsBuilder;
+import org.cryse.widget.persistentsearch.VoiceRecognitionDelegate;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import io.realm.Realm;
 import rawcomposition.bibletools.info.R;
-import rawcomposition.bibletools.info.api.BibleToolsApi;
 import rawcomposition.bibletools.info.api.BibleToolsService;
-import rawcomposition.bibletools.info.custom.ClearAutoCompleteTextView;
-import rawcomposition.bibletools.info.custom.SearchTextWatcher;
+import rawcomposition.bibletools.info.custom.CustomSearchListener;
+import rawcomposition.bibletools.info.custom.VerseSuggestionBuilder;
 import rawcomposition.bibletools.info.model.json.Reference;
 import rawcomposition.bibletools.info.model.json.ReferencesResponse;
 import rawcomposition.bibletools.info.ui.adapters.ReferenceListAdapter;
@@ -58,13 +59,14 @@ import retrofit.client.Response;
 public class MainActivity extends BaseActivity implements
         OnNavigationListener, SwipeRefreshLayout.OnRefreshListener {
 
-    private static final int REQUEST_CODE = 1234;
+    private static final int VOICE_RECOGNITION_REQUEST_CODE = 1234;
 
     private static final String TAG = MainActivity.class.getName();
     public static final String ARG_THEME_CHANGED = "arg:theme_changed";
 
     private static final String VERSE_KEY = "verse";
-    private ClearAutoCompleteTextView mSearchView;
+    private PersistentSearchView mSearchView;
+    private VerseSuggestionBuilder mSearchAdapter;
     private ReferenceListAdapter mAdapter;
     private ProgressBar mProgress;
     private SwipeRefreshLayout mSwipeToRefreshLayout;
@@ -72,30 +74,6 @@ public class MainActivity extends BaseActivity implements
     private RecyclerView mRecycler;
     private Realm mRealm;
     private DrawerLayout mDrawerLayout;
-
-    private View.OnTouchListener mVoiceListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-
-            if (mSearchView.getCompoundDrawables()[2] == null)
-                return false;
-
-            if (event.getAction() != MotionEvent.ACTION_UP)
-                return false;
-
-            if (event.getX() > mSearchView.getWidth() - mSearchView.getPaddingRight() - mSearchView.getVoiceBtn().getIntrinsicWidth()) {
-                startVoiceRecognitionActivity();
-            }
-            return false;
-        }
-    };
-    private View.OnClickListener mDrawerToggleListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            KeyBoardUtil.hideKeyboard(MainActivity.this, mSearchView);
-            mDrawerLayout.openDrawer(GravityCompat.START);
-        }
-    };
 
     @Override
     protected int getLayoutResource() {
@@ -168,45 +146,41 @@ public class MainActivity extends BaseActivity implements
 
     private void initSearchView() {
 
-        mSearchView = (ClearAutoCompleteTextView) findViewById(R.id.searchView);
-        mSearchView.showVoiceButton(mVoiceListener);
-        mSearchView.setVoiceTouchListener(mVoiceListener);
-        ImageView imageView = (ImageView) findViewById(R.id.drawerToggle);
-        imageView.setOnClickListener(mDrawerToggleListener);
-        //change drawable colors if needed
-        if (ThemeUtil.isDarkTheme(this)) {
-            ThemeUtil.tintDrawable(imageView.getDrawable(), Color.WHITE);
+        mSearchView = (PersistentSearchView) findViewById(R.id.searchview);
+        mSearchView.setLogoTextColor(Color.RED);
+        VoiceRecognitionDelegate delegate = new DefaultVoiceRecognizerDelegate(this, VOICE_RECOGNITION_REQUEST_CODE);
+        if (delegate.isVoiceRecognitionAvailable()) {
+            mSearchView.setVoiceRecognitionDelegate(delegate);
         }
 
-        mSearchView.addTextChangedListener(new SearchTextWatcher(mSearchView, imageView, mDrawerToggleListener));
-
-
-        mSearchView.setAdapter(new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
-                BibleQueryUtil.getAllQueries(this)));
-
-
-        mSearchView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mSearchView.setHomeButtonListener(new PersistentSearchView.HomeButtonListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    KeyBoardUtil.hideKeyboard(MainActivity.this, mSearchView);
-
-                    if (!TextUtils.isEmpty(mSearchView.getText())) {
-                        performQuery(mSearchView.getText().toString().trim());
-                    }
-                }
-                return false;
+            public void onHomeButtonClick() {
+                mDrawerLayout.openDrawer(GravityCompat.START);
             }
         });
+
+        mSearchView.setSearchListener(new CustomSearchListener() {
+            @Override
+            public void onSearch(String query) {
+                if (!TextUtils.isEmpty(query)) {
+                    performQuery(query);
+                }
+
+                mSearchAdapter.refreshSearchHistory();
+            }
+
+            @Override
+            public void onSearchEditClosed() {
+                mSearchAdapter.refreshSearchHistory();
+            }
+        });
+        mSearchAdapter = new VerseSuggestionBuilder(this);
+        mSearchView.setSuggestionBuilder(mSearchAdapter);
 
     }
 
     private void initRecyclerStuff() {
-        mHeaderView = findViewById(R.id.header);
 
         mRecycler = (RecyclerView) findViewById(R.id.recycler);
 
@@ -218,9 +192,6 @@ public class MainActivity extends BaseActivity implements
         } else {
             mRecycler.setLayoutManager(new LinearLayoutManager(this));
         }
-
-        int paddingTop = DeviceUtil.getToolbarHeight(this) + mRecycler.getPaddingTop();
-        mRecycler.setPadding(mRecycler.getPaddingLeft(), paddingTop, mRecycler.getPaddingRight(), mRecycler.getPaddingBottom());
 
         mProgress = (ProgressBar) findViewById(R.id.progress);
 
@@ -236,13 +207,12 @@ public class MainActivity extends BaseActivity implements
                 R.color.theme_accent
         );
         mSwipeToRefreshLayout.setOnRefreshListener(this);
-        mSwipeToRefreshLayout.setProgressViewOffset(true, 155, 205);
 
     }
 
-    private void getSearchIntentData(){
+    private void getSearchIntentData() {
 
-        if(getIntent().getAction() != null){
+        if (getIntent().getAction() != null) {
             if (getIntent().getAction().equals(SearchIntents.ACTION_SEARCH)) {
                 String query = getIntent().getStringExtra(SearchManager.QUERY);
                 if (!TextUtils.isEmpty(query)) {
@@ -286,21 +256,6 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-    /**
-     * Fire an intent to start the voice recognition activity.
-     */
-    private void startVoiceRecognitionActivity() {
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Listening...");
-
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(intent, REQUEST_CODE);
-        } else {
-            showToast("Speech not supported");
-        }
-    }
 
     /**
      * Handle the results from the voice recognition activity.
@@ -309,31 +264,29 @@ public class MainActivity extends BaseActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+        if (requestCode == VOICE_RECOGNITION_REQUEST_CODE && resultCode == RESULT_OK) {
 
             ArrayList<String> matches = data.getStringArrayListExtra(
                     RecognizerIntent.EXTRA_RESULTS);
 
             if (!matches.isEmpty()) {
-                boolean matched = false;
+                ArrayList<String> verseMatches = new ArrayList<>();
 
                 for (String item : matches) {
                     for (String book : getResources().getStringArray(R.array.bible_books_full)) {
                         if (book.toLowerCase().contains(item.toLowerCase())) {
-                            matched = true;
 
-                            mSearchView.setText(book);
-                            mSearchView.setSelection(mSearchView.getText().toString().length());
-
-                            break;
+                            verseMatches.add(book);
                         }
                     }
                 }
 
-                if (!matched) {
-                    mSearchView.setText(matches.get(0));
-                    mSearchView.setSelection(mSearchView.getText().toString().length());
+                if (verseMatches.isEmpty()) {
+                    mSearchView.populateEditText(matches);
+                } else {
+                    mSearchView.populateEditText(verseMatches);
                 }
+
 
             }
 
