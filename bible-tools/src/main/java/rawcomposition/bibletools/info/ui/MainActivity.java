@@ -2,7 +2,7 @@ package rawcomposition.bibletools.info.ui;
 
 import android.app.SearchManager;
 import android.content.Intent;
-import android.graphics.Color;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -26,12 +26,9 @@ import com.google.android.gms.actions.SearchIntents;
 
 import org.cryse.widget.persistentsearch.DefaultVoiceRecognizerDelegate;
 import org.cryse.widget.persistentsearch.PersistentSearchView;
-import org.cryse.widget.persistentsearch.SearchItem;
-import org.cryse.widget.persistentsearch.SearchSuggestionsBuilder;
 import org.cryse.widget.persistentsearch.VoiceRecognitionDelegate;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import io.realm.Realm;
@@ -48,10 +45,8 @@ import rawcomposition.bibletools.info.util.BibleQueryUtil;
 import rawcomposition.bibletools.info.util.CacheUtil;
 import rawcomposition.bibletools.info.util.DeviceUtil;
 import rawcomposition.bibletools.info.util.GSonUtil;
-import rawcomposition.bibletools.info.util.KeyBoardUtil;
 import rawcomposition.bibletools.info.util.PreferenceUtil;
 import rawcomposition.bibletools.info.util.TextViewUtil;
-import rawcomposition.bibletools.info.util.ThemeUtil;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -62,7 +57,6 @@ public class MainActivity extends BaseActivity implements
     private static final int VOICE_RECOGNITION_REQUEST_CODE = 1234;
 
     private static final String TAG = MainActivity.class.getName();
-    public static final String ARG_THEME_CHANGED = "arg:theme_changed";
 
     private static final String VERSE_KEY = "verse";
     private PersistentSearchView mSearchView;
@@ -83,6 +77,8 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        DataBindingUtil.setContentView(this, getLayoutResource());
 
         mRealm = Realm.getDefaultInstance();
 
@@ -116,9 +112,6 @@ public class MainActivity extends BaseActivity implements
                         case R.id.nav_fav:
                             startAnActivity(new Intent(MainActivity.this, FavouritesActivity.class));
                             break;
-                        case R.id.nav_history:
-                            showHistoryDialog(CacheUtil.getCachedReferences(MainActivity.this));
-                            break;
                         case R.id.action_settings:
                             startAnActivity(new Intent(MainActivity.this, SettingsActivity.class));
                             break;
@@ -147,7 +140,6 @@ public class MainActivity extends BaseActivity implements
     private void initSearchView() {
 
         mSearchView = (PersistentSearchView) findViewById(R.id.searchview);
-        mSearchView.setLogoTextColor(Color.RED);
         VoiceRecognitionDelegate delegate = new DefaultVoiceRecognizerDelegate(this, VOICE_RECOGNITION_REQUEST_CODE);
         if (delegate.isVoiceRecognitionAvailable()) {
             mSearchView.setVoiceRecognitionDelegate(delegate);
@@ -164,10 +156,16 @@ public class MainActivity extends BaseActivity implements
             @Override
             public void onSearch(String query) {
                 if (!TextUtils.isEmpty(query)) {
-                    performQuery(query);
+                    if (query.contains(":")) {
+                        performQuery(query);
+                        mSearchAdapter.refreshSearchHistory();
+                    } else {
+
+                        mSearchView.setSearchString(query, true);
+                    }
+
                 }
 
-                mSearchAdapter.refreshSearchHistory();
             }
 
             @Override
@@ -386,7 +384,6 @@ public class MainActivity extends BaseActivity implements
         int[] arr = BibleQueryUtil.stripRequest(text);
 
         if (arr.length == 3) {
-            KeyBoardUtil.hideKeyboard(this, mSearchView);
             performRequest(arr[0], arr[1], arr[2]);
         }
     }
@@ -396,7 +393,6 @@ public class MainActivity extends BaseActivity implements
         int[] arr = BibleQueryUtil.stripRequest(text);
 
         if (arr.length == 3) {
-            KeyBoardUtil.hideKeyboard(this, mSearchView);
             performRequest(arr[0], arr[1], arr[2]);
         }
     }
@@ -414,34 +410,6 @@ public class MainActivity extends BaseActivity implements
     }
 
 
-    private void showHistoryDialog(List<String> history) {
-
-        int max = Integer.valueOf(PreferenceUtil.getValue(this,
-                getString(R.string.pref_key_history_entries),
-                "10"));
-
-        if (history.size() > max) {
-            history = history.subList(0, max);
-        }
-
-        final List<String> list = history;
-
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(this);
-        builder.title(R.string.title_history)
-                .iconRes(ThemeUtil.isDarkTheme(this) ? R.drawable.ic_history_color : R.drawable.ic_history_grey)
-                .items(list.toArray(new String[list.size()]))
-                .itemsCallback(new MaterialDialog.ListCallback() {
-                    @Override
-                    public void onSelection(MaterialDialog materialDialog, View view, int position, CharSequence charSequence) {
-
-                        performQuery(list.get(position));
-                    }
-                })
-                .positiveText(R.string.action_cancel)
-                .show();
-    }
-
-
     private void showHowItWorks() {
         new MaterialDialog.Builder(this)
                 .title(R.string.title_how_it_works)
@@ -456,20 +424,6 @@ public class MainActivity extends BaseActivity implements
             mRealm.close();
         }
         super.onDestroy();
-    }
-
-    @Override
-    public void onBackPressed() {
-
-        if (getIntent().getBooleanExtra(ARG_THEME_CHANGED, false)) {
-            Intent mainActivity = new Intent(Intent.ACTION_MAIN);
-            mainActivity.addCategory(Intent.CATEGORY_HOME);
-            mainActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(mainActivity);
-            finish();
-        } else {
-            super.onBackPressed();
-        }
     }
 
     public Realm getRealm() {

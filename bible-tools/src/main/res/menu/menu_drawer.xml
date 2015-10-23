@@ -12,10 +12,6 @@
             android:icon="@drawable/ic_favorite_grey"
             android:title="@string/title_favourites"/>
 
-        <item
-            android:id="@+id/nav_history"
-            android:icon="@drawable/ic_history_grey"
-            android:title="@string/title_history"/>
     </group>
 
     <group

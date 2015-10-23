@@ -3,9 +3,9 @@ package rawcomposition.bibletools.info.ui;
 import android.annotation.TargetApi;
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.internal.VersionUtils;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +17,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import rawcomposition.bibletools.info.BuildConfig;
 import rawcomposition.bibletools.info.R;
+import rawcomposition.bibletools.info.util.FontCache;
 import rawcomposition.bibletools.info.util.ThemeUtil;
 import rawcomposition.bibletools.info.util.ToastUtil;
 import rawcomposition.bibletools.info.util.billing.IabHelper;
@@ -33,7 +34,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     static final int RC_REQUEST = 10001;
     private static final String TAG = BaseActivity.class.getName();
     protected Toolbar mToolbar;
-    protected View mHeaderView;
     // The helper object
     private IabHelper mHelper;
 
@@ -88,24 +88,18 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         ThemeUtil.setAppTheme(this, isSettings());
 
+        FontCache.getInstance().addFont("light", "Lato-Light.ttf");
+        FontCache.getInstance().addFont("medium", "Lato-Medium.ttf");
+        FontCache.getInstance().addFont("regular", "Lato-Regular.ttf");
+
         setContentView(getLayoutResource());
 
         mToolbar = (Toolbar) findViewById(R.id.app_action_bar);
-        mHeaderView = findViewById(R.id.header_view);
         if (mToolbar != null) {
-            try {
+            setSupportActionBar(mToolbar);
 
-                if (mHeaderView != null) {
-                    ViewCompat.setTranslationZ(mHeaderView, getResources().getDimension(R.dimen.toolbar_elevation));
-                    ViewCompat.setElevation(mHeaderView, getResources().getDimension(R.dimen.toolbar_elevation));
-                }
-
-
-                setSupportActionBar(mToolbar);
-
+            if (getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            } catch (Throwable ex) {
-                //
             }
 
         }

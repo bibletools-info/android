@@ -302,10 +302,6 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
     private void setOptionsListener(final ImageView imageView, final Reference item) {
 
-        if (ThemeUtil.isDarkTheme(context)) {
-            ThemeUtil.tintDrawable(imageView.getDrawable(), Color.WHITE);
-        }
-
         Reference first = mReferences.get(0);
 
         final String subject = first.getTitle()

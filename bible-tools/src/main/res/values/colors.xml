@@ -21,10 +21,6 @@
     <color name="dark_window_background">#303030</color>
     <color name="dark_card_background">#424242</color>
 
-
-    <color name="screen_background_holo_light">#fff3f3f3</color>
-    <color name="screen_background_holo_dark">#ff000000</color>
-
     <integer-array name="progress_colors">
         <item>@color/theme_primary</item>
         <item>@color/theme_accent</item>
