@@ -28,7 +28,7 @@
 
             <ImageView
                 android:id="@+id/action_share"
-                style="@style/selectableItem"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/blank"
@@ -45,7 +45,9 @@
             style="@style/referenceText"
             android:autoLink="none"
             android:clickable="true"
-            tools:visibility="gone"
+            android:scrollHorizontally="false"
+            android:overScrollMode="never"
+            android:singleLine="false"
             tools:text="1. Now. From the Hebrew particle we, which is more commonly translated “and.” This is the first instance of its use at the beginning of a book. All but four of the historical books of the" />
 
         <ImageView

@@ -97,44 +97,51 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void initDrawer() {
-        TextView textView = (TextView) findViewById(R.id.app_title);
-        TextViewUtil.setCustomFontTitle(this, textView);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        if (navigationView != null) {
-            navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(MenuItem menuItem) {
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                navigationView.removeOnLayoutChangeListener(this);
 
-                    switch (menuItem.getItemId()) {
-                        case R.id.nav_fav:
-                            startAnActivity(new Intent(MainActivity.this, FavouritesActivity.class));
-                            break;
-                        case R.id.action_settings:
-                            startAnActivity(new Intent(MainActivity.this, SettingsActivity.class));
-                            break;
-                        case R.id.action_feedback:
-                            sendFeedBack();
-                            break;
-                        case R.id.action_help:
-                            showHelp();
-                            break;
-                        case R.id.action_donate:
-                            onDonateButtonClicked();
-                            break;
-                    }
+                TextView textView = (TextView) findViewById(R.id.app_title);
+                TextViewUtil.setCustomFontTitle(MainActivity.this, textView);
+            }
+        });
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
 
-                    mDrawerLayout.closeDrawers();
-                    return true;
+                switch (menuItem.getItemId()) {
+                    case R.id.nav_fav:
+                        startActivity(new Intent(MainActivity.this, FavouritesActivity.class));
+                        break;
+                    case R.id.action_settings:
+                        startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                        break;
+                    case R.id.action_feedback:
+                        sendFeedBack();
+                        break;
+                    case R.id.action_help:
+                        showHelp();
+                        break;
+                    case R.id.action_donate:
+                        onDonateButtonClicked();
+                        break;
                 }
-            });
 
-            //Only Home is checked
-            navigationView.getMenu().findItem(R.id.nam_home)
-                    .setChecked(true);
-        }
+                mDrawerLayout.closeDrawers();
+                return true;
+            }
+        });
+
+        //Only Home is checked
+        navigationView.getMenu().findItem(R.id.nam_home)
+                .setChecked(true);
+
+
     }
 
     private void initSearchView() {

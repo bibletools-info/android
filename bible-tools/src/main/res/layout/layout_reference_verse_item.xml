@@ -32,17 +32,26 @@
 
                 <ImageView
                     android:id="@+id/action_favourite"
-                    style="@style/selectableItem.verseNavigation"
+                    style="@style/verseNavigation"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/blank"
+                    android:layout_margin="@dimen/margin_tiny"
                     android:src="@drawable/ic_favorite_outline" />
 
                 <ImageView
                     android:id="@+id/navigate_previous"
-                    style="@style/selectableItem.verseNavigation"
+                    style="@style/verseNavigation"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/blank"
+                    android:layout_margin="@dimen/margin_tiny"
                     android:src="@drawable/ic_chevron_left_white" />
 
                 <ImageView
                     android:id="@+id/navigate_next"
-                    style="@style/selectableItem.verseNavigation"
+                    style="@style/verseNavigation"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/blank"
+                    android:layout_margin="@dimen/margin_tiny"
                     android:src="@drawable/ic_chevron_right_white" />
 
             </LinearLayout>

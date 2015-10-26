@@ -71,12 +71,8 @@
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="selectableItem">
-        <item name="android:background">@drawable/selectable_item_background</item>
-        <item name="android:clickable">true</item>
-    </style>
 
-    <style name="selectableItem.verseNavigation">
+    <style name="verseNavigation">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
@@ -116,5 +112,9 @@
     <!-- Backward-compatible version of ?android:attr/buttonBarButtonStyle -->
     <style name="ButtonBarButton" />
 
-
+    <style name="Widget.SearchView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="persistentSV_logoDrawable">@drawable/logo</item>
+    </style>
 </resources>

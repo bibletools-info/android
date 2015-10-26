@@ -26,8 +26,6 @@
         <item name="searchViewStyle">@style/Widget.AppTheme.SearchView</item>
         <item name="actionBarIconColor">@android:color/white</item>
 
-        <item name="selectableItemBackground">@drawable/selectable_item_background</item>
-
         <item name="md_positive_color">@color/theme_primary</item>
         <item name="md_neutral_color">@color/theme_primary</item>
         <item name="md_negative_color">@color/theme_primary</item>
@@ -58,8 +56,6 @@
         <item name="searchViewStyle">@style/Widget.AppTheme.SearchView</item>
         <item name="actionBarIconColor">@android:color/white</item>
 
-        <item name="selectableItemBackground">@drawable/selectable_item_background</item>
-
         <item name="md_positive_color">@android:color/white</item>
         <item name="md_neutral_color">@android:color/white</item>
         <item name="md_negative_color">@android:color/white</item>
@@ -80,6 +76,10 @@
 
     <style name="Theme.Dark.Settings">
         <item name="colorAccent">@color/theme_primary</item>
+    </style>
+
+    <style name="Theme.Light.Launcher">
+        <item name="android:windowBackground">@drawable/launcher_back</item>
     </style>
 
 

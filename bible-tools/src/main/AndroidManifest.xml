@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="rawcomposition.bibletools.info" >
+    package="rawcomposition.bibletools.info">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
+        android:name=".BibleToolsApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Light"
-        android:name=".BibleToolsApp">
+        android:theme="@style/Theme.Light">
+
         <activity
-            android:name=".ui.MainActivity"
-            android:label="@string/app_name" >
+            android:name=".ui.AppLauncherActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Light.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".ui.MainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -31,15 +36,15 @@
                     android:scheme="@string/app_scheme" />
             </intent-filter>
             <intent-filter>
-                <action android:name="com.google.android.gms.actions.SEARCH_ACTION"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.google.android.gms.actions.SEARCH_ACTION" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ui.SettingsActivity"
             android:label="@string/action_settings"
             android:parentActivityName=".ui.MainActivity"
-            android:theme="@style/Theme.Light.Settings" >
+            android:theme="@style/Theme.Light.Settings">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="rawcomposition.bibletools.info.ui.MainActivity" />
@@ -47,7 +52,7 @@
         <activity
             android:name=".ui.FavouritesActivity"
             android:label="@string/title_favourites"
-            android:parentActivityName=".ui.MainActivity" >
+            android:parentActivityName=".ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="rawcomposition.bibletools.info.ui.MainActivity" />
@@ -65,7 +70,7 @@
 
         <activity
             android:name=".ui.ReferenceActivity"
-            android:theme="@style/Theme.Light.Reference"/>
+            android:theme="@style/Theme.Light.Reference" />
     </application>
 
 </manifest>

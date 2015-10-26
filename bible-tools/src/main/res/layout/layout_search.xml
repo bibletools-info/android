@@ -11,8 +11,7 @@
 
         <org.cryse.widget.persistentsearch.PersistentSearchView
             android:id="@+id/searchview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/Widget.SearchView"
             android:layout_gravity="top"
             app:layout_scrollFlags="scroll|enterAlways"
             app:persistentSV_customToolbarHeight="64dp"
