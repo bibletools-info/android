@@ -56,12 +56,30 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
     private OnNavigationListener mListener;
 
-    private Typeface typeface;
+    private Typeface typeface = null;
 
     public ReferenceListAdapter(Activity context, List<Reference> references, OnNavigationListener listener) {
         this.mReferences = references;
         this.context = context;
         this.mListener = listener;
+
+        String fontPath = "";
+
+        switch (ThemeUtil.getFontWeight(context)) {
+            case REGULAR:
+                fontPath = context.getString(R.string.pref_font_regular);
+                break;
+            case MEDIUM:
+                fontPath = context.getString(R.string.pref_font_medium);
+                break;
+            case HEAVY:
+                fontPath = context.getString(R.string.pref_font_heavy);
+                break;
+        }
+
+        if (!TextUtils.isEmpty(fontPath)) {
+            typeface = Typeface.createFromAsset(context.getAssets(), FONT_DIRECTORY + fontPath);
+        }
 
     }
 
@@ -102,27 +120,12 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
         if (position > mLastAnimatedPosition) {
             mLastAnimatedPosition = position;
 
-           AnimUtil.slideInEnterAnimation(context, holder.itemView);
+            AnimUtil.slideInEnterAnimation(context, holder.itemView);
         }
 
         final Reference reference = mReferences.get(position);
 
-        String fontPath = "";
-
-        switch (ThemeUtil.getFontWeight(context)) {
-            case REGULAR:
-                fontPath = context.getString(R.string.pref_font_regular);
-                break;
-            case MEDIUM:
-                fontPath = context.getString(R.string.pref_font_medium);
-                break;
-            case HEAVY:
-                fontPath = context.getString(R.string.pref_font_heavy);
-                break;
-        }
-
-        if (!TextUtils.isEmpty(fontPath)) {
-            typeface = Typeface.createFromAsset(context.getAssets(), FONT_DIRECTORY + fontPath);
+        if (typeface != null) {
             holder.title.setTypeface(typeface);
             holder.title.setText(Html.fromHtml("<b>" + reference.getTitle() + "</b>"));
             holder.content.setTypeface(typeface);
@@ -134,7 +137,6 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
         if (!ThemeUtil.isDarkTheme(context)) {
             if (position != 0) {
                 holder.referenceTop.setBackgroundColor(context.getResources().getColor(R.color.reference_title_background));
-
             }
 
             holder.referenceWhiteView.setBackgroundColor(Color.WHITE);
@@ -148,7 +150,7 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    context.startActivity(new Intent(context, ReferenceActivity.class));
+                    //context.startActivity(new Intent(context, ReferenceActivity.class));
                 }
             });
 
@@ -194,7 +196,7 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
         } else {
 
-            if(TextUtils.isEmpty(reference.getFileName())){
+            if (TextUtils.isEmpty(reference.getFileName())) {
 
                 content.setVisibility(View.VISIBLE);
                 holder.refShareItem.setVisibility(View.VISIBLE);
@@ -224,11 +226,11 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
                     }
                 });
 
-                if(!reference.isCollapsed()){
+                if (!reference.isCollapsed()) {
                     content.setMaxLines(4);
                 }
 
-            }else {
+            } else {
 
                 content.setVisibility(View.GONE);
                 holder.refShareItem.setVisibility(View.GONE);
@@ -270,15 +272,13 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
             }
 
 
-
         }
 
 
     }
 
     private void toggleReferenceView(Reference reference, TextView content, final int position) {
-        content.setEllipsize(null);
-        
+
         if (reference.isCollapsed()) {
             content.setMaxLines(4);
             reference.setCollapsed(false);
@@ -288,6 +288,8 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
                     mListener.onScrollRequired(position);
                 }
             }, 500);
+
+            this.notifyItemChanged(0);
 
         } else {
             content.setMaxLines(Integer.MAX_VALUE);

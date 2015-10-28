@@ -28,6 +28,13 @@
 -keep class android.support.v7.** { *; }
 -keep interface android.support.v7.** { *; }
 
+#To revise
+-keep class com.google.android.gms.** { *; }
+-keep public class com.google.android.gms.**
+-dontwarn com.google.android.gms.**
+-keep class android.support.v7.** { *; }
+-keep interface android.support.v7.** { *; }
+
 #Retrofit
 -dontwarn retrofit.**
 -keep class retrofit.** { *; }
@@ -63,3 +70,5 @@ public static *** v(...);
 #To keep line numbers for crash reports
 -renamesourcefileattribute SourceFile
 -keepattributes SourceFile, LineNumberTable
+
+-dontwarn uk.co.senab.**

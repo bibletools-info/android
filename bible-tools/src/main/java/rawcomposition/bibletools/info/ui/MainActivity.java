@@ -191,7 +191,7 @@ public class MainActivity extends BaseActivity implements
 
         if (DeviceUtil.isTablet(this)) {
             StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-            manager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+            manager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
             mRecycler.setLayoutManager(manager);
 
         } else {

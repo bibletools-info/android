@@ -32,14 +32,6 @@
 
     <style name="Widget.AppTheme.SearchView" parent="Widget.AppCompat.Light.SearchView" />
 
-    <style name="AppTheme.CardView">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="cardBackgroundColor">?android:colorBackground</item>
-        <item name="cardElevation">@dimen/margin_small</item>
-        <item name="cardUseCompatPadding">true</item>
-        <item name="android:foreground">?attr/selectableItemBackground</item>
-    </style>
 
     <style name="AppTheme.TextView">
         <item name="android:layout_height">wrap_content</item>
