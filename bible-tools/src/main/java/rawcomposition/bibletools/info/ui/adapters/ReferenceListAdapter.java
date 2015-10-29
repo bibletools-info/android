@@ -1,9 +1,7 @@
 package rawcomposition.bibletools.info.ui.adapters;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -22,18 +20,19 @@ import com.bumptech.glide.request.target.Target;
 import java.util.List;
 
 import io.realm.Realm;
+import rawcomposition.bibletools.info.Bindings;
 import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.model.ReferenceMap;
 import rawcomposition.bibletools.info.model.json.Reference;
 import rawcomposition.bibletools.info.ui.MainActivity;
 import rawcomposition.bibletools.info.ui.MapDetailActivity;
-import rawcomposition.bibletools.info.ui.ReferenceActivity;
 import rawcomposition.bibletools.info.ui.callbacks.OnNavigationListener;
 import rawcomposition.bibletools.info.util.AnimUtil;
 import rawcomposition.bibletools.info.util.FavouritesUtil;
 import rawcomposition.bibletools.info.util.TextViewUtil;
 import rawcomposition.bibletools.info.util.ThemeUtil;
 import rawcomposition.bibletools.info.util.ToastUtil;
+import rawcomposition.bibletools.info.util.enums.FontWeight;
 
 /**
  * Created by tinashe on 2015/02/15.
@@ -41,8 +40,6 @@ import rawcomposition.bibletools.info.util.ToastUtil;
 public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdapter.ReferenceViewHolder> {
 
     private static final String TAG = ReferenceListAdapter.class.getName();
-
-    private static final String FONT_DIRECTORY = "fonts/";
 
     private static final int TITLE = 0;
     private static final int NON_TITLE = 1;
@@ -56,30 +53,14 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
     private OnNavigationListener mListener;
 
-    private Typeface typeface = null;
+    private static FontWeight fontWeight = null;
 
     public ReferenceListAdapter(Activity context, List<Reference> references, OnNavigationListener listener) {
         this.mReferences = references;
         this.context = context;
         this.mListener = listener;
 
-        String fontPath = "";
-
-        switch (ThemeUtil.getFontWeight(context)) {
-            case REGULAR:
-                fontPath = context.getString(R.string.pref_font_regular);
-                break;
-            case MEDIUM:
-                fontPath = context.getString(R.string.pref_font_medium);
-                break;
-            case HEAVY:
-                fontPath = context.getString(R.string.pref_font_heavy);
-                break;
-        }
-
-        if (!TextUtils.isEmpty(fontPath)) {
-            typeface = Typeface.createFromAsset(context.getAssets(), FONT_DIRECTORY + fontPath);
-        }
+        fontWeight = ThemeUtil.getFontWeight(context);
 
     }
 
@@ -125,10 +106,8 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
         final Reference reference = mReferences.get(position);
 
-        if (typeface != null) {
-            holder.title.setTypeface(typeface);
+        if (fontWeight != FontWeight.LIGHT) {
             holder.title.setText(Html.fromHtml("<b>" + reference.getTitle() + "</b>"));
-            holder.content.setTypeface(typeface);
         } else {
             holder.title.setText(Html.fromHtml(reference.getTitle()));
         }
@@ -363,7 +342,7 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
         });
     }
 
-    public static class ReferenceViewHolder extends RecyclerView.ViewHolder {
+    static class ReferenceViewHolder extends RecyclerView.ViewHolder {
 
         private TextView title;
         private TextView content;
@@ -393,6 +372,11 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
             referenceTop = itemView.findViewById(R.id.reference_top);
             referenceWhiteView = itemView.findViewById(R.id.reference_white_view);
+
+            if (fontWeight != FontWeight.LIGHT) {
+                Bindings.setFont(title, fontWeight.getName());
+                Bindings.setFont(content, fontWeight.getName());
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ package rawcomposition.bibletools.info.model;
 import io.realm.RealmObject;
 import io.realm.annotations.Index;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
 /**
  * Created by tinashe on 2015/03/05.
@@ -13,6 +14,7 @@ public class FavouriteVerse extends RealmObject {
     @Index
     private String verseCode;
 
+    @Required
     private String verseText;
 
     public String getVerseCode() {

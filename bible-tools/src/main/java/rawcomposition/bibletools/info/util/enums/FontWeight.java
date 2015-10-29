@@ -5,8 +5,25 @@ package rawcomposition.bibletools.info.util.enums;
  */
 public enum FontWeight {
 
-    LIGHT,
-    REGULAR,
-    MEDIUM,
-    HEAVY;
+    LIGHT("light", "Lato-Light.ttf"),
+    REGULAR("regular", "Lato-Regular.ttf"),
+    MEDIUM("medium", "Lato-Medium.ttf"),
+    HEAVY("heavy", "Lato-Heavy.ttf"),
+    ITALIC("italic", "Lato-Italic.ttf");
+
+    private String name;
+    private String fileName;
+
+    FontWeight(String name, String fileName) {
+        this.name = name;
+        this.fileName = fileName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
 }
