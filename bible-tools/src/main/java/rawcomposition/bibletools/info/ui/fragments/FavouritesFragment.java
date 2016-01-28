@@ -6,6 +6,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
 
+import butterknife.Bind;
 import io.realm.Realm;
 import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.ui.FavouritesActivity;
@@ -23,6 +24,9 @@ public class FavouritesFragment extends BaseFragment {
 
     private ViewType mViewType = ViewType.ALL;
 
+    @Bind(R.id.recycler)
+    RecyclerView mRecycler;
+
     @Override
     protected int getLayoutResource() {
         return R.layout.fragment_favourites;
@@ -31,9 +35,6 @@ public class FavouritesFragment extends BaseFragment {
     @Override
     protected void initialize(View rootView) {
         super.initialize(rootView);
-
-        RecyclerView mRecycler = (RecyclerView) rootView.findViewById(R.id.recycler);
-        //  mRecycler.setHasFixedSize(true);
 
         if (DeviceUtil.isTablet(getActivity())) {
             StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);

@@ -2,7 +2,6 @@ package rawcomposition.bibletools.info.ui;
 
 import android.app.SearchManager;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -31,6 +30,7 @@ import org.cryse.widget.persistentsearch.VoiceRecognitionDelegate;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
 import io.realm.Realm;
 import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.api.BibleToolsService;
@@ -44,14 +44,13 @@ import rawcomposition.bibletools.info.ui.callbacks.SearchQueryStripListener;
 import rawcomposition.bibletools.info.util.BibleQueryUtil;
 import rawcomposition.bibletools.info.util.CacheUtil;
 import rawcomposition.bibletools.info.util.DeviceUtil;
-import rawcomposition.bibletools.info.util.FontCache;
 import rawcomposition.bibletools.info.util.GSonUtil;
 import rawcomposition.bibletools.info.util.PreferenceUtil;
 import rawcomposition.bibletools.info.util.TextViewUtil;
-import rawcomposition.bibletools.info.util.enums.FontWeight;
+import retrofit.Call;
 import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 public class MainActivity extends BaseActivity implements
         OnNavigationListener, SwipeRefreshLayout.OnRefreshListener {
@@ -61,15 +60,31 @@ public class MainActivity extends BaseActivity implements
     private static final String TAG = MainActivity.class.getName();
 
     private static final String VERSE_KEY = "verse";
-    private PersistentSearchView mSearchView;
+
     private VerseSuggestionBuilder mSearchAdapter;
     private ReferenceListAdapter mAdapter;
-    private ProgressBar mProgress;
-    private SwipeRefreshLayout mSwipeToRefreshLayout;
+
     private List<Reference> mReferences = new ArrayList<>();
-    private RecyclerView mRecycler;
+
     private Realm mRealm;
-    private DrawerLayout mDrawerLayout;
+
+    @Bind(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
+
+    @Bind(R.id.nav_view)
+    NavigationView navigationView;
+
+    @Bind(R.id.recycler)
+    RecyclerView mRecycler;
+
+    @Bind(R.id.progress)
+    ProgressBar mProgress;
+
+    @Bind(R.id.swipe_to_refresh)
+    SwipeRefreshLayout mSwipeToRefreshLayout;
+
+    @Bind(R.id.searchview)
+    PersistentSearchView mSearchView;
 
     @Override
     protected int getLayoutResource() {
@@ -79,8 +94,6 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        DataBindingUtil.setContentView(this, getLayoutResource());
 
         mRealm = Realm.getDefaultInstance();
 
@@ -100,9 +113,6 @@ public class MainActivity extends BaseActivity implements
 
     private void initDrawer() {
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
@@ -115,6 +125,7 @@ public class MainActivity extends BaseActivity implements
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
+                mDrawerLayout.closeDrawers();
 
                 switch (menuItem.getItemId()) {
                     case R.id.nav_fav:
@@ -133,9 +144,7 @@ public class MainActivity extends BaseActivity implements
                         onDonateButtonClicked();
                         break;
                 }
-
-                mDrawerLayout.closeDrawers();
-                return true;
+                return false;
             }
         });
 
@@ -147,8 +156,6 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void initSearchView() {
-
-        mSearchView = (PersistentSearchView) findViewById(R.id.searchview);
         VoiceRecognitionDelegate delegate = new DefaultVoiceRecognizerDelegate(this, VOICE_RECOGNITION_REQUEST_CODE);
         if (delegate.isVoiceRecognitionAvailable()) {
             mSearchView.setVoiceRecognitionDelegate(delegate);
@@ -169,8 +176,12 @@ public class MainActivity extends BaseActivity implements
                         performQuery(query);
                         mSearchAdapter.refreshSearchHistory();
                     } else {
-
-                        mSearchView.setSearchString(query, true);
+                        mSearchView.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mSearchView.openSearch();
+                            }
+                        }, 200);
                     }
 
                 }
@@ -189,36 +200,28 @@ public class MainActivity extends BaseActivity implements
 
     private void initRecyclerStuff() {
 
-        mRecycler = (RecyclerView) findViewById(R.id.recycler);
-
         if (DeviceUtil.isTablet(this)) {
             StaggeredGridLayoutManager manager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
             manager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
             mRecycler.setLayoutManager(manager);
-
         } else {
             mRecycler.setLayoutManager(new LinearLayoutManager(this));
         }
-
-        mProgress = (ProgressBar) findViewById(R.id.progress);
-
         mAdapter = new ReferenceListAdapter(MainActivity.this, mReferences, this);
         mRecycler.setAdapter(mAdapter);
         mRecycler.setItemAnimator(new DefaultItemAnimator());
 
-        mSwipeToRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_to_refresh);
         mSwipeToRefreshLayout.setColorSchemeResources(
                 R.color.theme_primary_dark,
-                R.color.theme_accent,
                 R.color.theme_primary_dark,
-                R.color.theme_accent
+                R.color.theme_primary_dark,
+                R.color.theme_primary_dark
         );
         mSwipeToRefreshLayout.setOnRefreshListener(this);
 
     }
 
     private void getSearchIntentData() {
-
         if (getIntent().getAction() != null) {
             if (getIntent().getAction().equals(SearchIntents.ACTION_SEARCH)) {
                 String query = getIntent().getStringExtra(SearchManager.QUERY);
@@ -228,7 +231,6 @@ public class MainActivity extends BaseActivity implements
                 }
             }
         }
-
 
         Intent intent = getIntent();
         Uri data = intent.getData();
@@ -346,43 +348,40 @@ public class MainActivity extends BaseActivity implements
             }
         }, 100);
 
-        BibleToolsService.getApi()
-                .deliverReferences(book, chapter, verse, new Callback<ReferencesResponse>() {
-                    @Override
-                    public void success(ReferencesResponse referencesResponse, Response response) {
+        Call<ReferencesResponse> call = BibleToolsService.getApi()
+                .deliverReferences(book, chapter, verse);
+        call.enqueue(new Callback<ReferencesResponse>() {
+            @Override
+            public void onResponse(Response<ReferencesResponse> response, Retrofit retrofit) {
 
-                        mSwipeToRefreshLayout.setRefreshing(false);
+                mSwipeToRefreshLayout.setRefreshing(false);
 
-                        if (!referencesResponse.getResources().isEmpty() &&
-                                TextUtils.isEmpty(referencesResponse.getResources().get(0).getText())) {
+                if (!response.isSuccess() || response.body().getResources().isEmpty()
+                        || TextUtils.isEmpty(response.body().getResources().get(0).getText())) {
+                    showToast(getString(R.string.api_default_error));
+                    return;
+                }
 
-                            showToast(getString(R.string.api_default_error));
-                            return;
-                        }
+                if (PreferenceUtil.getValue(MainActivity.this,
+                        getString(R.string.pref_key_cache),
+                        true)) {
 
-                        if (PreferenceUtil.getValue(MainActivity.this,
-                                getString(R.string.pref_key_cache),
-                                true)) {
+                    CacheUtil.save(MainActivity.this,
+                            CacheUtil.getFileName(MainActivity.this, book, chapter, verse),
+                            GSonUtil.getInstance().toJson(response.body()));
+                }
 
-                            CacheUtil.save(MainActivity.this,
-                                    CacheUtil.getFileName(MainActivity.this, book, chapter, verse),
-                                    GSonUtil.getInstance().toJson(referencesResponse));
-                        }
+                displayReferences(response.body(), true);
+            }
 
-                        displayReferences(referencesResponse, true);
-                    }
+            @Override
+            public void onFailure(Throwable t) {
+                mProgress.setVisibility(View.GONE);
+                mSwipeToRefreshLayout.setRefreshing(false);
 
-                    @Override
-                    public void failure(RetrofitError error) {
-                        Log.d(TAG, error.getMessage());
-
-                        mProgress.setVisibility(View.GONE);
-                        mSwipeToRefreshLayout.setRefreshing(false);
-
-                        showToast(getString(R.string.api_default_error));
-                    }
-                });
-
+                showToast(getString(R.string.api_default_error));
+            }
+        });
 
     }
 

@@ -43,7 +43,6 @@
         <activity
             android:name=".ui.SettingsActivity"
             android:label="@string/action_settings"
-            android:parentActivityName=".ui.MainActivity"
             android:theme="@style/Theme.Light.Settings">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -51,8 +50,7 @@
         </activity>
         <activity
             android:name=".ui.FavouritesActivity"
-            android:label="@string/title_favourites"
-            android:parentActivityName=".ui.MainActivity">
+            android:label="@string/title_favourites">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="rawcomposition.bibletools.info.ui.MainActivity" />
@@ -61,7 +59,6 @@
             android:name=".ui.MapDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/blank"
-            android:parentActivityName=".ui.MainActivity"
             android:theme="@style/Theme.Dark">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

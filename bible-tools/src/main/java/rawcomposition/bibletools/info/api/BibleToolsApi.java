@@ -1,6 +1,7 @@
 package rawcomposition.bibletools.info.api;
 
 import rawcomposition.bibletools.info.model.json.ReferencesResponse;
+import retrofit.Call;
 import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Path;
@@ -12,10 +13,9 @@ import retrofit.http.Path;
 public interface BibleToolsApi {
 
     @GET("/resources/get/{book}/{chapter}/{verse}")
-    void deliverReferences(
+    Call<ReferencesResponse> deliverReferences(
             @Path("book") int book,
             @Path("chapter") int chapter,
-            @Path("verse") int verse,
-            Callback<ReferencesResponse> callBack
+            @Path("verse") int verse
     );
 }

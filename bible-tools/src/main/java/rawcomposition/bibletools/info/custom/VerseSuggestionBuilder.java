@@ -10,8 +10,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.util.BibleQueryUtil;
 import rawcomposition.bibletools.info.util.CacheUtil;
+import rawcomposition.bibletools.info.util.PreferenceUtil;
 
 /**
  * Created by tinashe on 2015/10/20.
@@ -58,9 +60,16 @@ public class VerseSuggestionBuilder implements SearchSuggestionsBuilder {
     }
 
     public void refreshSearchHistory() {
+        int max = Integer.valueOf(
+                PreferenceUtil.getValue(mContext, mContext.getString(R.string.pref_key_history_entries), "5")
+        );
+
         List<String> history = CacheUtil.getCachedReferences(mContext);
         emptySuggestions = new ArrayList<>();
         for (String item : history) {
+            if (emptySuggestions.size() == max) {
+                break;
+            }
             SearchItem searItem = new SearchItem(item, item, SearchItem.TYPE_SEARCH_ITEM_HISTORY);
             emptySuggestions.add(searItem);
         }

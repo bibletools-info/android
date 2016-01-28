@@ -5,9 +5,9 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.internal.VersionUtils;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -15,10 +15,13 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import rawcomposition.bibletools.info.BuildConfig;
 import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.util.ThemeUtil;
 import rawcomposition.bibletools.info.util.ToastUtil;
+import rawcomposition.bibletools.info.util.VersionUtils;
 import rawcomposition.bibletools.info.util.billing.IabHelper;
 import rawcomposition.bibletools.info.util.billing.IabResult;
 import rawcomposition.bibletools.info.util.billing.Inventory;
@@ -32,7 +35,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     // (arbitrary) request code for the purchase flow
     static final int RC_REQUEST = 10001;
     private static final String TAG = BaseActivity.class.getName();
-    protected Toolbar mToolbar;
+
+    @Nullable
+    @Bind(R.id.app_action_bar)
+    Toolbar mToolbar;
     // The helper object
     private IabHelper mHelper;
 
@@ -89,7 +95,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         setContentView(getLayoutResource());
 
-        mToolbar = (Toolbar) findViewById(R.id.app_action_bar);
+        ButterKnife.bind(this);
+
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
             ViewCompat.setElevation(mToolbar, getResources().getDimension(R.dimen.toolbar_elevation));

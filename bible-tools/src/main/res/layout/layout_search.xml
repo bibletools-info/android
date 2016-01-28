@@ -20,7 +20,8 @@
             app:persistentSV_editTextColor="@color/text"
             app:persistentSV_homeButtonMode="burger"
             app:persistentSV_searchCardElevation="2dp"
-            app:persistentSV_searchTextColor="?android:textColorPrimary" />
+            app:persistentSV_searchTextColor="@color/secondary"
+            app:persistentSV_editHintTextColor="@color/secondary"/>
     </android.support.design.widget.AppBarLayout>
 
     <FrameLayout
