@@ -66,6 +66,11 @@
         </activity>
 
         <activity
+            android:name=".ui.VersePickerActivity"
+            android:theme="@style/Theme.DialogActivity"
+            android:label="@string/blank"/>
+
+        <activity
             android:name=".ui.ReferenceActivity"
             android:theme="@style/Theme.Light.Reference" />
     </application>

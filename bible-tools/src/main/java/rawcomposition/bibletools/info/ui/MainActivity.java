@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -38,6 +39,7 @@ import rawcomposition.bibletools.info.custom.CustomSearchListener;
 import rawcomposition.bibletools.info.custom.VerseSuggestionBuilder;
 import rawcomposition.bibletools.info.model.json.Reference;
 import rawcomposition.bibletools.info.model.json.ReferencesResponse;
+import rawcomposition.bibletools.info.model.json.ReferencesRequest;
 import rawcomposition.bibletools.info.ui.adapters.ReferenceListAdapter;
 import rawcomposition.bibletools.info.ui.callbacks.OnNavigationListener;
 import rawcomposition.bibletools.info.ui.callbacks.SearchQueryStripListener;
@@ -47,6 +49,7 @@ import rawcomposition.bibletools.info.util.DeviceUtil;
 import rawcomposition.bibletools.info.util.GSonUtil;
 import rawcomposition.bibletools.info.util.PreferenceUtil;
 import rawcomposition.bibletools.info.util.TextViewUtil;
+import rawcomposition.bibletools.info.util.enums.BundledExtras;
 import retrofit.Call;
 import retrofit.Callback;
 import retrofit.Response;
@@ -56,6 +59,7 @@ public class MainActivity extends BaseActivity implements
         OnNavigationListener, SwipeRefreshLayout.OnRefreshListener {
 
     private static final int VOICE_RECOGNITION_REQUEST_CODE = 1234;
+    private static final int VERSE_PICKER_REQUEST_CODE = 1235;
 
     private static final String TAG = MainActivity.class.getName();
 
@@ -85,6 +89,9 @@ public class MainActivity extends BaseActivity implements
 
     @Bind(R.id.searchview)
     PersistentSearchView mSearchView;
+
+    @Bind(R.id.dialog_picker)
+    ImageButton dialogPicker;
 
     @Override
     protected int getLayoutResource() {
@@ -196,6 +203,14 @@ public class MainActivity extends BaseActivity implements
         mSearchAdapter = new VerseSuggestionBuilder(this);
         mSearchView.setSuggestionBuilder(mSearchAdapter);
 
+        dialogPicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivityForResult(new Intent(MainActivity.this, VersePickerActivity.class),
+                        VERSE_PICKER_REQUEST_CODE);
+            }
+        });
     }
 
     private void initRecyclerStuff() {
@@ -299,6 +314,13 @@ public class MainActivity extends BaseActivity implements
 
             }
 
+        } else if(requestCode == VERSE_PICKER_REQUEST_CODE && resultCode == RESULT_OK){
+            ReferencesRequest request = (ReferencesRequest)
+                    data.getSerializableExtra(BundledExtras.DATA_OBJECT.name());
+
+            if(request != null){
+                performRequest(request.getBook(), request.getChapter(), request.getVerse());
+            }
         }
 
     }

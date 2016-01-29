@@ -8,20 +8,41 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|enterAlways">
+            <org.cryse.widget.persistentsearch.PersistentSearchView
+                android:id="@+id/searchview"
+                style="@style/Widget.SearchView"
+                android:layout_gravity="top"
+                app:persistentSV_customToolbarHeight="64dp"
+                app:persistentSV_displayMode="toolbar"
+                app:persistentSV_editHintText="Search"
+                app:persistentSV_editTextColor="@color/text"
+                app:persistentSV_homeButtonMode="burger"
+                app:persistentSV_searchCardElevation="2dp"
+                app:persistentSV_searchTextColor="@color/secondary"
+                app:persistentSV_editHintTextColor="@color/secondary" />
 
-        <org.cryse.widget.persistentsearch.PersistentSearchView
-            android:id="@+id/searchview"
-            style="@style/Widget.SearchView"
-            android:layout_gravity="top"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:persistentSV_customToolbarHeight="64dp"
-            app:persistentSV_displayMode="toolbar"
-            app:persistentSV_editHintText="Search"
-            app:persistentSV_editTextColor="@color/text"
-            app:persistentSV_homeButtonMode="burger"
-            app:persistentSV_searchCardElevation="2dp"
-            app:persistentSV_searchTextColor="@color/secondary"
-            app:persistentSV_editHintTextColor="@color/secondary"/>
+
+            <ImageButton
+                android:id="@+id/dialog_picker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/view_list"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_marginLeft="@dimen/picker_margin_left"
+                android:layout_marginStart="@dimen/picker_margin_left"
+                android:layout_marginTop="14dp"
+                android:padding="@dimen/margin_small"
+                android:layout_gravity="top"
+                android:contentDescription="@string/blank"
+                android:clickable="true"/>
+        </FrameLayout>
+
+
+
     </android.support.design.widget.AppBarLayout>
 
     <FrameLayout

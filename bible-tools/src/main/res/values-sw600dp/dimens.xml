@@ -9,4 +9,6 @@
     <dimen name="text_huge">26sp</dimen>
 
     <dimen name="search_max_width">600dp</dimen>
+
+    <dimen name="picker_margin_left">500dp</dimen>
 </resources>
