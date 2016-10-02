@@ -9,6 +9,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,7 +22,6 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.actions.SearchIntents;
 
 import org.cryse.widget.persistentsearch.DefaultVoiceRecognizerDelegate;
@@ -38,8 +38,8 @@ import rawcomposition.bibletools.info.api.BibleToolsService;
 import rawcomposition.bibletools.info.custom.CustomSearchListener;
 import rawcomposition.bibletools.info.custom.VerseSuggestionBuilder;
 import rawcomposition.bibletools.info.model.json.Reference;
-import rawcomposition.bibletools.info.model.json.ReferencesResponse;
 import rawcomposition.bibletools.info.model.json.ReferencesRequest;
+import rawcomposition.bibletools.info.model.json.ReferencesResponse;
 import rawcomposition.bibletools.info.ui.adapters.ReferenceListAdapter;
 import rawcomposition.bibletools.info.ui.callbacks.OnNavigationListener;
 import rawcomposition.bibletools.info.ui.callbacks.SearchQueryStripListener;
@@ -63,7 +63,7 @@ public class MainActivity extends BaseActivity implements
 
     private static final String TAG = MainActivity.class.getName();
 
-    private static final String VERSE_KEY = "verse";
+    public static final String VERSE_KEY = "verse";
 
     private VerseSuggestionBuilder mSearchAdapter;
     private ReferenceListAdapter mAdapter;
@@ -136,10 +136,10 @@ public class MainActivity extends BaseActivity implements
 
                 switch (menuItem.getItemId()) {
                     case R.id.nav_fav:
-                        startActivity(new Intent(MainActivity.this, FavouritesActivity.class));
+                        startAnActivity(new Intent(MainActivity.this, FavouritesActivity.class));
                         break;
                     case R.id.action_settings:
-                        startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                        startAnActivity(new Intent(MainActivity.this, SettingsActivity.class));
                         break;
                     case R.id.action_feedback:
                         sendFeedBack();
@@ -251,16 +251,17 @@ public class MainActivity extends BaseActivity implements
         Uri data = intent.getData();
 
         if (data != null) {
-            String verse = data.getQueryParameter(VERSE_KEY);
+            Log.d(TAG, "PATH: " + data.getEncodedPath());
+            String verse = data.getEncodedPath().replace("/", "").replace("_", " ");
+            performQuery(verse);
 
-            Log.d(TAG, "VERSE: " + verse);
-
+        } else if (intent.hasExtra(VERSE_KEY)) {
+            String verse = intent.getStringExtra(VERSE_KEY);
             if (!TextUtils.isEmpty(verse)) {
                 performQuery(verse);
             } else {
                 performQuery(CacheUtil.getRecentReference(this));
             }
-
         } else {
             performQuery(CacheUtil.getRecentReference(this));
         }
@@ -311,18 +312,16 @@ public class MainActivity extends BaseActivity implements
                     mSearchView.populateEditText(verseMatches);
                 }
 
-
             }
 
-        } else if(requestCode == VERSE_PICKER_REQUEST_CODE && resultCode == RESULT_OK){
+        } else if (requestCode == VERSE_PICKER_REQUEST_CODE && resultCode == RESULT_OK) {
             ReferencesRequest request = (ReferencesRequest)
                     data.getSerializableExtra(BundledExtras.DATA_OBJECT.name());
 
-            if(request != null){
+            if (request != null) {
                 performRequest(request.getBook(), request.getChapter(), request.getVerse());
             }
         }
-
     }
 
     public void performQuery(String query) {
@@ -441,10 +440,10 @@ public class MainActivity extends BaseActivity implements
 
 
     private void showHowItWorks() {
-        new MaterialDialog.Builder(this)
-                .title(R.string.title_how_it_works)
-                .content(R.string.msg_how_it_works)
-                .positiveText(R.string.action_ok)
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.title_how_it_works)
+                .setMessage(R.string.msg_how_it_works)
+                .setPositiveButton(R.string.action_ok, null)
                 .show();
     }
 

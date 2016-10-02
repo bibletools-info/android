@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/settings_cat_preference">
+    <android.support.v7.preference.PreferenceCategory android:title="@string/settings_cat_preference">
 
-        <com.afollestad.materialdialogs.prefs.MaterialListPreference
+        <android.support.v7.preference.ListPreference
             android:defaultValue="zero"
             android:entries="@array/base_theme_entries"
             android:entryValues="@array/base_theme_values"
@@ -11,7 +11,7 @@
             android:summary="@string/summary_base_theme"
             android:title="@string/title_base_theme" />
 
-        <com.afollestad.materialdialogs.prefs.MaterialListPreference
+        <android.support.v7.preference.ListPreference
             android:defaultValue="lig"
             android:entries="@array/font_weight_entries"
             android:entryValues="@array/font_weight_values"
@@ -19,7 +19,7 @@
             android:summary="@string/summary_font_weight"
             android:title="@string/title_font_weght" />
 
-        <com.afollestad.materialdialogs.prefs.MaterialListPreference
+        <android.support.v7.preference.ListPreference
             android:defaultValue="10"
             android:entries="@array/history_entries"
             android:entryValues="@array/history_entries"
@@ -27,50 +27,50 @@
             android:summary="@string/settings_history_count_summary"
             android:title="@string/settings_history_count_title" />
 
-        <CheckBoxPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="@string/pref_key_cache"
             android:summary="@string/settings_cache_pref_summary"
             android:title="@string/settings_cache_pref_title" />
 
-    </PreferenceCategory>
+    </android.support.v7.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/settings_support">
+    <android.support.v7.preference.PreferenceCategory android:title="@string/settings_support">
 
-        <Preference
+        <android.support.v7.preference.Preference
             android:key="@string/pref_feedback"
             android:persistent="false"
-            android:title="@string/action_send_feedback"
-            android:summary="Queries or Complains?"/>
+            android:summary="Queries or Complains?"
+            android:title="@string/action_send_feedback" />
 
 
-        <Preference
+        <android.support.v7.preference.Preference
             android:key="pref_donate"
             android:persistent="false"
-            android:title="@string/action_donate"
-            android:summary="Support future releases."/>
+            android:summary="Support future releases."
+            android:title="@string/action_donate" />
 
-    </PreferenceCategory>
+    </android.support.v7.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/settings_about_preference">
+    <android.support.v7.preference.PreferenceCategory android:title="@string/settings_about_preference">
 
-        <Preference
+        <android.support.v7.preference.Preference
             android:key="@string/pref_key_version"
             android:persistent="false"
             android:title="@string/settings_version">
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://play.google.com/store/apps/details?id=rawcomposition.bibletools.info" />
-        </Preference>
+        </android.support.v7.preference.Preference>
 
-        <Preference
+        <android.support.v7.preference.Preference
             android:key="pref_open_source"
             android:persistent="false"
             android:summary="License details for open source software"
             android:title="Open Source Licenses" />
 
 
-        <Preference
+        <android.support.v7.preference.Preference
             android:persistent="false"
             android:summary="Tinashe Mzondiwa"
             android:title="Developer">
@@ -78,9 +78,9 @@
                 android:action="android.intent.action.VIEW"
                 android:data="https://plus.google.com/u/0/+TinasheMzondiwa/" />
 
-        </Preference>
+        </android.support.v7.preference.Preference>
 
-    </PreferenceCategory>
+    </android.support.v7.preference.PreferenceCategory>
 
 
-</PreferenceScreen>
+</android.support.v7.preference.PreferenceScreen>

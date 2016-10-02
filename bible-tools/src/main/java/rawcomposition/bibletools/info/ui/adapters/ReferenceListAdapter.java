@@ -3,9 +3,11 @@ package rawcomposition.bibletools.info.ui.adapters;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,8 @@ import com.bumptech.glide.request.target.Target;
 
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import io.realm.Realm;
 import rawcomposition.bibletools.info.Bindings;
 import rawcomposition.bibletools.info.R;
@@ -344,34 +348,38 @@ public class ReferenceListAdapter extends RecyclerView.Adapter<ReferenceListAdap
 
     static class ReferenceViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView title;
-        private TextView content;
+        @Bind(R.id.reference_title)
+        TextView title;
+        @Bind(R.id.reference_text)
+        TextView content;
 
-        private View navigatePrevious;
-        private View navigateNext;
+        @Nullable
+        @Bind(R.id.navigate_previous)
+        View navigatePrevious;
+        @Nullable
+        @Bind(R.id.navigate_next)
+        View navigateNext;
 
-        private ImageView refShareItem;
-        private ImageView refMap;
-        private ImageView toggleFav;
+        @Nullable
+        @Bind(R.id.action_share)
+        ImageView refShareItem;
+        @Nullable
+        @Bind(R.id.reference_map)
+        ImageView refMap;
+        @Nullable
+        @Bind(R.id.action_favourite)
+        ImageView toggleFav;
 
-        private View referenceTop;
-        private View referenceWhiteView;
+        @Nullable
+        @Bind(R.id.reference_top)
+        View referenceTop;
+        @Nullable
+        @Bind(R.id.reference_white_view)
+        View referenceWhiteView;
 
         public ReferenceViewHolder(View itemView) {
             super(itemView);
-
-            title = (TextView) itemView.findViewById(R.id.reference_title);
-            content = (TextView) itemView.findViewById(R.id.reference_text);
-
-            navigatePrevious = itemView.findViewById(R.id.navigate_previous);
-            navigateNext = itemView.findViewById(R.id.navigate_next);
-
-            refShareItem = (ImageView) itemView.findViewById(R.id.action_share);
-            refMap = (ImageView) itemView.findViewById(R.id.reference_map);
-            toggleFav = (ImageView) itemView.findViewById(R.id.action_favourite);
-
-            referenceTop = itemView.findViewById(R.id.reference_top);
-            referenceWhiteView = itemView.findViewById(R.id.reference_white_view);
+            ButterKnife.bind(this, itemView);
 
             if (fontWeight != FontWeight.LIGHT) {
                 Bindings.setFont(title, fontWeight.getName());

@@ -1,14 +1,12 @@
 package rawcomposition.bibletools.info.ui;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-
-import com.afollestad.materialdialogs.MaterialDialog;
 
 import io.realm.Realm;
 import rawcomposition.bibletools.info.R;
@@ -109,14 +107,10 @@ public class FavouritesActivity extends BaseActivity {
 
         String[] arr = {getString(R.string.title_all), getString(R.string.title_ot), getString(R.string.title_nt)};
 
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(this);
-        builder
-                .items(arr)
-                .itemsCallbackSingleChoice(pstn, new MaterialDialog.ListCallbackSingleChoice() {
+        new AlertDialog.Builder(this)
+                .setSingleChoiceItems(arr, pstn, new DialogInterface.OnClickListener() {
                     @Override
-                    public boolean onSelection(MaterialDialog materialDialog, View view, int position, CharSequence charSequence) {
-                        Log.d(TAG, "onSelection() " + position);
-
+                    public void onClick(DialogInterface dialogInterface, int position) {
                         switch (position) {
                             case 1:
                                 fragment.setViewType(ViewType.OLD_TESTAMENT);
@@ -128,12 +122,12 @@ public class FavouritesActivity extends BaseActivity {
                                 fragment.setViewType(ViewType.ALL);
                                 break;
                         }
-                        return true;
+
+                        dialogInterface.dismiss();
                     }
                 })
-                .positiveText(R.string.action_filter)
-                .negativeText(R.string.action_cancel)
-                .build().show();
+                .setNegativeButton(R.string.action_cancel, null)
+                .create().show();
     }
 
     @Override

@@ -74,7 +74,11 @@
     </style>
 
 
-    <style name="Widget"/>
+    <style name="Widget" />
+
+    <style name="Widget.AlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/theme_primary</item>
+    </style>
 
     <style name="Widget.CardView">
         <item name="android:layout_height">wrap_content</item>

@@ -1,11 +1,10 @@
 package rawcomposition.bibletools.info.ui;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
+import android.support.v14.preference.PreferenceFragment;
 import android.support.v4.app.NavUtils;
+import android.support.v7.preference.Preference;
 
 import de.psdev.licensesdialog.LicensesDialog;
 import rawcomposition.bibletools.info.BuildConfig;
@@ -45,10 +44,9 @@ public class SettingsActivity extends BaseActivity {
     public static class SettingsFragment extends PreferenceFragment implements
             SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceChangeListener {
 
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
 
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             addPreferencesFromResource(R.xml.preferences);
 
             initialize();

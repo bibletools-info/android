@@ -2,18 +2,17 @@ package rawcomposition.bibletools.info.ui;
 
 import android.annotation.TargetApi;
 import android.app.ActivityOptions;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-
-import com.afollestad.materialdialogs.MaterialDialog;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -41,6 +40,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     Toolbar mToolbar;
     // The helper object
     private IabHelper mHelper;
+
+    private int mSelected = 1;
 
     // Listener that's called when we finish querying the items and subscriptions we own
     IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
@@ -200,20 +201,24 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         final String[] skuArray = getResources().getStringArray(R.array.available_donations_sku);
 
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(this);
-        builder.title(R.string.title_make_donation)
-                .items(getResources().getStringArray(R.array.available_donations_titles))
-                .itemsCallbackSingleChoice(1, new MaterialDialog.ListCallbackSingleChoice() {
+        // MaterialDialog.Builder builder = new MaterialDialog.Builder(this);
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.title_make_donation)
+                .setSingleChoiceItems(getResources().getStringArray(R.array.available_donations_titles), mSelected, new DialogInterface.OnClickListener() {
                     @Override
-                    public boolean onSelection(MaterialDialog materialDialog, View view, int position, CharSequence charSequence) {
-                        mHelper.launchPurchaseFlow(BaseActivity.this, skuArray[position], RC_REQUEST,
-                                mPurchaseFinishedListener, payload);
-                        return true;
+                    public void onClick(DialogInterface dialogInterface, int position) {
+                        mSelected = position;
                     }
                 })
-                .positiveText(R.string.action_donate)
-                .negativeText(R.string.action_cancel)
-                .build().show();
+                .setPositiveButton(R.string.action_donate, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        mHelper.launchPurchaseFlow(BaseActivity.this, skuArray[mSelected], RC_REQUEST,
+                                mPurchaseFinishedListener, payload);
+                    }
+                })
+                .setNegativeButton(R.string.action_cancel, null)
+                .create().show();
 
 
     }

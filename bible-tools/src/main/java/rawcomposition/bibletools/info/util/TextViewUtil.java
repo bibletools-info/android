@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import rawcomposition.bibletools.info.custom.LinkMovementMethodOverride;
 import rawcomposition.bibletools.info.ui.callbacks.OnNavigationListener;
 
 
@@ -44,7 +45,7 @@ public class TextViewUtil {
             if (!TextUtils.isEmpty(subject)) {
                 sharingIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
             }
-            context.startActivity(sharingIntent);
+            context.startActivity(Intent.createChooser(sharingIntent, "Send with:"));
 
         } else {
 
@@ -163,6 +164,7 @@ public class TextViewUtil {
         MovementMethod m = textView.getMovementMethod();
         if ((m == null) || !(m instanceof LinkMovementMethod)) {
             textView.setMovementMethod(LinkMovementMethod.getInstance());
+            textView.setOnTouchListener(new LinkMovementMethodOverride());
         }
 
     }
