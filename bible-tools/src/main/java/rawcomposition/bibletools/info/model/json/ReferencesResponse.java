@@ -4,13 +4,17 @@ import android.text.TextUtils;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import lombok.Data;
 
 /**
  * Created by tinashe on 2015/02/15.
  */
-public class ReferencesResponse extends JSONModel {
+@Data
+public class ReferencesResponse implements Serializable {
 
     private static final long serialVersionUID = 915795466438092157L;
 
@@ -26,10 +30,6 @@ public class ReferencesResponse extends JSONModel {
             }
         }
         return temp;
-    }
-
-    public void setResources(List<Reference> resources) {
-        this.resources = resources;
     }
 
 }

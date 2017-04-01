@@ -111,6 +111,5 @@
     <style name="Widget.SearchView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="persistentSV_logoDrawable">@drawable/logo</item>
     </style>
 </resources>

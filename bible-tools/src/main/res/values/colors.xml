@@ -10,6 +10,7 @@
 
     <color name="reference_title_background">#f5f5f5</color>
     <color name="link_color">#c85243</color>
+    <color name="nt_red">#cc0029</color>
 
     <!-- general text colors -->
     <color name="text">#212121</color>

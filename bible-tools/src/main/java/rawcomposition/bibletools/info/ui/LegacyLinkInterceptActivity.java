@@ -8,7 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 
-import static rawcomposition.bibletools.info.ui.MainActivity.VERSE_KEY;
+import rawcomposition.bibletools.info.ui.references.MainActivity;
+
+import static rawcomposition.bibletools.info.ui.references.MainActivity.VERSE_KEY;
 
 /**
  * Created by tinashe on 2016/10/02.

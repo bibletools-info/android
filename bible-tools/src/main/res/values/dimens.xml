@@ -27,4 +27,6 @@
     <dimen name="navigation_drawer_width">240dp</dimen>
 
     <dimen name="alert_def_padding">18dp</dimen>
+
+    <dimen name="status_bar_height">0dp</dimen>
 </resources>

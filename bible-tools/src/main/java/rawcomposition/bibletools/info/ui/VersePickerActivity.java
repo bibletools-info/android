@@ -1,10 +1,8 @@
 package rawcomposition.bibletools.info.ui;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -14,12 +12,13 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.model.json.ReferencesRequest;
 import rawcomposition.bibletools.info.model.json.bible.Book;
 import rawcomposition.bibletools.info.model.json.bible.Chapter;
 import rawcomposition.bibletools.info.ui.adapters.PickerFragmentAdapter;
+import rawcomposition.bibletools.info.ui.base.BaseActivity;
 import rawcomposition.bibletools.info.ui.callbacks.VersePickerController;
 import rawcomposition.bibletools.info.ui.fragments.PickerContentFragment;
 import rawcomposition.bibletools.info.util.GSonUtil;
@@ -32,13 +31,10 @@ public class VersePickerActivity extends BaseActivity implements VersePickerCont
 
     private static final String TAG = VersePickerActivity.class.getName();
 
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-
-    @Bind(R.id.tabs)
+    @BindView(R.id.tabs)
     TabLayout tabLayout;
 
-    @Bind(R.id.pager)
+    @BindView(R.id.pager)
     ViewPager pager;
 
     private List<Book> mBibleBooks;
@@ -48,45 +44,33 @@ public class VersePickerActivity extends BaseActivity implements VersePickerCont
 
     private PickerFragmentAdapter mPagerAdapter;
 
+
     @Override
-    protected int getLayoutResource() {
+    protected int layoutRes() {
         return R.layout.activity_verse_picker;
     }
 
+    @Override
+    protected boolean showHomeAsUp() {
+        return true;
+    }
 
     @Override
-    public void onCreate(Bundle savedInstance) {
-        super.onCreate(savedInstance);
-        setSupportActionBar(toolbar);
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
+    public void hookUpPresenter() {
         initializeBooks();
 
         mPagerAdapter = new PickerFragmentAdapter(getSupportFragmentManager());
         pager.setAdapter(mPagerAdapter);
         tabLayout.setupWithViewPager(pager);
 
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
+        pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 
             @Override
             public void onPageSelected(int position) {
                 ((PickerContentFragment) mPagerAdapter.getRegisteredFragment(position))
                         .updateView();
             }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
         });
-
     }
 
     private void initializeBooks() {
@@ -168,5 +152,4 @@ public class VersePickerActivity extends BaseActivity implements VersePickerCont
         setResult(RESULT_OK, intent);
         finish();
     }
-
 }

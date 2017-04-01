@@ -8,7 +8,7 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.ui.adapters.BibleListAdapter;
 import rawcomposition.bibletools.info.ui.callbacks.VersePickerController;
@@ -20,7 +20,7 @@ public class PickerContentFragment extends BaseFragment implements BibleListAdap
 
     private VersePickerController controller;
 
-    @Bind(R.id.recycler)
+    @BindView(R.id.recycler)
     RecyclerView recyclerView;
 
     private BibleListAdapter mAdapter = new BibleListAdapter(this);

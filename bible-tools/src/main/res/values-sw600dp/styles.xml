@@ -4,7 +4,6 @@
     <style name="Widget.SearchView">
         <item name="android:layout_width">@dimen/search_max_width</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="persistentSV_logoDrawable">@drawable/logo_big</item>
     </style>
 
 </resources>

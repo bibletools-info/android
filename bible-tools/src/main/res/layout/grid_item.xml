@@ -7,6 +7,6 @@
     style="@style/AppTheme.TextView"
     android:textSize="@dimen/text_regular"
     android:gravity="center"
-    android:textColor="@color/text"
+    android:textColor="?android:textColorPrimary"
     android:background="?attr/selectableItemBackground"
     tools:text="Gen"/>

@@ -17,6 +17,7 @@ import rawcomposition.bibletools.info.ui.callbacks.SearchQueryStripListener;
 public class BibleQueryUtil {
 
     private static final String TAG = BibleQueryUtil.class.getName();
+    private static final String VERSE_REGEX = "(?:\\d\\s*)?[A-Z]?[a-z]+\\s*\\d+(?:[:-]\\d+)?(?:\\s*-\\s*\\d+)?(?::\\d+|(?:\\s*[A-Z]?[a-z]+\\s*\\d+:\\d+))?";
 
 
     private static String extractWord(String query) {
@@ -70,6 +71,7 @@ public class BibleQueryUtil {
     public static void stripQuery(Context context, String query, SearchQueryStripListener listener) {
         List<String> titles = Arrays.asList(context.getResources().getStringArray(R.array.bible_books_full));
 
+        Log.d(TAG, "Got: " + query);
         /*
             Genesis 1:2
             2 Samuel 2:3

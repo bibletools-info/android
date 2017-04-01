@@ -23,7 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.references.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -57,14 +57,14 @@
             android:theme="@style/Theme.Light.Settings">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="rawcomposition.bibletools.info.ui.MainActivity" />
+                android:value="rawcomposition.bibletools.info.ui.references.MainActivity" />
         </activity>
         <activity
             android:name=".ui.FavouritesActivity"
             android:label="@string/title_favourites">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="rawcomposition.bibletools.info.ui.MainActivity" />
+                android:value="rawcomposition.bibletools.info.ui.references.MainActivity" />
         </activity>
         <activity
             android:name=".ui.MapDetailActivity"
@@ -73,7 +73,7 @@
             android:theme="@style/Theme.Dark">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="rawcomposition.bibletools.info.ui.MainActivity" />
+                android:value="rawcomposition.bibletools.info.ui.references.MainActivity" />
         </activity>
 
         <activity

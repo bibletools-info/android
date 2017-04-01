@@ -26,6 +26,7 @@
     <string name="pref_tut_shown">tut_shown</string>
     <string name="pref_theme_type">pref_theme</string>
     <string name="pref_font_weight">font_weight</string>
+    <string name="transition_photo">transition_photo</string>
 
 
     <string name="sample_reference">

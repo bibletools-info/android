@@ -6,7 +6,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import io.realm.Realm;
 import rawcomposition.bibletools.info.R;
 import rawcomposition.bibletools.info.ui.FavouritesActivity;
@@ -24,7 +24,7 @@ public class FavouritesFragment extends BaseFragment {
 
     private ViewType mViewType = ViewType.ALL;
 
-    @Bind(R.id.recycler)
+    @BindView(R.id.recycler)
     RecyclerView mRecycler;
 
     @Override

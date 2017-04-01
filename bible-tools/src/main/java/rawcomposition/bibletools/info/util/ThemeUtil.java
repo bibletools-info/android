@@ -9,6 +9,7 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import java.util.Calendar;
 
 import rawcomposition.bibletools.info.R;
+import rawcomposition.bibletools.info.ui.VersePickerActivity;
 import rawcomposition.bibletools.info.util.enums.FontWeight;
 
 /**
@@ -21,7 +22,12 @@ public class ThemeUtil {
     public static void setAppTheme(Activity activity, boolean settings) {
 
         if (isDarkTheme(activity)) {
-            activity.setTheme(settings ? R.style.Theme_Dark_Settings : R.style.Theme_Dark);
+            if (activity instanceof VersePickerActivity) {
+                activity.setTheme(R.style.Theme_Dark_DialogActivity);
+            } else {
+                activity.setTheme(settings ? R.style.Theme_Dark_Settings : R.style.Theme_Dark);
+            }
+
             activity.getWindow().setBackgroundDrawable(new ColorDrawable(getBackgroundColor(activity)));
         }
 

@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
@@ -5,8 +7,10 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0'
-
+        classpath 'com.android.tools.build:gradle:2.3.0'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'me.tatarka:gradle-retrolambda:3.3.0'
+        classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -22,6 +26,19 @@ task clean(type: Delete) {
 }
 
 ext {
-    supportLibVersion = '24.2.1'
-    playServicesVersion = '9.6.1'
+    versionCode = generateBuildTime()
+    versionName = "1.2.0"
+    supportLibVersion = '25.3.1'
+    playServicesVersion = '10.2.1'
+    rxjavaVersion = '1.1.6'
+    rxandroidVersion = '1.2.1'
+    butterknifeVersion = '8.5.1'
+    retrofitVersion = '2.1.0'
+    okhttp3Version = '3.4.1'
+}
+
+static def generateBuildTime() {
+    def df = new SimpleDateFormat("yyDDDHHmm")
+    df.setTimeZone(TimeZone.getTimeZone("UTC"))
+    return df.format(new Date())
 }

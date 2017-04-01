@@ -3,8 +3,8 @@ package rawcomposition.bibletools.info.custom;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import rawcomposition.bibletools.info.R;
 
@@ -12,7 +12,7 @@ import rawcomposition.bibletools.info.R;
 /**
  * Created by tinashe on 2015/01/06.
  */
-public class AppTextView extends TextView {
+public class AppTextView extends AppCompatTextView {
 
     private static final String FONT_DIRECTORY = "fonts/";
 

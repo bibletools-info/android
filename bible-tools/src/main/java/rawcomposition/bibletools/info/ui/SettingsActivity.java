@@ -9,14 +9,10 @@ import android.support.v7.preference.Preference;
 import de.psdev.licensesdialog.LicensesDialog;
 import rawcomposition.bibletools.info.BuildConfig;
 import rawcomposition.bibletools.info.R;
+import rawcomposition.bibletools.info.ui.base.BaseActivity;
 import rawcomposition.bibletools.info.util.PreferenceUtil;
 
 public class SettingsActivity extends BaseActivity {
-
-    @Override
-    protected int getLayoutResource() {
-        return R.layout.activity_settings;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,6 +26,16 @@ public class SettingsActivity extends BaseActivity {
     }
 
     @Override
+    protected int layoutRes() {
+        return R.layout.activity_settings;
+    }
+
+    @Override
+    protected boolean showHomeAsUp() {
+        return true;
+    }
+
+    @Override
     protected boolean isSettings() {
         return true;
     }
@@ -38,6 +44,11 @@ public class SettingsActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         NavUtils.navigateUpFromSameTask(this);
+
+    }
+
+    @Override
+    public void hookUpPresenter() {
 
     }
 
@@ -65,27 +76,21 @@ public class SettingsActivity extends BaseActivity {
 
             getPreferenceManager()
                     .findPreference(getString(R.string.pref_feedback))
-                    .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                        @Override
-                        public boolean onPreferenceClick(Preference preference) {
+                    .setOnPreferenceClickListener(preference -> {
 
-                            ((BaseActivity) getActivity())
-                                    .sendFeedBack();
+                        ((BaseActivity) getActivity())
+                                .sendFeedBack();
 
-                            return true;
-                        }
+                        return true;
                     });
             getPreferenceManager()
                     .findPreference("pref_donate")
-                    .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                        @Override
-                        public boolean onPreferenceClick(Preference preference) {
+                    .setOnPreferenceClickListener(preference -> {
 
-                            ((BaseActivity) getActivity())
-                                    .onDonateButtonClicked();
+                        ((BaseActivity) getActivity())
+                                .onDonateButtonClicked();
 
-                            return true;
-                        }
+                        return true;
                     });
 
             findPreference(getString(R.string.pref_theme_type))
@@ -95,18 +100,15 @@ public class SettingsActivity extends BaseActivity {
                     .setOnPreferenceChangeListener(this);
 
             findPreference("pref_open_source")
-                    .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                        @Override
-                        public boolean onPreferenceClick(Preference preference) {
-                            new LicensesDialog.Builder(getActivity())
-                                    .setNotices(R.raw.notices)
-                                    .setIncludeOwnLicense(true)
-                                            //.setThemeResourceId(R.style.custom_theme)
-                                            // .setDividerColorId(R.color.custom_divider_color)
-                                    .build().show();
+                    .setOnPreferenceClickListener(preference -> {
+                        new LicensesDialog.Builder(getActivity())
+                                .setNotices(R.raw.notices)
+                                .setIncludeOwnLicense(true)
+                                //.setThemeResourceId(R.style.custom_theme)
+                                // .setDividerColorId(R.color.custom_divider_color)
+                                .build().show();
 
-                            return true;
-                        }
+                        return true;
                     });
 
         }

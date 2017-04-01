@@ -12,7 +12,6 @@
         <item name="colorPrimaryDark">@color/theme_primary_dark</item>
         <item name="colorAccent">@color/theme_accent</item>
 
-        <item name="android:textColor">@color/primary_material_dark</item>
         <item name="android:textColorLink">@color/link_color</item>
         <item name="android:divider">@color/dividers</item>
 
@@ -28,7 +27,6 @@
         <item name="colorPrimaryDark">@color/theme_primary_dark</item>
         <item name="colorAccent">@color/theme_accent</item>
 
-        <item name="android:textColor">@android:color/white</item>
         <item name="android:textColorLink">@color/link_color</item>
         <item name="android:divider">@color/dividers</item>
 
@@ -67,10 +65,21 @@
         <item name="colorPrimaryDark">@color/theme_primary_dark</item>
         <item name="colorAccent">@color/theme_accent</item>
         <item name="actionModeBackground">@color/theme_primary_dark</item>
-        <item name="cardStyle">@style/Widget.CardView.Light</item>
-
+        <item name="alertDialogTheme">@style/Widget.AlertDialog</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
     </style>
+
+    <style name="Theme.Dark.DialogActivity" parent="Base.Theme.AppCompat.Dialog.FixedSize">
+        <item name="colorPrimary">@color/theme_primary</item>
+        <item name="colorPrimaryDark">@color/theme_primary_dark</item>
+        <item name="colorAccent">@color/theme_accent</item>
+        <item name="actionModeBackground">@color/theme_primary_dark</item>
+        <item name="alertDialogTheme">@style/Widget.AlertDialog</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
+
 </resources>

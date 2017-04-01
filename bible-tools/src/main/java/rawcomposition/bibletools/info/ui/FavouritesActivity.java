@@ -1,6 +1,5 @@
 package rawcomposition.bibletools.info.ui;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
@@ -10,6 +9,7 @@ import android.view.MenuItem;
 
 import io.realm.Realm;
 import rawcomposition.bibletools.info.R;
+import rawcomposition.bibletools.info.ui.base.BaseActivity;
 import rawcomposition.bibletools.info.ui.fragments.FavouritesFragment;
 import rawcomposition.bibletools.info.util.enums.ViewType;
 
@@ -19,8 +19,18 @@ public class FavouritesActivity extends BaseActivity {
     private Realm mRealm;
 
     @Override
-    protected int getLayoutResource() {
+    protected int layoutRes() {
         return R.layout.activity_favourites;
+    }
+
+    @Override
+    protected boolean showHomeAsUp() {
+        return true;
+    }
+
+    @Override
+    public void hookUpPresenter() {
+
     }
 
     @Override
@@ -74,10 +84,8 @@ public class FavouritesActivity extends BaseActivity {
         switch (item.getItemId()) {
             case R.id.action_filter:
                 showFilterOptions();
-
                 return true;
         }
-
 
         return super.onOptionsItemSelected(item);
     }
@@ -108,23 +116,20 @@ public class FavouritesActivity extends BaseActivity {
         String[] arr = {getString(R.string.title_all), getString(R.string.title_ot), getString(R.string.title_nt)};
 
         new AlertDialog.Builder(this)
-                .setSingleChoiceItems(arr, pstn, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int position) {
-                        switch (position) {
-                            case 1:
-                                fragment.setViewType(ViewType.OLD_TESTAMENT);
-                                break;
-                            case 2:
-                                fragment.setViewType(ViewType.NEW_TESTAMENT);
-                                break;
-                            default:
-                                fragment.setViewType(ViewType.ALL);
-                                break;
-                        }
-
-                        dialogInterface.dismiss();
+                .setSingleChoiceItems(arr, pstn, (dialogInterface, position) -> {
+                    switch (position) {
+                        case 1:
+                            fragment.setViewType(ViewType.OLD_TESTAMENT);
+                            break;
+                        case 2:
+                            fragment.setViewType(ViewType.NEW_TESTAMENT);
+                            break;
+                        default:
+                            fragment.setViewType(ViewType.ALL);
+                            break;
                     }
+
+                    dialogInterface.dismiss();
                 })
                 .setNegativeButton(R.string.action_cancel, null)
                 .create().show();
@@ -139,6 +144,5 @@ public class FavouritesActivity extends BaseActivity {
     public Realm getRealm() {
         return mRealm;
     }
-
 
 }

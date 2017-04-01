@@ -1,29 +1,32 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#000"
     tools:context="rawcomposition.bibletools.info.ui.MapDetailActivity">
 
-
     <ImageView
-        android:id="@+id/fullscreen_image"
+        android:id="@+id/photo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:keepScreenOn="true"
-        android:textSize="50sp"
-        android:layout_gravity="center"
-        tools:src="#0099cc"
-        android:contentDescription="@string/blank"/>
-
+        android:contentDescription="@string/blank"
+        android:minHeight="168dp"
+        android:scaleType="centerCrop"
+        tools:src="#000" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/app_action_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        app:popupTheme="@style/ActionBarPopupThemeOverlay"
-        app:theme="@style/ActionBarThemeOverlay"
-        app:titleTextAppearance="@style/ActionBar.TitleText" />
+        android:layout_marginTop="@dimen/status_bar_height"
+        app:navigationIcon="@drawable/ic_close_white" />
+
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 
 </FrameLayout>
