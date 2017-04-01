@@ -22,7 +22,7 @@
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="ActionBarThemeOverlay" parent="">
+    <style name="ActionBarThemeOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:textColorPrimary">#fff</item>
         <item name="colorControlNormal">?actionBarIconColor</item>
         <item name="colorControlHighlight">#3fff</item>

@@ -1,7 +1,8 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
@@ -16,5 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="rawcomposition.bibletools.info.ui.FavouritesActivity"
-        tools:ignore="MergeRootFrame" />
-</LinearLayout>
+        tools:ignore="MergeRootFrame"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+</android.support.design.widget.CoordinatorLayout>
