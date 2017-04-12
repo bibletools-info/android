@@ -73,4 +73,6 @@ dependencies {
     compile 'com.github.chrisbanes.photoview:library:1.2.3'
     compile 'de.psdev.licensesdialog:licensesdialog:1.7.0'
     compile 'org.cryse.widget:persistentsearchview:1.0.4@aar'
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-all:1.10.19'
 }
