@@ -81,6 +81,10 @@
             android:label="@string/blank"
             android:theme="@style/Theme.DialogActivity" />
 
+        <activity
+            android:name=".ui.downloads.DownloadsActivity"
+            android:label="@string/title_manage_offline" />
+
     </application>
 
 </manifest>

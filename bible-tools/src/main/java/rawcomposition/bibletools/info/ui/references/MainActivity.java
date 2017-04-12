@@ -47,6 +47,7 @@ import rawcomposition.bibletools.info.ui.VersePickerActivity;
 import rawcomposition.bibletools.info.ui.adapters.ReferenceListAdapter;
 import rawcomposition.bibletools.info.ui.base.BaseActivity;
 import rawcomposition.bibletools.info.ui.callbacks.OnNavigationListener;
+import rawcomposition.bibletools.info.ui.downloads.DownloadsActivity;
 import rawcomposition.bibletools.info.util.CacheUtil;
 import rawcomposition.bibletools.info.util.DeviceUtil;
 import rawcomposition.bibletools.info.util.TextViewUtil;
@@ -123,10 +124,13 @@ public class MainActivity extends BaseActivity implements ReferencesContract.Vie
 
             switch (menuItem.getItemId()) {
                 case R.id.nav_fav:
-                    startActivity(new Intent(MainActivity.this, FavouritesActivity.class));
+                    startActivity(new Intent(this, FavouritesActivity.class));
+                    break;
+                case R.id.nav_offline:
+                    startActivity(new Intent(this, DownloadsActivity.class));
                     break;
                 case R.id.action_settings:
-                    startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+                    startActivity(new Intent(this, SettingsActivity.class));
                     break;
                 case R.id.action_feedback:
                     sendFeedBack();

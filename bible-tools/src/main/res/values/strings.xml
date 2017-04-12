@@ -37,6 +37,7 @@
     <string name="title_font_medium">Medium</string>
     <string name="title_font_light">Light</string>
     <string name="title_font_heavy">Heavy</string>
+    <string name="title_manage_offline">Manage Offline</string>
 
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
