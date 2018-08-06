@@ -6,7 +6,6 @@
         <attr name="spinnerBarInsetStart" format="dimension" />
         <attr name="popupItemBackground" format="reference" />
         <attr name="photoItemForeground" format="reference" />
-        <attr name="fontStyle" format="string" />
         <attr format="reference" name="cardStyle"/>
     </declare-styleable>
 </resources>

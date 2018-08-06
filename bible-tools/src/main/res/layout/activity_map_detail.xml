@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000"
-    tools:context="rawcomposition.bibletools.info.ui.MapDetailActivity">
+    tools:context=".v1.ui.MapDetailActivity">
 
     <ImageView
         android:id="@+id/photo"

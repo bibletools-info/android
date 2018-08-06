@@ -2,11 +2,9 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="?attr/cardStyle"
-    android:clickable="true"
     android:descendantFocusability="blocksDescendants">
 
     <LinearLayout
-        android:id="@+id/reference_white_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -15,50 +13,94 @@
             android:id="@+id/reference_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?android:colorBackground"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
-            <rawcomposition.bibletools.info.custom.AppTextView
-                android:id="@+id/reference_title"
-                style="@style/referenceTitle"
+            <LinearLayout
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                tools:text="SDA Bible Commentary" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/spacing_micro"
+                android:paddingTop="@dimen/spacing_micro">
+
+                <ImageView
+                    android:id="@+id/photo"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:contentDescription="@string/blank"
+                    android:src="@drawable/ic_account_circle" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    tools:ignore="NestedWeights">
+
+                    <TextView
+                        android:id="@+id/author"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato_medium"
+                        android:maxLines="1"
+                        android:textColor="@color/text"
+                        android:textSize="@dimen/text_size_small"
+                        tools:text="SDA Bible Commentary" />
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/lato_regular"
+                        android:maxLines="1"
+                        android:textColor="@color/text"
+                        android:textSize="@dimen/text_size_xsmall"
+                        tools:text="SDA Bible Commentary" />
+                </LinearLayout>
+
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/action_share"
-                android:background="?attr/selectableItemBackgroundBorderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/blank"
                 android:padding="@dimen/margin_tiny"
                 android:src="@drawable/ic_share_grey"
-                android:tint="@android:color/darker_gray"/>
+                android:tint="@android:color/darker_gray"
+                android:visibility="invisible" />
         </LinearLayout>
 
 
         <include layout="@layout/divider_reference" />
 
-        <rawcomposition.bibletools.info.custom.AppTextView
-            android:id="@+id/reference_text"
+        <TextView
+            android:id="@+id/content"
             style="@style/referenceText"
             android:autoLink="none"
-            android:clickable="true"
-            android:scrollHorizontally="false"
             android:overScrollMode="never"
+            android:scrollHorizontally="false"
             android:singleLine="false"
             tools:text="1. Now. From the Hebrew particle we, which is more commonly translated “and.” This is the first instance of its use at the beginning of a book. All but four of the historical books of the" />
 
         <ImageView
-            android:id="@+id/reference_map"
+            android:id="@+id/map"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:contentDescription="@string/blank"
             android:scaleType="centerInside"
-            tools:src="@color/theme_accent"
-            tools:visibility="visible"
             android:visibility="gone"
-            android:contentDescription="@string/blank"/>
+            tools:src="@color/theme_accent"
+            tools:visibility="visible" />
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

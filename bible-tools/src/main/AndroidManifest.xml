@@ -13,17 +13,21 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.Light">
 
-        <activity
-            android:name=".ui.AppLauncherActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Light.Launcher">
+        <activity android:name=".ui.home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.references.MainActivity">
+
+        <activity
+            android:name=".v1.ui.AppLauncherActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Light.Launcher">
+
+        </activity>
+        <activity android:name=".v1.ui.references.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -39,7 +43,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.LegacyLinkInterceptActivity">
+        <activity android:name=".v1.ui.LegacyLinkInterceptActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -52,32 +56,32 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.SettingsActivity"
+            android:name=".v1.ui.SettingsActivity"
             android:label="@string/action_settings"
             android:theme="@style/Theme.Light.Settings">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="rawcomposition.bibletools.info.ui.references.MainActivity" />
+                android:value=".v1.ui.references.MainActivity" />
         </activity>
         <activity
-            android:name=".ui.FavouritesActivity"
+            android:name=".v1.ui.FavouritesActivity"
             android:label="@string/title_favourites">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="rawcomposition.bibletools.info.ui.references.MainActivity" />
+                android:value=".v1.ui.references.MainActivity" />
         </activity>
         <activity
-            android:name=".ui.MapDetailActivity"
+            android:name=".v1.ui.MapDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/blank"
             android:theme="@style/Theme.Dark">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="rawcomposition.bibletools.info.ui.references.MainActivity" />
+                android:value=".v1.ui.references.MainActivity" />
         </activity>
 
         <activity
-            android:name=".ui.VersePickerActivity"
+            android:name=".v1.ui.VersePickerActivity"
             android:label="@string/blank"
             android:theme="@style/Theme.DialogActivity" />
 

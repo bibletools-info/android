@@ -36,7 +36,7 @@
     <style name="AppTheme.TextView">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="fontStyle">@string/font_regular</item>
+        <item name="android:fontFamily">@font/lato_regular</item>
         <item name="android:paddingTop">@dimen/margin_small</item>
         <item name="android:paddingBottom">@dimen/margin_small</item>
         <item name="android:paddingLeft">@dimen/margin_medium</item>
@@ -44,11 +44,8 @@
     </style>
 
     <style name="referenceTitle" parent="AppTheme.TextView">
-        <item name="android:paddingBottom">@dimen/margin_small</item>
-        <item name="android:paddingTop">@dimen/margin_small</item>
-        <!-- <item name="android:background">@color/reference_title_background</item>-->
-        <item name="android:textSize">@dimen/text_medium</item>
-        <item name="fontStyle">@string/font_medium</item>
+        <item name="android:textSize">@dimen/text_size_body</item>
+        <item name="android:fontFamily">@font/lato_medium</item>
     </style>
 
     <style name="referenceTitle.verse">
@@ -56,11 +53,12 @@
     </style>
 
     <style name="referenceText" parent="AppTheme.TextView">
-        <item name="android:textSize">@dimen/text_medium</item>
+        <item name="android:textSize">@dimen/text_size_body</item>
         <item name="android:maxLines">4</item>
-        <item name="android:lineSpacingExtra">@dimen/margin_tiny</item>
+        <item name="android:lineSpacingExtra">@dimen/spacing_micro</item>
         <item name="android:clipToPadding">false</item>
         <item name="android:ellipsize">end</item>
+        <item name="android:textColor">@color/text</item>
     </style>
 
 

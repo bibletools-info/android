@@ -8,8 +8,8 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
-    <rawcomposition.bibletools.info.custom.AppTextView
-        android:id="@+id/app_title"
+    <TextView
+        android:id="@+id/appTitle"
         style="@style/referenceTitle.verse"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

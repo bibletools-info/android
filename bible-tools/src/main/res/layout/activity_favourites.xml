@@ -16,7 +16,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="rawcomposition.bibletools.info.ui.FavouritesActivity"
+        tools:context=".v1.ui.FavouritesActivity"
         tools:ignore="MergeRootFrame"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
