@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="AppTheme.Base">
-        <attr name="actionBarIconColor" format="color" />
-        <attr name="actionBarInsetStart" format="dimension" />
-        <attr name="spinnerBarInsetStart" format="dimension" />
-        <attr name="popupItemBackground" format="reference" />
-        <attr name="photoItemForeground" format="reference" />
         <attr format="reference" name="cardStyle"/>
     </declare-styleable>
 </resources>

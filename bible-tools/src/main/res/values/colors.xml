@@ -14,11 +14,12 @@
     <color name="text">#212121</color>
     <color name="secondary">#727272</color>
     <color name="hint">#B8B8B8</color>
-    <color name="dividers">#DADADA</color>
+    <color name="divider">#e0e0e0</color>
+
+    <color name="icons">#989A9A</color>
 
     <color name="window_background">#f0f3f6</color>
-    <color name="dark_window_background">#303030</color>
-    <color name="dark_card_background">#424242</color>
+    <color name="card_background">#fff</color>
 
     <integer-array name="progress_colors">
         <item>@color/theme_primary</item>

@@ -2,37 +2,6 @@
 
     <style name="AppTheme" />
 
-
-    <style name="Widget.AppTheme.ListView.DropDown" parent="Widget.AppCompat.Light.ListView.DropDown">
-        <item name="android:listSelector">?popupItemBackground</item>
-        <item name="android:divider">@null</item>
-        <item name="android:dividerHeight">0dp</item>
-    </style>
-
-    <style name="Widget.AppTheme.PopupMenu" parent="Widget.AppCompat.Light.PopupMenu">
-        <item name="android:dropDownSelector">?popupItemBackground</item>
-    </style>
-
-    <style name="TextAppearance.LargePopupMenu" parent="TextAppearance.AppCompat.Widget.PopupMenu.Large">
-        <item name="android:textColor">@android:color/black</item>
-    </style>
-
-    <style name="ActionBar.TitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textColor">#fff</item>
-        <item name="android:textSize">18sp</item>
-    </style>
-
-    <style name="ActionBarThemeOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:textColorPrimary">#fff</item>
-        <item name="colorControlNormal">?actionBarIconColor</item>
-        <item name="colorControlHighlight">#3fff</item>
-    </style>
-
-    <style name="ActionBarPopupThemeOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="Widget.AppTheme.SearchView" parent="Widget.AppCompat.Light.SearchView" />
-
-
     <style name="AppTheme.TextView">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
@@ -58,7 +27,7 @@
         <item name="android:lineSpacingExtra">@dimen/spacing_micro</item>
         <item name="android:clipToPadding">false</item>
         <item name="android:ellipsize">end</item>
-        <item name="android:textColor">@color/text</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
     </style>
 
 
@@ -84,30 +53,15 @@
         <item name="cardUseCompatPadding">true</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
         <item name="cardElevation">@dimen/margin_small</item>
+        <item name="cardBackgroundColor">@color/card_background</item>
     </style>
-
-    <style name="Widget.CardView.Light">
-        <item name="cardBackgroundColor">@android:color/white</item>
-    </style>
-
-    <style name="Widget.CardView.Dark">
-        <item name="cardBackgroundColor">@color/dark_card_background</item>
-    </style>
-
-    <!-- Backward-compatible version of ?android:attr/buttonBarStyle -->
-    <style name="ButtonBar">
-        <item name="android:paddingLeft">2dp</item>
-        <item name="android:paddingTop">5dp</item>
-        <item name="android:paddingRight">2dp</item>
-        <item name="android:paddingBottom">0dp</item>
-        <item name="android:background">@android:drawable/bottom_bar</item>
-    </style>
-
-    <!-- Backward-compatible version of ?android:attr/buttonBarButtonStyle -->
-    <style name="ButtonBarButton" />
 
     <style name="Widget.SearchView">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="floatingSearch_backgroundColor">@color/card_background</item>
+        <item name="floatingSearch_viewSuggestionItemTextColor">@color/text</item>
+        <item name="floatingSearch_hintTextColor">@color/secondary</item>
+        <item name="floatingSearch_dividerColor">@color/divider</item>
+        <item name="floatingSearch_clearBtnColor">@color/icons</item>
+        <item name="floatingSearch_menuItemIconColor">@color/icons</item>
     </style>
 </resources>

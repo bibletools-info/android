@@ -10,5 +10,8 @@ import retrofit2.http.Path
 interface BibleToolsApi {
 
     @GET("/resources/json/{ref}")
-    fun getReferences(@Path("ref") ref: String): Observable<Response<Reference>>
+    fun getReference(@Path("ref") ref: String): Observable<Response<Reference>>
+
+    @GET("/resources/json/query/{query}")
+    fun queryReference(@Path("query") query: String): Observable<Response<Reference>>
 }

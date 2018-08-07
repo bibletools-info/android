@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Light.Launcher">
-        <item name="android:windowBackground">@drawable/launcher_back</item>
-    </style>
-
     <style name="Theme.Light" parent="BaseTheme.Light">
         <!-- enable window content transitions -->
         <item name="android:windowContentTransitions">true</item>
@@ -26,5 +22,14 @@
     </style>
 
     <dimen name="status_bar_height">25dp</dimen>
+
+    <style name="Widget.CardView">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="cardElevation">1dp</item>
+        <item name="android:stateListAnimator">@animator/animator_raise</item>
+    </style>
 
 </resources>

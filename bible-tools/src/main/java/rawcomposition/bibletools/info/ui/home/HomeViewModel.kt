@@ -1,6 +1,7 @@
 package rawcomposition.bibletools.info.ui.home
 
 import android.arch.lifecycle.MutableLiveData
+import io.reactivex.Observable
 import rawcomposition.bibletools.info.data.model.Reference
 import rawcomposition.bibletools.info.data.model.ViewState
 import rawcomposition.bibletools.info.data.model.ViewStateData
@@ -18,24 +19,34 @@ class HomeViewModel @Inject constructor(private val repository: ReferencesReposi
     var reference = MutableLiveData<Reference>()
 
     init {
-        fetchReference("Rev_1.1")
+        handleResponse(repository.getLastReference())
     }
 
     override fun subscribe() {
 
     }
 
-    private fun fetchReference(ref: String) {
-        val disposable = repository.getReference(ref)
+    fun fetchReference(ref: String) {
+        handleResponse(repository.getReference(ref))
+    }
+
+    private fun handleResponse(observable: Observable<Reference>) {
+        val disposable = observable
                 .subscribeOn(rxSchedulers.network)
                 .observeOn(rxSchedulers.main)
                 .doOnSubscribe { viewState.value = ViewStateData(ViewState.LOADING) }
                 .subscribe({
-                    viewState.value = ViewStateData(ViewState.SUCCESS)
+                    viewState.value = if (it.resources.isEmpty() || it.verse == null) ViewStateData(ViewState.ERROR) else ViewStateData(ViewState.SUCCESS)
+
                     reference.value = it
-                }, {
+                }, { it ->
                     Timber.e(it)
-                    viewState.value = ViewStateData(ViewState.ERROR)
+
+                    if (it.message != null) {
+                        viewState.value = ViewStateData(ViewState.ERROR, it.message!!)
+                    } else {
+                        viewState.value = ViewStateData(ViewState.ERROR)
+                    }
                 })
 
         disposables.add(disposable)

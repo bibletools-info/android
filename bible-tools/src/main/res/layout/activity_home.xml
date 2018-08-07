@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -27,6 +28,19 @@
                 android:scrollbarStyle="outsideOverlay"
                 android:scrollbars="vertical" />
 
+            <TextView
+                android:id="@+id/errorView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/spacing_large"
+                android:fontFamily="@font/lato_medium"
+                android:gravity="center"
+                android:padding="@dimen/spacing_large"
+                android:textColor="@color/secondary"
+                android:textSize="@dimen/text_size_medium"
+                tools:text="@string/api_default_error" />
+
         </FrameLayout>
 
 
@@ -34,16 +48,14 @@
             android:id="@+id/searchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
-            app:floatingSearch_backgroundColor="@android:color/white"
+            app:floatingSearch_backgroundColor="@color/card_background"
             app:floatingSearch_close_search_on_keyboard_dismiss="true"
             app:floatingSearch_leftActionMode="showHamburger"
-            app:floatingSearch_menu="@menu/menu_search"
-            app:floatingSearch_searchBarMarginLeft="16dp"
-            app:floatingSearch_searchBarMarginRight="16dp"
+            app:floatingSearch_searchBarMarginLeft="12dp"
+            app:floatingSearch_searchBarMarginRight="12dp"
             app:floatingSearch_searchBarMarginTop="16dp"
             app:floatingSearch_searchHint="@string/search_hint"
-            app:floatingSearch_showSearchKey="false"
+            app:floatingSearch_showSearchKey="true"
             app:floatingSearch_showVoiceInput="true" />
 
     </android.support.design.widget.CoordinatorLayout>

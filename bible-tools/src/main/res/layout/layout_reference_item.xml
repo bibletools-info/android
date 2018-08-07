@@ -2,6 +2,7 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="?attr/cardStyle"
+    android:layout_marginTop="@dimen/spacing_normal"
     android:descendantFocusability="blocksDescendants">
 
     <LinearLayout
@@ -22,14 +23,13 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/spacing_micro"
-                android:paddingTop="@dimen/spacing_micro">
+                android:paddingBottom="6dp"
+                android:paddingTop="6dp">
 
                 <ImageView
                     android:id="@+id/photo"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:layout_marginLeft="@dimen/spacing_normal"
                     android:layout_marginStart="@dimen/spacing_normal"
                     android:contentDescription="@string/blank"
                     android:src="@drawable/ic_account_circle" />
@@ -37,7 +37,6 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/spacing_normal"
                     android:layout_marginStart="@dimen/spacing_normal"
                     android:layout_weight="1"
                     android:orientation="vertical"
@@ -50,7 +49,7 @@
                         android:ellipsize="end"
                         android:fontFamily="@font/lato_medium"
                         android:maxLines="1"
-                        android:textColor="@color/text"
+                        android:textColor="?android:textColorPrimary"
                         android:textSize="@dimen/text_size_small"
                         tools:text="SDA Bible Commentary" />
 
@@ -61,7 +60,7 @@
                         android:ellipsize="end"
                         android:fontFamily="@font/lato_regular"
                         android:maxLines="1"
-                        android:textColor="@color/text"
+                        android:textColor="?android:textColorSecondary"
                         android:textSize="@dimen/text_size_xsmall"
                         tools:text="SDA Bible Commentary" />
                 </LinearLayout>
@@ -69,13 +68,13 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/action_share"
+                android:id="@+id/btnShare"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/blank"
                 android:padding="@dimen/margin_tiny"
-                android:src="@drawable/ic_share_grey"
+                android:src="@drawable/ic_share"
                 android:tint="@android:color/darker_gray"
                 android:visibility="invisible" />
         </LinearLayout>

@@ -7,7 +7,7 @@
     <!-- Your product logo - 144dp color version of your app icon -->
     <item>
         <bitmap
-            android:src="@drawable/ic_brand"
+            android:src="@drawable/ic_bible_tools"
             android:gravity="center"
             android:tileMode="disabled"/>
     </item>

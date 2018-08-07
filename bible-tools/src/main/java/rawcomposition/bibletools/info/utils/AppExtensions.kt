@@ -2,6 +2,7 @@ package rawcomposition.bibletools.info.utils
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProviders
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.support.annotation.LayoutRes
@@ -18,6 +19,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.arlib.floatingsearchview.FloatingSearchView
 import rawcomposition.bibletools.info.R
 import rawcomposition.bibletools.info.di.ViewModelFactory
 
@@ -76,5 +78,13 @@ fun TextView.renderHtml(html: String) {
     } else {
         Html.fromHtml(html)
     }
+}
 
+fun FloatingSearchView.setDarkTheme() {
+    setBackgroundColor(Color.parseColor("#424242"))
+    setViewTextColor(Color.parseColor("#ffffff"))
+    setHintTextColor(Color.parseColor("#70FFFFFF"))
+    setLeftActionIconColor(Color.parseColor("#ffffff"))
+    setClearBtnColor(Color.parseColor("#ffffff"))
+    setDividerColor(Color.parseColor("#BEBEBE"))
 }

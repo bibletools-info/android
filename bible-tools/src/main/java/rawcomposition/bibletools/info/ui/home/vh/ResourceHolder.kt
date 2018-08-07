@@ -8,8 +8,10 @@ import kotlinx.android.synthetic.main.layout_reference_item.*
 import rawcomposition.bibletools.info.R
 import rawcomposition.bibletools.info.data.model.Resource
 import rawcomposition.bibletools.info.utils.glide.GlideRequests
+import rawcomposition.bibletools.info.utils.hide
 import rawcomposition.bibletools.info.utils.inflateView
 import rawcomposition.bibletools.info.utils.renderHtml
+import rawcomposition.bibletools.info.utils.show
 
 class ResourceHolder constructor(override val containerView: View) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
@@ -26,11 +28,31 @@ class ResourceHolder constructor(override val containerView: View) :
         name.text = resource.name
         content.renderHtml(resource.content ?: "")
 
+        btnShare.setOnClickListener {
+
+        }
+
         itemView.setOnClickListener {
             when (content.maxLines) {
-                MAX_LINES -> content.maxLines = Int.MAX_VALUE
-                else -> content.maxLines = MAX_LINES
+                MAX_LINES -> {
+                    content.maxLines = Int.MAX_VALUE
+                    it.isActivated = true
+                    btnShare.show()
+
+                    resource.isExpanded = true
+                }
+                else -> {
+                    btnShare.hide()
+                    content.maxLines = MAX_LINES
+                    it.isActivated = false
+
+                    resource.isExpanded = false
+                }
             }
+        }
+
+        if (content.maxLines == Int.MAX_VALUE) {
+            itemView.performClick()
         }
     }
 

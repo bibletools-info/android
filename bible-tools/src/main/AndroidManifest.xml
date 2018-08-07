@@ -11,9 +11,11 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Light">
+        android:theme="@style/Theme.BibleTools">
 
-        <activity android:name=".ui.home.HomeActivity">
+        <activity
+            android:name=".ui.SplashActivity"
+            android:theme="@style/Theme.BibleTools.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,7 +23,15 @@
             </intent-filter>
         </activity>
 
-        <activity
+        <activity android:name=".ui.home.HomeActivity">
+
+            <intent-filter>
+                <action android:name="com.google.android.gms.actions.SEARCH_ACTION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!--<activity
             android:name=".v1.ui.AppLauncherActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.Light.Launcher">
@@ -78,12 +88,7 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".v1.ui.references.MainActivity" />
-        </activity>
-
-        <activity
-            android:name=".v1.ui.VersePickerActivity"
-            android:label="@string/blank"
-            android:theme="@style/Theme.DialogActivity" />
+        </activity>-->
 
     </application>
 

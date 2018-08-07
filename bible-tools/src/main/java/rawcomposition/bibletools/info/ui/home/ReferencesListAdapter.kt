@@ -9,7 +9,8 @@ import rawcomposition.bibletools.info.ui.home.vh.SkeletonHolder
 import rawcomposition.bibletools.info.ui.home.vh.VerseHolder
 import rawcomposition.bibletools.info.utils.glide.GlideRequests
 
-class ReferencesListAdapter constructor(private val glide: GlideRequests) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ReferencesListAdapter constructor(private val glide: GlideRequests,
+                                        private val callback: ReferenceCallback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var size = 0
 
@@ -55,7 +56,7 @@ class ReferencesListAdapter constructor(private val glide: GlideRequests) : Recy
 
         when (holder) {
             is SkeletonHolder -> holder.bind()
-            is VerseHolder -> holder.bind(reference!!)
+            is VerseHolder -> holder.bind(reference!!, callback)
             is ResourceHolder -> {
                 val pos = position - 1
                 if (pos < reference?.resources?.size ?: 0) {

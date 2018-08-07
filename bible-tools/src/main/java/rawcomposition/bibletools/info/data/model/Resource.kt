@@ -17,7 +17,7 @@ class Resource {
 
     var logo: String? = null
 
-    var isCollapsed = false
+    var isExpanded = false
 
     override fun toString(): String {
         return "Resource(name=$name, author=$author, content=$content, logo=$logo)"
