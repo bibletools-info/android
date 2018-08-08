@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import io.reactivex.Observable
 import rawcomposition.bibletools.info.R
 import rawcomposition.bibletools.info.data.db.BibleToolsDb
+import rawcomposition.bibletools.info.data.exceptions.ReferenceExeption
 import rawcomposition.bibletools.info.data.model.Reference
 import rawcomposition.bibletools.info.data.prefs.AppPrefs
 import rawcomposition.bibletools.info.data.retrofit.BibleToolsApi
@@ -67,7 +68,7 @@ class ReferencesRepositoryImpl constructor(private val api: BibleToolsApi,
 
                     val reference = it.body()
 
-                    if (reference != null && reference.resources.isNotEmpty() && reference.verse != null) {
+                    if (reference?.resources != null && reference.resources?.isNotEmpty() == true && reference.verse != null) {
 
                         rxSchedulers.database.run {
                             database.referencesDao().insert(reference)
@@ -76,14 +77,14 @@ class ReferencesRepositoryImpl constructor(private val api: BibleToolsApi,
                         prefs.setLastRef(reference.shortRef)
                         Observable.just(reference)
                     } else {
-                        Observable.error(RuntimeException(String.format(context.getString(R.string.api_default_error), query)))
+                        Observable.error(ReferenceExeption(String.format(context.getString(R.string.api_default_error), query)))
                     }
                 } else {
-                    Observable.error(RuntimeException(String.format(context.getString(R.string.api_default_error), query)))
+                    Observable.error(ReferenceExeption(String.format(context.getString(R.string.api_default_error), query)))
                 }
             }
         } else {
-            Observable.error(RuntimeException(context.getString(R.string.error_no_connection)))
+            Observable.error(ReferenceExeption(context.getString(R.string.error_no_connection)))
         }
     }
 

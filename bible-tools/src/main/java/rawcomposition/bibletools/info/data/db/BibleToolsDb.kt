@@ -8,7 +8,7 @@ import android.content.Context
 import rawcomposition.bibletools.info.data.db.dao.ReferenceDao
 import rawcomposition.bibletools.info.data.model.Reference
 
-@Database(entities = [(Reference::class)], exportSchema = false, version = 2)
+@Database(entities = [(Reference::class)], exportSchema = false, version = 3)
 @TypeConverters(DataTypeConverters::class)
 abstract class BibleToolsDb : RoomDatabase() {
 

@@ -80,11 +80,22 @@ fun TextView.renderHtml(html: String) {
     }
 }
 
-fun FloatingSearchView.setDarkTheme() {
-    setBackgroundColor(Color.parseColor("#424242"))
-    setViewTextColor(Color.parseColor("#ffffff"))
-    setHintTextColor(Color.parseColor("#70FFFFFF"))
-    setLeftActionIconColor(Color.parseColor("#ffffff"))
-    setClearBtnColor(Color.parseColor("#ffffff"))
-    setDividerColor(Color.parseColor("#BEBEBE"))
+fun FloatingSearchView.setTheme(darkMode: Boolean) {
+    if (darkMode) {
+        setBackgroundColor(Color.parseColor("#424242"))
+        setViewTextColor(Color.parseColor("#ffffff"))
+        setHintTextColor(Color.parseColor("#70FFFFFF"))
+        setLeftActionIconColor(Color.parseColor("#ffffff"))
+        setClearBtnColor(Color.parseColor("#ffffff"))
+        setDividerColor(Color.parseColor("#BEBEBE"))
+        setMenuItemIconColor(Color.parseColor("#ffffff"))
+    } else {
+        setBackgroundColor(Color.parseColor("#ffffff"))
+        setViewTextColor(Color.parseColor("#212121"))
+        setHintTextColor(Color.parseColor("#727272"))
+        setLeftActionIconColor(Color.parseColor("#989A9A"))
+        setClearBtnColor(Color.parseColor("#989A9A"))
+        setDividerColor(Color.parseColor("#e0e0e0"))
+        setMenuItemIconColor(Color.parseColor("#989A9A"))
+    }
 }

@@ -2,6 +2,8 @@ package rawcomposition.bibletools.info.ui.home
 
 import android.arch.lifecycle.MutableLiveData
 import io.reactivex.Observable
+import rawcomposition.bibletools.info.R
+import rawcomposition.bibletools.info.data.exceptions.ReferenceExeption
 import rawcomposition.bibletools.info.data.model.Reference
 import rawcomposition.bibletools.info.data.model.ViewState
 import rawcomposition.bibletools.info.data.model.ViewStateData
@@ -42,16 +44,16 @@ class HomeViewModel @Inject constructor(private val repository: ReferencesReposi
                 .observeOn(rxSchedulers.main)
                 .doOnSubscribe { viewState.value = ViewStateData(ViewState.LOADING) }
                 .subscribe({
-                    viewState.value = if (it.resources.isEmpty() || it.verse == null) ViewStateData(ViewState.ERROR) else ViewStateData(ViewState.SUCCESS)
+                    viewState.value = if (it.resources?.isEmpty() == true || it.verse == null) ViewStateData(ViewState.ERROR) else ViewStateData(ViewState.SUCCESS)
 
                     reference.value = it
                 }, { it ->
                     Timber.e(it)
 
-                    if (it.message != null) {
+                    if (it is ReferenceExeption && it.message != null) {
                         viewState.value = ViewStateData(ViewState.ERROR, it.message!!)
                     } else {
-                        viewState.value = ViewStateData(ViewState.ERROR)
+                        viewState.value = ViewStateData(ViewState.ERROR, R.string.error_default)
                     }
                 })
 

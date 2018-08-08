@@ -1,6 +1,5 @@
 package rawcomposition.bibletools.info.ui.settings
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v14.preference.PreferenceFragment
 import android.support.v4.app.NavUtils
@@ -41,7 +40,7 @@ class SettingsActivity : BaseThemedActivity() {
         NavUtils.navigateUpFromSameTask(this)
     }
 
-    class SettingsFragment : PreferenceFragment(), SharedPreferences.OnSharedPreferenceChangeListener, Preference.OnPreferenceChangeListener {
+    class SettingsFragment : PreferenceFragment(), Preference.OnPreferenceChangeListener {
 
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -52,12 +51,10 @@ class SettingsActivity : BaseThemedActivity() {
 
         private fun initialize() {
 
-            preferenceManager
-                    .findPreference(getString(R.string.pref_key_version)).summary = BuildConfig.VERSION_NAME
+            preferenceManager.findPreference(getString(R.string.pref_key_version)).summary = BuildConfig.VERSION_NAME
 
 
-            preferenceManager
-                    .findPreference(getString(R.string.pref_feedback))
+            preferenceManager.findPreference(getString(R.string.pref_feedback))
                     .setOnPreferenceClickListener { _ ->
 
                         if (activity is BaseThemedActivity) {
@@ -66,8 +63,7 @@ class SettingsActivity : BaseThemedActivity() {
 
                         true
                     }
-            preferenceManager
-                    .findPreference("pref_donate")
+            preferenceManager.findPreference("pref_donate")
                     .setOnPreferenceClickListener { _ ->
 
                         if (activity is BaseThemedActivity) {
@@ -91,22 +87,6 @@ class SettingsActivity : BaseThemedActivity() {
                         true
                     }
 
-        }
-
-        override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-
-        }
-
-        override fun onResume() {
-            super.onResume()
-            preferenceScreen.sharedPreferences
-                    .registerOnSharedPreferenceChangeListener(this)
-        }
-
-        override fun onPause() {
-            super.onPause()
-            preferenceScreen.sharedPreferences
-                    .unregisterOnSharedPreferenceChangeListener(this)
         }
 
         override fun onPreferenceChange(preference: Preference, o: Any): Boolean {

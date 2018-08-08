@@ -51,12 +51,13 @@
             app:floatingSearch_backgroundColor="@color/card_background"
             app:floatingSearch_close_search_on_keyboard_dismiss="true"
             app:floatingSearch_leftActionMode="showHamburger"
+            app:floatingSearch_menu="@menu/menu_search"
             app:floatingSearch_searchBarMarginLeft="12dp"
             app:floatingSearch_searchBarMarginRight="12dp"
             app:floatingSearch_searchBarMarginTop="16dp"
             app:floatingSearch_searchHint="@string/search_hint"
-            app:floatingSearch_showSearchKey="true"
             app:floatingSearch_showMoveSuggestionUp="true"
+            app:floatingSearch_showSearchKey="true"
             app:floatingSearch_showVoiceInput="true" />
 
     </android.support.design.widget.CoordinatorLayout>

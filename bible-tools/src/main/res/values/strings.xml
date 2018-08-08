@@ -19,6 +19,7 @@
 
     <string name="blank"> </string>
 
+    <string name="title_about">About</string>
     <string name="label_email">Send with:</string>
     <string name="title_home">Home</string>
     <string name="title_favourites">Favourites</string>
@@ -40,6 +41,7 @@
 
     <string name="search_hint">Enter reference</string>
     <string name="api_default_error">No resources were found matching&lt;br/> "&lt;b>'%s'&lt;/b>."</string>
+    <string name="error_default">&lt;b>Something went wrong!&lt;/b>&lt;br/>&lt;br/>Please try that again.</string>
     <string name="error_no_connection">&lt;b>No Internet Connection!&lt;/b>&lt;br/>&lt;br/>Check your network connection and try again.</string>
 
     <string name="settings_about_preference">ABOUT</string>

@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
 data class Reference(@PrimaryKey @SerializedName("short_ref") var shortRef: String) {
 
     @SerializedName("main_resources")
-    var resources = arrayListOf<Resource>()
+    var resources: ArrayList<Resource>? = null
 
     @SerializedName("text_ref")
     var textRef: String? = null

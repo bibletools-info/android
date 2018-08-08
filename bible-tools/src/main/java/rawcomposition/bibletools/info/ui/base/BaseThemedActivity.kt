@@ -6,6 +6,8 @@ import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.support.customtabs.CustomTabsIntent
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AppCompatDelegate
 import android.view.MenuItem
@@ -15,6 +17,7 @@ import rawcomposition.bibletools.info.BuildConfig
 import rawcomposition.bibletools.info.R
 import rawcomposition.bibletools.info.data.prefs.AppPrefs
 import javax.inject.Inject
+
 
 abstract class BaseThemedActivity : AppCompatActivity() {
 
@@ -74,6 +77,23 @@ abstract class BaseThemedActivity : AppCompatActivity() {
     }
 
     fun donateClicked() {
+
+    }
+
+    fun showWebUrl(url: String) {
+        val builder = CustomTabsIntent.Builder()
+                .setToolbarColor(ContextCompat.getColor(this, R.color.theme_primary))
+                .setShowTitle(true)
+                .enableUrlBarHiding()
+                .setStartAnimations(this, R.anim.slide_up, android.R.anim.fade_out)
+                .setExitAnimations(this, android.R.anim.fade_in, R.anim.slide_down)
+
+        try {
+            val intent = builder.build()
+            intent.launchUrl(this, Uri.parse(url))
+        } catch (ex: Exception){
+
+        }
 
     }
 }

@@ -9,4 +9,7 @@
     <color name="divider">#757575</color>
 
     <color name="card_background">#424242</color>
+
+    <color name="scrim_center">#98424242</color>
+    <color name="scrim_start">#424242</color>
 </resources>

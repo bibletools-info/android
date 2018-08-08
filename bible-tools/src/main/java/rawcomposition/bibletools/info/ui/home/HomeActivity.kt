@@ -1,8 +1,10 @@
 package rawcomposition.bibletools.info.ui.home
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
+import android.speech.RecognizerIntent
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
@@ -22,6 +24,7 @@ import rawcomposition.bibletools.info.utils.*
 import rawcomposition.bibletools.info.utils.glide.GlideApp
 import timber.log.Timber
 import javax.inject.Inject
+
 
 class HomeActivity : BaseThemedActivity(), ReferenceCallback {
 
@@ -54,6 +57,11 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
 
                         it.errorMessage?.let { message ->
                             errorView.renderHtml(message)
+                            errorView.show()
+                        }
+
+                        it.errorRes?.let { errorRes ->
+                            errorView.renderHtml(getString(errorRes))
                             errorView.show()
                         }
 
@@ -97,9 +105,7 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
 
         })
 
-        if (appPrefs.isNightMode()) {
-            searchView.setDarkTheme()
-        }
+        searchView.setTheme(appPrefs.isNightMode())
 
         val suggestions = arrayListOf<SearchSuggestion>()
         for (book in resources.getStringArray(R.array.bible_books_full)) {
@@ -118,6 +124,12 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
             searchView.swapSuggestions(list)
         }
 
+        searchView.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.action_voice -> displaySpeechRecognizer()
+            }
+        }
+
         navView.setNavigationItemSelectedListener {
             drawerLayout.closeDrawers()
 
@@ -130,9 +142,11 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
                     true
                 }
                 R.id.action_feedback -> {
+                    sendFeedback()
                     true
                 }
-                R.id.action_help -> {
+                R.id.action_about -> {
+                    showWebUrl("https://bibletools.info/about/info")
                     true
                 }
                 R.id.action_donate -> {
@@ -142,6 +156,8 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
 
             }
         }
+
+        navView.menu.findItem(R.id.nam_home).isChecked = true
 
         listAdapter = ReferencesListAdapter(GlideApp.with(this), this)
 
@@ -189,7 +205,39 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
         viewModel.fetchReference(next)
     }
 
+    override fun goToReference(ref: String) {
+        viewModel.fetchReference(ref)
+    }
+
+    override fun goToLink(link: String) {
+        showWebUrl(link)
+    }
+
+    private fun displaySpeechRecognizer() {
+        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+
+        intent.resolveActivity(packageManager)?.let {
+            startActivityForResult(intent, SPEECH_REQUEST_CODE)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == SPEECH_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
+            val results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+            if (results.isNotEmpty()) {
+                val query = results.first()
+                searchView.setSearchText(query)
+
+                viewModel.fetchReference(query)
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
     companion object {
         private const val VERSE_KEY = "verse"
+        private const val SPEECH_REQUEST_CODE = 1234
     }
 }
