@@ -48,4 +48,8 @@
         <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
+    <style name="Theme.BibleTools.Settings">
+        <item name="colorAccent">@color/theme_primary</item>
+    </style>
+
 </resources>

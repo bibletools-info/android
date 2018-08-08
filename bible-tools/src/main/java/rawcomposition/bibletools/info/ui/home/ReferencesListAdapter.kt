@@ -18,10 +18,11 @@ class ReferencesListAdapter constructor(private val glide: GlideRequests,
         set(value) {
             field = value
 
-            if (value) {
-                size = 6
-                notifyDataSetChanged()
-            }
+            size = if (value) {
+                6
+            } else 0
+
+            notifyDataSetChanged()
         }
 
     var reference: Reference? = null

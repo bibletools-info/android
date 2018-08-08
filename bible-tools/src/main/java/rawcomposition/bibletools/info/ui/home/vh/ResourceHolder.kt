@@ -58,7 +58,7 @@ class ResourceHolder constructor(override val containerView: View) :
 
     companion object {
         private const val MAX_LINES = 4
-        private const val LOGO_URL = "http://bibletools.info/assets/img/authors/%s.png"
+        private const val LOGO_URL = "https://bibletools.info/assets/img/authors/%s.png"
 
         fun inflate(parent: ViewGroup):
                 ResourceHolder = ResourceHolder(inflateView(R.layout.layout_reference_item, parent, false))

@@ -4,13 +4,11 @@
     <string-array name="base_theme_entries">
         <item>Light</item>
         <item>Dark</item>
-        <item>Automatic</item>
     </string-array>
 
     <string-array name="base_theme_values">
         <item>zero</item>
         <item>one</item>
-        <item>two</item>
     </string-array>
 
     <string-array name="font_weight_entries">
@@ -25,13 +23,6 @@
         <item>reg</item>
         <item>med</item>
         <item>hev</item>
-    </string-array>
-
-    <string-array name="history_entries">
-        <item>5</item>
-        <item>10</item>
-        <item>15</item>
-        <item>20</item>
     </string-array>
 
     <string-array name="available_donations_sku">

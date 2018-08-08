@@ -1,7 +1,11 @@
 package rawcomposition.bibletools.info.ui.home
 
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.StaggeredGridLayoutManager
 import com.arlib.floatingsearchview.FloatingSearchView
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
 import kotlinx.android.synthetic.main.activity_home.*
@@ -13,8 +17,10 @@ import rawcomposition.bibletools.info.data.model.ViewState
 import rawcomposition.bibletools.info.di.ViewModelFactory
 import rawcomposition.bibletools.info.ui.base.BaseThemedActivity
 import rawcomposition.bibletools.info.ui.custom.SearchViewAttachedListener
+import rawcomposition.bibletools.info.ui.settings.SettingsActivity
 import rawcomposition.bibletools.info.utils.*
 import rawcomposition.bibletools.info.utils.glide.GlideApp
+import timber.log.Timber
 import javax.inject.Inject
 
 class HomeActivity : BaseThemedActivity(), ReferenceCallback {
@@ -46,13 +52,18 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
                         searchView.hideProgress()
                         listAdapter.isLoading = false
 
-                        errorView.renderHtml(String.format(getString(R.string.api_default_error), searchView.query))
-                        errorView.show()
+                        it.errorMessage?.let { message ->
+                            errorView.renderHtml(message)
+                            errorView.show()
+                        }
+
                     }
                     ViewState.SUCCESS -> {
                         searchView.hideProgress()
                         errorView.hide()
                         listAdapter.isLoading = false
+                    }
+                    else -> {
                     }
                 }
             }
@@ -62,6 +73,8 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
             listAdapter.reference = it
         })
 
+        checkDeepLink()
+
     }
 
     private fun initUi() {
@@ -70,7 +83,6 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
 
         searchView.attachNavigationDrawerToMenuButton(drawerLayout)
         searchView.setDimBackground(false)
-        searchView.setShowMoveUpSuggestion(true)
         searchView.setOnSearchListener(object : FloatingSearchView.OnSearchListener {
             override fun onSearchAction(currentQuery: String?) {
 
@@ -85,7 +97,7 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
 
         })
 
-        if (darkTheme) {
+        if (appPrefs.isNightMode()) {
             searchView.setDarkTheme()
         }
 
@@ -94,14 +106,14 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
             suggestions.add(Book(book))
         }
 
-        searchView.setOnQueryChangeListener { _, newQuery ->
+        searchView.setOnQueryChangeListener { _, query ->
 
-            if (newQuery.isNullOrEmpty()) {
+            if (query.isNullOrEmpty()) {
                 searchView.swapSuggestions(emptyList())
                 return@setOnQueryChangeListener
             }
 
-            val list = suggestions.filter { it.body.contains(newQuery, true) }.sortedBy { it.body }
+            val list = suggestions.filter { it.body.contains(query, true) }.sortedBy { it.body }
 
             searchView.swapSuggestions(list)
         }
@@ -114,6 +126,7 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
                     true
                 }
                 R.id.action_settings -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
                     true
                 }
                 R.id.action_feedback -> {
@@ -132,10 +145,35 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
 
         listAdapter = ReferencesListAdapter(GlideApp.with(this), this)
 
+        val manager: RecyclerView.LayoutManager
+
+        if (resources.getBoolean(R.bool.is_tablet)) {
+            manager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            manager.gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+        } else {
+            manager = LinearLayoutManager(this)
+        }
+
         recycler.apply {
-            vertical()
+            layoutManager = manager
             adapter = listAdapter
             addOnScrollListener(SearchViewAttachedListener(searchView))
+        }
+    }
+
+    private fun checkDeepLink() {
+        val intent = intent
+        val data = intent.data
+
+        if (data != null) {
+            val verse = data.getQueryParameter(VERSE_KEY)
+            Timber.d("VERSE: $verse")
+
+            viewModel.initReference(verse)
+
+            searchView.setSearchText(verse)
+        } else {
+            viewModel.initReference(null)
         }
     }
 
@@ -149,5 +187,9 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
 
     override fun goToNext(next: String) {
         viewModel.fetchReference(next)
+    }
+
+    companion object {
+        private const val VERSE_KEY = "verse"
     }
 }

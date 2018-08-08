@@ -19,17 +19,15 @@ class AppPrefsImpl constructor(context: Context) : AppPrefs {
     }
 
     override fun isNightMode(): Boolean {
-        return prefs.getBoolean(KEY_NIGHT_MODE, false)
-    }
-
-    override fun setNightMode(enable: Boolean) {
-        prefs.edit()
-                .putBoolean(KEY_NIGHT_MODE, enable)
-                .apply()
+        val prefVal = prefs.getString(KEY_PREF_THEME, "zero")
+        return when (prefVal) {
+            "one" -> true
+            else -> false
+        }
     }
 
     companion object {
         private const val KEY_LAST_REF = "KEY_LAST_REF"
-        private const val KEY_NIGHT_MODE = "KEY_NIGHT_MODE"
+        private const val KEY_PREF_THEME = "pref_theme"
     }
 }

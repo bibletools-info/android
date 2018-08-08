@@ -4,13 +4,7 @@
     <string name="base_api_url">http://bibletools.info</string>
     <string name="base_maps_url">http://bibletools.info/assets/img/maps/</string>
 
-    <string name="pref_font_light">Lato-Light.ttf</string>
-    <string name="pref_font_regular">Lato-Regular.ttf</string>
-    <string name="pref_font_medium">Lato-Medium.ttf</string>
-    <string name="pref_font_heavy">Lato-Heavy.ttf</string>
-
     <string name="app_email">akjackson1@gmail.com</string>
-    <string name="app_full_name">Bible Tools.info</string>
     <string name="app_help">http://bibletools.info/about</string>
     <string name="app_host">path</string>
     <string name="app_scheme">bibletools</string>

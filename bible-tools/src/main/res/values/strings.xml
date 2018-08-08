@@ -40,7 +40,7 @@
 
     <string name="search_hint">Enter reference</string>
     <string name="api_default_error">No resources were found matching&lt;br/> "&lt;b>'%s'&lt;/b>."</string>
-    <string name="error_no_connection">No Internet Connection</string>
+    <string name="error_no_connection">&lt;b>No Internet Connection!&lt;/b>&lt;br/>&lt;br/>Check your network connection and try again.</string>
 
     <string name="settings_about_preference">ABOUT</string>
     <string name="settings_cache">CACHE</string>

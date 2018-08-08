@@ -7,6 +7,4 @@ interface AppPrefs {
     fun setLastRef(ref: String)
 
     fun isNightMode(): Boolean
-
-    fun setNightMode(enable: Boolean)
 }

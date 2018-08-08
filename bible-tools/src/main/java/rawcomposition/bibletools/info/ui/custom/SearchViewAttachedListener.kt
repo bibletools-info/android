@@ -2,7 +2,9 @@ package rawcomposition.bibletools.info.ui.custom
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import com.arlib.floatingsearchview.FloatingSearchView
@@ -14,6 +16,17 @@ class SearchViewAttachedListener(private val searchView: FloatingSearchView) : R
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
 
         if (dy > 0 && !animating) { //hide
+
+            val manager = recyclerView.layoutManager
+            if (manager is LinearLayoutManager && manager.findFirstVisibleItemPosition() < 1) {
+                return
+            } else if (manager is StaggeredGridLayoutManager) {
+                val position = manager.findFirstVisibleItemPositions(null)[0]
+                if (position < 1) {
+                    return
+                }
+            }
+
             searchView.animate()
                     .translationY(-searchView.height.toFloat())
                     .setListener(object : AnimatorListenerAdapter() {

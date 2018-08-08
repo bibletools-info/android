@@ -74,15 +74,16 @@ class ReferencesRepositoryImpl constructor(private val api: BibleToolsApi,
                         }
 
                         prefs.setLastRef(reference.shortRef)
+                        Observable.just(reference)
+                    } else {
+                        Observable.error(RuntimeException(String.format(context.getString(R.string.api_default_error), query)))
                     }
-
-                    Observable.just(reference)
                 } else {
-                    Observable.error(RuntimeException(""))
+                    Observable.error(RuntimeException(String.format(context.getString(R.string.api_default_error), query)))
                 }
             }
         } else {
-            Observable.error(Exception(context.getString(R.string.error_no_connection)))
+            Observable.error(RuntimeException(context.getString(R.string.error_no_connection)))
         }
     }
 

@@ -14,7 +14,7 @@ android {
         versionCode rootProject.ext.versionCode as Integer
         versionName rootProject.ext.versionName as String
 
-        buildConfigField "String", "URL_BASE", '"http://bibletools.info"'
+        buildConfigField "String", "URL_BASE", '"https://bibletools.info"'
     }
 
     signingConfigs {

@@ -19,20 +19,6 @@
             android:summary="@string/summary_font_weight"
             android:title="@string/title_font_weght" />
 
-        <android.support.v7.preference.ListPreference
-            android:defaultValue="10"
-            android:entries="@array/history_entries"
-            android:entryValues="@array/history_entries"
-            android:key="@string/pref_key_history_entries"
-            android:summary="@string/settings_history_count_summary"
-            android:title="@string/settings_history_count_title" />
-
-        <android.support.v7.preference.SwitchPreferenceCompat
-            android:defaultValue="true"
-            android:key="@string/pref_key_cache"
-            android:summary="@string/settings_cache_pref_summary"
-            android:title="@string/settings_cache_pref_title" />
-
     </android.support.v7.preference.PreferenceCategory>
 
     <android.support.v7.preference.PreferenceCategory android:title="@string/settings_support">

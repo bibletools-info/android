@@ -1,6 +1,7 @@
 package rawcomposition.bibletools.info.ui.home.vh
 
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.extensions.LayoutContainer
@@ -14,6 +15,11 @@ class VerseHolder constructor(override val containerView: View) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
 
     fun bind(reference: Reference, callback: Callback) {
+
+        if (itemView.layoutParams is StaggeredGridLayoutManager.LayoutParams) {
+            val layoutParams = itemView.layoutParams as StaggeredGridLayoutManager.LayoutParams
+            layoutParams.isFullSpan = true
+        }
 
         shortRef.text = reference.textRef ?: ""
         textRef.renderHtml(reference.verse ?: "")

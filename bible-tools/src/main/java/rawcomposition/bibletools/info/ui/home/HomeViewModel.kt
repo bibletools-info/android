@@ -18,12 +18,18 @@ class HomeViewModel @Inject constructor(private val repository: ReferencesReposi
     var viewState = SingleLiveEvent<ViewStateData>()
     var reference = MutableLiveData<Reference>()
 
-    init {
-        handleResponse(repository.getLastReference())
-    }
-
     override fun subscribe() {
 
+    }
+
+    /**
+     * Only called when view initializes
+     * with deeplink query or null
+     */
+    fun initReference(query: String?) {
+        query?.let {
+            fetchReference(it)
+        } ?: handleResponse(repository.getLastReference())
     }
 
     fun fetchReference(ref: String) {

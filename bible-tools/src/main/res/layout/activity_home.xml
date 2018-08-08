@@ -56,6 +56,7 @@
             app:floatingSearch_searchBarMarginTop="16dp"
             app:floatingSearch_searchHint="@string/search_hint"
             app:floatingSearch_showSearchKey="true"
+            app:floatingSearch_showMoveSuggestionUp="true"
             app:floatingSearch_showVoiceInput="true" />
 
     </android.support.design.widget.CoordinatorLayout>

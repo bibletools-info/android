@@ -29,31 +29,6 @@
                 <action android:name="com.google.android.gms.actions.SEARCH_ACTION" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity>
-
-        <!--<activity
-            android:name=".v1.ui.AppLauncherActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Light.Launcher">
-
-        </activity>
-        <activity android:name=".v1.ui.references.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="bibletools.info"
-                    android:scheme="http" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.google.android.gms.actions.SEARCH_ACTION" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".v1.ui.LegacyLinkInterceptActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -66,13 +41,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".v1.ui.SettingsActivity"
+            android:name=".ui.settings.SettingsActivity"
             android:label="@string/action_settings"
-            android:theme="@style/Theme.Light.Settings">
+            android:theme="@style/Theme.BibleTools.Settings">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".v1.ui.references.MainActivity" />
+                android:value="rawcomposition.bibletools.info.ui.home.HomeActivity" />
         </activity>
+
+        <!--
         <activity
             android:name=".v1.ui.FavouritesActivity"
             android:label="@string/title_favourites">
