@@ -110,12 +110,22 @@ class ReferencesRepositoryImpl constructor(private val api: BibleToolsApi,
         return activeNetwork != null && activeNetwork.isConnected
     }
 
-    override fun submitHelpful(resourceId: String): Completable {
+    override fun submitHelpful(resourceId: String, reference: Reference): Completable {
         return api.submitHelpful(resourceId)
+                .doOnSubscribe {
+                    rxSchedulers.database.run {
+                        database.referencesDao().update(reference)
+                    }
+                }
     }
 
-    override fun submitUnHelpful(resourceId: String): Completable {
+    override fun submitUnHelpful(resourceId: String, reference: Reference): Completable {
         return api.submitUnHelpful(resourceId)
+                .doOnSubscribe {
+                    rxSchedulers.database.run {
+                        database.referencesDao().update(reference)
+                    }
+                }
     }
 
     companion object {

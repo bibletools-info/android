@@ -12,18 +12,21 @@ import android.view.ViewGroup
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.layout_reference_item.*
 import rawcomposition.bibletools.info.R
+import rawcomposition.bibletools.info.data.model.Helpful
 import rawcomposition.bibletools.info.data.model.Reference.Companion.MAP
 import rawcomposition.bibletools.info.data.model.Resource
 import rawcomposition.bibletools.info.utils.glide.GlideRequests
 import rawcomposition.bibletools.info.utils.hide
 import rawcomposition.bibletools.info.utils.inflateView
+import rawcomposition.bibletools.info.utils.isVisible
 import rawcomposition.bibletools.info.utils.show
 import timber.log.Timber
+
 
 class ResourceHolder constructor(override val containerView: View) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-    fun bind(resource: Resource, glide: GlideRequests, callback: Callback) {
+    fun bind(resource: Resource, glide: GlideRequests, callback: Callback, position: Int) {
 
         if (resource.type == null) {
             glide.load(String.format(LOGO_URL, resource.logo))
@@ -91,20 +94,50 @@ class ResourceHolder constructor(override val containerView: View) :
                     resource.isExpanded = true
 
                     gradient.hide()
+
+                    if (resource.rating == null) {
+                        ratingContainer.show()
+                    }
                 }
                 else -> {
+                    if (ratingContainer.isVisible()) {
+                        ratingContainer.hide()
+                    }
+
                     content.maxLines = MAX_LINES
                     it.isActivated = false
 
                     resource.isExpanded = false
 
                     gradient.show()
+
+                    callback.itemCollapsed(position, itemView)
                 }
             }
         }
 
         gradient.setOnClickListener { itemView.performClick() }
         content.setOnClickListener { itemView.performClick() }
+
+        btnRatingPositive.setOnClickListener {
+            txtRating.setText(R.string.msg_helpful_submitted)
+
+            btnRatingPositive.hide()
+            btnRatingNegative.hide()
+
+            resource.rating = Helpful.POSITIVE
+            callback.submitHelpful(resource)
+        }
+
+        btnRatingNegative.setOnClickListener {
+            txtRating.setText(R.string.msg_unhelpful_submitted)
+
+            btnRatingPositive.hide()
+            btnRatingNegative.hide()
+
+            resource.rating = Helpful.NEGATIVE
+            callback.submitUnHelpful(resource)
+        }
 
         if (content.maxLines == Int.MAX_VALUE) {
             itemView.performClick()
@@ -148,9 +181,11 @@ class ResourceHolder constructor(override val containerView: View) :
 
         fun viewMap(animView: View, url: String)
 
-        fun submitHelpful(resourceId: String)
+        fun submitHelpful(resource: Resource)
 
-        fun submitUnHelpful(resourceId: String)
+        fun submitUnHelpful(resource: Resource)
+
+        fun itemCollapsed(position: Int, childView: View)
     }
 
     companion object {

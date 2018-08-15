@@ -10,7 +10,7 @@ interface ReferencesRepository {
 
     fun getReference(ref: String): Observable<Reference>
 
-    fun submitHelpful(resourceId: String): Completable
+    fun submitHelpful(resourceId: String, reference: Reference): Completable
 
-    fun submitUnHelpful(resourceId: String): Completable
+    fun submitUnHelpful(resourceId: String, reference: Reference): Completable
 }

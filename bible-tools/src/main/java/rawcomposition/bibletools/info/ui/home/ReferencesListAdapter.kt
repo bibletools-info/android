@@ -71,7 +71,7 @@ class ReferencesListAdapter constructor(private val glide: GlideRequests,
                 val pos = position - 1
 
                 if (pos < resources.size) {
-                    holder.bind(resources[pos], glide, callback)
+                    holder.bind(resources[pos], glide, callback, position)
                 }
             }
         }

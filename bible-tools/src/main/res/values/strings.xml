@@ -17,7 +17,7 @@
     <string name="action_yes">Yes</string>
     <string name="action_donate">Donate</string>
 
-    <string name="blank"> </string>
+    <string name="blank"/>
 
     <string name="title_about">About</string>
     <string name="label_email">Send with:</string>
@@ -59,5 +59,8 @@
     <string name="summary_base_theme">Choose your base theme (light/dark)</string>
     <string name="summary_font_weight">Adjust font weight</string>
 
+    <string name="msg_helpful_title">Was this helpful?</string>
+    <string name="msg_helpful_submitted">Thanks! We may rank this resource higher next time.</string>
+    <string name="msg_unhelpful_submitted">Good to know, we may put this resource further down the list.</string>
     <string name="msg_how_it_works">Enter any Bible verse in the format <b>\'Genesis 1:1\'</b> and click on the Search icon on your keyboard to perform the search.\nAll References will load up as collapsed cards, Tap on the card to expand or collapse it.\n</string>
 </resources>

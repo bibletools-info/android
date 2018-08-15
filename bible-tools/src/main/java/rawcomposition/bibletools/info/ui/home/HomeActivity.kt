@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.layout_nav_header.view.*
 import rawcomposition.bibletools.info.R
 import rawcomposition.bibletools.info.data.model.Book
 import rawcomposition.bibletools.info.data.model.Reference
+import rawcomposition.bibletools.info.data.model.Resource
 import rawcomposition.bibletools.info.data.model.ViewState
 import rawcomposition.bibletools.info.di.ViewModelFactory
 import rawcomposition.bibletools.info.ui.base.BaseThemedActivity
@@ -26,7 +27,6 @@ import rawcomposition.bibletools.info.ui.settings.SettingsActivity
 import rawcomposition.bibletools.info.utils.*
 import rawcomposition.bibletools.info.utils.glide.GlideApp
 import javax.inject.Inject
-
 
 class HomeActivity : BaseThemedActivity(), ReferenceCallback {
 
@@ -177,11 +177,16 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
 
         scrollView.setOnScrollChangeListener(SearchScrollListener(searchView))
         ViewCompat.setNestedScrollingEnabled(recycler, false)
+        scrollView.isSmoothScrollingEnabled = true
 
     }
 
     override fun onEnterAnimationComplete() {
         super.onEnterAnimationComplete()
+
+        if (listAdapter.itemCount > 0 && !listAdapter.isLoading) {
+            return
+        }
 
         val intent = intent
         val data = intent.data
@@ -221,12 +226,17 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
         MapDetailActivity.view(this, animView, url)
     }
 
-    override fun submitHelpful(resourceId: String) {
-        viewModel.submitHelpful(resourceId)
+    override fun submitHelpful(resource: Resource) {
+        viewModel.submitHelpful(resource)
     }
 
-    override fun submitUnHelpful(resourceId: String) {
-        viewModel.submitUnHelpful(resourceId)
+    override fun submitUnHelpful(resource: Resource) {
+        viewModel.submitUnHelpful(resource)
+    }
+
+    override fun itemCollapsed(position: Int, childView: View) {
+        //TODO: Investigate how to scroll to collapsed position
+        // scrollView.smoothScrollTo(0, position - 1)
     }
 
     private fun displaySpeechRecognizer() {

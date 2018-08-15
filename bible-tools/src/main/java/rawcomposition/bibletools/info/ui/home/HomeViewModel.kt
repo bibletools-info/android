@@ -4,9 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import io.reactivex.Observable
 import rawcomposition.bibletools.info.R
 import rawcomposition.bibletools.info.data.exceptions.ReferenceExeption
-import rawcomposition.bibletools.info.data.model.Reference
-import rawcomposition.bibletools.info.data.model.ViewState
-import rawcomposition.bibletools.info.data.model.ViewStateData
+import rawcomposition.bibletools.info.data.model.*
 import rawcomposition.bibletools.info.data.repository.ReferencesRepository
 import rawcomposition.bibletools.info.ui.base.RxAwareViewModel
 import rawcomposition.bibletools.info.ui.base.SingleLiveEvent
@@ -60,8 +58,12 @@ class HomeViewModel @Inject constructor(private val repository: ReferencesReposi
         disposables.add(disposable)
     }
 
-    fun submitHelpful(resourceId: String) {
-        val disposable = repository.submitHelpful(resourceId)
+    fun submitHelpful(resource: Resource) {
+        val ref = reference.value ?: return
+
+        ref.resources?.find { it.id == resource.id }?.rating = Helpful.POSITIVE
+
+        val disposable = repository.submitHelpful(resource.id, ref)
                 .subscribeOn(rxSchedulers.network)
                 .observeOn(rxSchedulers.main)
                 .subscribe({}, { Timber.e(it) })
@@ -70,8 +72,13 @@ class HomeViewModel @Inject constructor(private val repository: ReferencesReposi
 
     }
 
-    fun submitUnHelpful(resourceId: String) {
-        val disposable = repository.submitUnHelpful(resourceId)
+    fun submitUnHelpful(resource: Resource) {
+
+        val ref = reference.value ?: return
+
+        ref.resources?.find { it.id == resource.id }?.rating = Helpful.NEGATIVE
+
+        val disposable = repository.submitUnHelpful(resource.id, ref)
                 .subscribeOn(rxSchedulers.network)
                 .observeOn(rxSchedulers.main)
                 .subscribe({}, { Timber.e(it) })

@@ -21,4 +21,6 @@ data class Resource(val id: String) {
 
     var mapUrl: String? = null
 
+    var rating: Int? = null
+
 }
