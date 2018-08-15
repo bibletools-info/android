@@ -10,6 +10,9 @@ data class Reference(@PrimaryKey @SerializedName("short_ref") var shortRef: Stri
     @SerializedName("main_resources")
     var resources: ArrayList<Resource>? = null
 
+    @SerializedName("sidebar_resources")
+    var sidebarResources: ArrayList<Resource>? = null
+
     @SerializedName("text_ref")
     var textRef: String? = null
 
@@ -19,4 +22,9 @@ data class Reference(@PrimaryKey @SerializedName("short_ref") var shortRef: Stri
     var navigation: Navigation? = null
 
     var favorite: Boolean = false
+
+    companion object {
+        const val MAP = "map"
+        const val CROSS_REF = "tsk-panel"
+    }
 }

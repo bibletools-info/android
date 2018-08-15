@@ -59,4 +59,23 @@ class HomeViewModel @Inject constructor(private val repository: ReferencesReposi
 
         disposables.add(disposable)
     }
+
+    fun submitHelpful(resourceId: String) {
+        val disposable = repository.submitHelpful(resourceId)
+                .subscribeOn(rxSchedulers.network)
+                .observeOn(rxSchedulers.main)
+                .subscribe({}, { Timber.e(it) })
+
+        disposables.add(disposable)
+
+    }
+
+    fun submitUnHelpful(resourceId: String) {
+        val disposable = repository.submitUnHelpful(resourceId)
+                .subscribeOn(rxSchedulers.network)
+                .observeOn(rxSchedulers.main)
+                .subscribe({}, { Timber.e(it) })
+
+        disposables.add(disposable)
+    }
 }

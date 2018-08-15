@@ -23,7 +23,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.home.HomeActivity">
+        <activity
+            android:name=".ui.home.HomeActivity">
 
             <intent-filter>
                 <action android:name="com.google.android.gms.actions.SEARCH_ACTION" />
@@ -48,6 +49,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="rawcomposition.bibletools.info.ui.home.HomeActivity" />
         </activity>
+        <activity
+            android:name=".ui.home.map.MapDetailActivity"
+            android:label="@string/blank"
+            android:theme="@style/Theme.BibleTools.Map" />
 
         <!--
         <activity

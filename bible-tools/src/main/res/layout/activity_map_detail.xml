@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#000">
 
-    <ImageView
+    <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/photo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,10 +15,10 @@
         tools:src="#000" />
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/app_action_bar"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/status_bar_height"
+        android:fitsSystemWindows="true"
         app:navigationIcon="@drawable/ic_close_white" />
 
 

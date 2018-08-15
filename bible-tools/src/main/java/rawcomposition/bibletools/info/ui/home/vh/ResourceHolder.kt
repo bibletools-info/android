@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.layout_reference_item.*
 import rawcomposition.bibletools.info.R
+import rawcomposition.bibletools.info.data.model.Reference.Companion.MAP
 import rawcomposition.bibletools.info.data.model.Resource
 import rawcomposition.bibletools.info.utils.glide.GlideRequests
 import rawcomposition.bibletools.info.utils.hide
@@ -24,32 +25,64 @@ class ResourceHolder constructor(override val containerView: View) :
 
     fun bind(resource: Resource, glide: GlideRequests, callback: Callback) {
 
-        glide.load(String.format(LOGO_URL, resource.logo))
-                .placeholder(R.drawable.ic_account_circle)
-                .error(R.drawable.ic_account_circle)
-                .circleCrop()
-                .into(photo)
+        if (resource.type == null) {
+            glide.load(String.format(LOGO_URL, resource.logo))
+                    .placeholder(R.drawable.ic_account_circle)
+                    .error(R.drawable.ic_account_circle)
+                    .circleCrop()
+                    .into(photo)
 
-        author.text = resource.author
-        name.text = resource.name
+            author.text = resource.author
+            name.text = resource.source
 
-        setContentHtml(resource.content ?: "") {
+            photo.show()
+            author.show()
+            name.show()
+        } else {
+            photo.hide()
+            name.hide()
 
-            if (it.startsWith("http")) {
+            author.text = resource.source
+        }
 
-                callback.goToLink(it)
 
-            } else if (it.startsWith("/")) {
+        when (resource.type) {
+            MAP -> {
+                contentContainer.hide()
+                map.show()
 
-                val ref = it.substring(it.indexOf("/") + 1)
+                glide.load(resource.mapUrl)
+                        .into(map)
+            }
+            else -> {
+                contentContainer.show()
+                map.hide()
 
-                if (ref.isNotEmpty()) {
-                    callback.goToReference(ref)
+                setContentHtml(resource.content ?: "") {
+
+                    if (it.startsWith("http")) {
+
+                        callback.goToLink(it)
+
+                    } else if (it.startsWith("/")) {
+
+                        val ref = it.substring(it.indexOf("/") + 1)
+
+                        if (ref.isNotEmpty()) {
+                            callback.goToReference(ref)
+                        }
+                    }
                 }
             }
         }
 
         itemView.setOnClickListener {
+
+            if (resource.type == MAP) {
+                callback.viewMap(map, resource.mapUrl!!)
+                return@setOnClickListener
+            }
+
             when (content.maxLines) {
                 MAX_LINES -> {
                     content.maxLines = Int.MAX_VALUE
@@ -112,6 +145,12 @@ class ResourceHolder constructor(override val containerView: View) :
         fun goToReference(ref: String)
 
         fun goToLink(link: String)
+
+        fun viewMap(animView: View, url: String)
+
+        fun submitHelpful(resourceId: String)
+
+        fun submitUnHelpful(resourceId: String)
     }
 
     companion object {

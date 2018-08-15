@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.BibleTools" parent="BaseTheme.Dark" />
+    <style name="BaseTheme.Dark" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:windowBackground">@color/window_background</item>
+
+        <item name="colorPrimary">@color/theme_primary</item>
+        <item name="colorPrimaryDark">@color/theme_primary_dark</item>
+        <item name="colorAccent">@color/theme_accent</item>
+
+        <item name="android:textColorPrimary">@color/text</item>
+        <item name="android:textColorSecondary">@color/secondary</item>
+
+        <item name="android:textColorLink">@color/link_color</item>
+        <item name="android:divider">@color/divider</item>
+
+        <item name="cardStyle">@style/Widget.CardView</item>
+        <item name="alertDialogTheme">@style/Widget.AlertDialog</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+    </style>
+
+    <style name="Theme" parent="BaseTheme.Dark" />
 </resources>

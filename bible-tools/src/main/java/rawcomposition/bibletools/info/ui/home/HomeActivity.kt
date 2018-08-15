@@ -5,9 +5,11 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.speech.RecognizerIntent
+import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
+import android.view.View
 import com.arlib.floatingsearchview.FloatingSearchView
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
 import kotlinx.android.synthetic.main.activity_home.*
@@ -18,11 +20,11 @@ import rawcomposition.bibletools.info.data.model.Reference
 import rawcomposition.bibletools.info.data.model.ViewState
 import rawcomposition.bibletools.info.di.ViewModelFactory
 import rawcomposition.bibletools.info.ui.base.BaseThemedActivity
-import rawcomposition.bibletools.info.ui.custom.SearchViewAttachedListener
+import rawcomposition.bibletools.info.ui.custom.SearchScrollListener
+import rawcomposition.bibletools.info.ui.home.map.MapDetailActivity
 import rawcomposition.bibletools.info.ui.settings.SettingsActivity
 import rawcomposition.bibletools.info.utils.*
 import rawcomposition.bibletools.info.utils.glide.GlideApp
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -80,8 +82,6 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
         viewModel.reference.observe(this, Observer {
             listAdapter.reference = it
         })
-
-        checkDeepLink()
 
     }
 
@@ -173,17 +173,21 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
         recycler.apply {
             layoutManager = manager
             adapter = listAdapter
-            addOnScrollListener(SearchViewAttachedListener(searchView))
         }
+
+        scrollView.setOnScrollChangeListener(SearchScrollListener(searchView))
+        ViewCompat.setNestedScrollingEnabled(recycler, false)
+
     }
 
-    private fun checkDeepLink() {
+    override fun onEnterAnimationComplete() {
+        super.onEnterAnimationComplete()
+
         val intent = intent
         val data = intent.data
 
         if (data != null) {
             val verse = data.getQueryParameter(VERSE_KEY)
-            Timber.d("VERSE: $verse")
 
             viewModel.initReference(verse)
 
@@ -211,6 +215,18 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
 
     override fun goToLink(link: String) {
         showWebUrl(link)
+    }
+
+    override fun viewMap(animView: View, url: String) {
+        MapDetailActivity.view(this, animView, url)
+    }
+
+    override fun submitHelpful(resourceId: String) {
+        viewModel.submitHelpful(resourceId)
+    }
+
+    override fun submitUnHelpful(resourceId: String) {
+        viewModel.submitUnHelpful(resourceId)
     }
 
     private fun displaySpeechRecognizer() {

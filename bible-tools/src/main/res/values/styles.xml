@@ -18,7 +18,7 @@
     </style>
 
     <style name="referenceTitle.verse">
-        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
     </style>
 
     <style name="referenceText" parent="AppTheme.TextView">

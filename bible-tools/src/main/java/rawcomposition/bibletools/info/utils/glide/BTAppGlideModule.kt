@@ -20,10 +20,6 @@ class BTAppGlideModule : AppGlideModule() {
         val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
 
         defaultOptions.format(if (activityManager.isLowRamDevice) DecodeFormat.PREFER_RGB_565 else DecodeFormat.PREFER_ARGB_8888)
-
-        // Disable hardware bitmaps as they don't play nicely with Palette
-        defaultOptions.disallowHardwareConfig()
-        builder.setDefaultRequestOptions(defaultOptions)
     }
 
     override fun isManifestParsingEnabled(): Boolean {

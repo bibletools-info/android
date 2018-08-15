@@ -2,11 +2,14 @@ package rawcomposition.bibletools.info.data.repository
 
 import android.content.Context
 import android.net.ConnectivityManager
+import io.reactivex.Completable
 import io.reactivex.Observable
+import rawcomposition.bibletools.info.BuildConfig
 import rawcomposition.bibletools.info.R
 import rawcomposition.bibletools.info.data.db.BibleToolsDb
 import rawcomposition.bibletools.info.data.exceptions.ReferenceExeption
 import rawcomposition.bibletools.info.data.model.Reference
+import rawcomposition.bibletools.info.data.model.Reference.Companion.MAP
 import rawcomposition.bibletools.info.data.prefs.AppPrefs
 import rawcomposition.bibletools.info.data.retrofit.BibleToolsApi
 import rawcomposition.bibletools.info.utils.RxSchedulers
@@ -59,30 +62,41 @@ class ReferencesRepositoryImpl constructor(private val api: BibleToolsApi,
     private fun fetchRemoteReference(query: String): Observable<Reference> {
 
         return if (hasConnection(context)) {
-            if (query.contains("_")) {
-                api.getReference(query)
-            } else {
-                api.queryReference(query)
-            }.flatMap {
-                if (it.isSuccessful) {
+            api.getReference(query)
+                    .flatMap { it ->
+                        if (it.isSuccessful) {
 
-                    val reference = it.body()
+                            val reference = it.body()
 
-                    if (reference?.resources != null && reference.resources?.isNotEmpty() == true && reference.verse != null) {
+                            if (reference?.resources != null && reference.resources?.isNotEmpty() == true && reference.verse != null) {
 
-                        rxSchedulers.database.run {
-                            database.referencesDao().insert(reference)
+                                reference.sidebarResources?.map { item ->
+                                    if (item.type == MAP) {
+                                        val content = item.content ?: return@map
+                                        val first = content.indexOfFirst { it == '/' }
+                                        val last = content.indexOfFirst { it == '>' }
+
+                                        if (first < 0 || last < 0) {
+                                            return@map
+                                        }
+
+                                        item.mapUrl = "${BuildConfig.URL_BASE}${content.substring(first, last - 1)}"
+                                    }
+                                }
+
+                                rxSchedulers.database.run {
+                                    database.referencesDao().insert(reference)
+                                }
+
+                                prefs.setLastRef(reference.shortRef)
+                                Observable.just(reference)
+                            } else {
+                                Observable.error(ReferenceExeption(String.format(context.getString(R.string.api_default_error), query)))
+                            }
+                        } else {
+                            Observable.error(ReferenceExeption(String.format(context.getString(R.string.api_default_error), query)))
                         }
-
-                        prefs.setLastRef(reference.shortRef)
-                        Observable.just(reference)
-                    } else {
-                        Observable.error(ReferenceExeption(String.format(context.getString(R.string.api_default_error), query)))
                     }
-                } else {
-                    Observable.error(ReferenceExeption(String.format(context.getString(R.string.api_default_error), query)))
-                }
-            }
         } else {
             Observable.error(ReferenceExeption(context.getString(R.string.error_no_connection)))
         }
@@ -94,6 +108,14 @@ class ReferencesRepositoryImpl constructor(private val api: BibleToolsApi,
         val activeNetwork = cm.activeNetworkInfo
 
         return activeNetwork != null && activeNetwork.isConnected
+    }
+
+    override fun submitHelpful(resourceId: String): Completable {
+        return api.submitHelpful(resourceId)
+    }
+
+    override fun submitUnHelpful(resourceId: String): Completable {
+        return api.submitUnHelpful(resourceId)
     }
 
     companion object {
