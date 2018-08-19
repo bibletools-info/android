@@ -61,6 +61,7 @@
             style="@style/referenceText"
             android:textIsSelectable="true"
             android:linksClickable="true"
+            android:textColorLink="?android:textColorPrimary"
             tools:text="In the beginning God created the heavens and earth" />
 
 
