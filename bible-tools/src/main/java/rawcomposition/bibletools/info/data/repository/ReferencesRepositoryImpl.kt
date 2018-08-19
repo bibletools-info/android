@@ -10,6 +10,7 @@ import rawcomposition.bibletools.info.data.db.BibleToolsDb
 import rawcomposition.bibletools.info.data.exceptions.ReferenceExeption
 import rawcomposition.bibletools.info.data.model.Reference
 import rawcomposition.bibletools.info.data.model.Reference.Companion.MAP
+import rawcomposition.bibletools.info.data.model.StrongsResponse
 import rawcomposition.bibletools.info.data.prefs.AppPrefs
 import rawcomposition.bibletools.info.data.retrofit.BibleToolsApi
 import rawcomposition.bibletools.info.utils.RxSchedulers
@@ -126,6 +127,21 @@ class ReferencesRepositoryImpl constructor(private val api: BibleToolsApi,
                         database.referencesDao().update(reference)
                     }
                 }
+    }
+
+    override fun getStrongs(wordId: String): Observable<StrongsResponse> {
+        return if (hasConnection(context)) {
+            api.getStrongs(wordId)
+                    .flatMap {
+                        if (it.isSuccessful) {
+                            Observable.just(it.body())
+                        } else {
+                            Observable.error(RuntimeException(""))
+                        }
+                    }
+        } else {
+            Observable.error(ReferenceExeption(context.getString(R.string.error_no_connection)))
+        }
     }
 
     companion object {

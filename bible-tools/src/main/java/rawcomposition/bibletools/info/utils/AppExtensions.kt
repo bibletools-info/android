@@ -15,12 +15,18 @@ import android.support.v7.widget.RecyclerView
 import android.text.Html
 import android.text.Spannable
 import android.text.SpannableString
+import android.text.SpannableStringBuilder
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.URLSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.arlib.floatingsearchview.FloatingSearchView
+import org.jsoup.Jsoup
 import rawcomposition.bibletools.info.R
+import rawcomposition.bibletools.info.data.model.Word
 import rawcomposition.bibletools.info.di.ViewModelFactory
 
 
@@ -97,5 +103,56 @@ fun FloatingSearchView.setTheme(darkMode: Boolean) {
         setClearBtnColor(Color.parseColor("#989A9A"))
         setDividerColor(Color.parseColor("#e0e0e0"))
         setMenuItemIconColor(Color.parseColor("#989A9A"))
+    }
+}
+
+fun TextView.setContentHtml(html: String, callback: (String) -> Unit) {
+    val sequence = if (Build.VERSION.SDK_INT >= 24) {
+        Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY)
+    } else {
+        Html.fromHtml(html)
+    }
+    val strBuilder = SpannableStringBuilder(sequence)
+    val urls = strBuilder.getSpans(0, sequence.length, URLSpan::class.java)
+    for (span in urls) {
+        makeLinkClickable(strBuilder, span, callback)
+    }
+    text = strBuilder
+    movementMethod = LinkMovementMethod.getInstance()
+}
+
+private fun makeLinkClickable(strBuilder: SpannableStringBuilder, span: URLSpan, callback: (String) -> Unit) {
+    val start = strBuilder.getSpanStart(span)
+    val end = strBuilder.getSpanEnd(span)
+    val flags = strBuilder.getSpanFlags(span)
+    val clickable = object : ClickableSpan() {
+        override fun onClick(view: View) {
+
+            callback.invoke(span.url)
+        }
+    }
+    strBuilder.setSpan(clickable, start, end, flags)
+    strBuilder.removeSpan(span)
+}
+
+fun TextView.renderVerse(html: String, callback: (Word) -> Unit) {
+    renderHtml(html)
+
+    val doc = Jsoup.parse(html)
+    for (element in doc.select("a")) {
+        val word = element.text()
+        val id = element.attr("id")
+
+        if (word.isEmpty() || id.isEmpty()) {
+            continue
+        }
+
+        val lister = object : ClickSpan.OnClickListener {
+            override fun onClick() {
+                callback.invoke(Word(id, word))
+            }
+        }
+
+        ClickSpan(lister).clickify(this, word, lister)
     }
 }

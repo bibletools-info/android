@@ -15,14 +15,12 @@ import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.layout_nav_header.view.*
 import rawcomposition.bibletools.info.R
-import rawcomposition.bibletools.info.data.model.Book
-import rawcomposition.bibletools.info.data.model.Reference
-import rawcomposition.bibletools.info.data.model.Resource
-import rawcomposition.bibletools.info.data.model.ViewState
+import rawcomposition.bibletools.info.data.model.*
 import rawcomposition.bibletools.info.di.ViewModelFactory
 import rawcomposition.bibletools.info.ui.base.BaseThemedActivity
 import rawcomposition.bibletools.info.ui.custom.SearchScrollListener
 import rawcomposition.bibletools.info.ui.home.map.MapDetailActivity
+import rawcomposition.bibletools.info.ui.home.strongs.StrongsDialogFragment
 import rawcomposition.bibletools.info.ui.settings.SettingsActivity
 import rawcomposition.bibletools.info.utils.*
 import rawcomposition.bibletools.info.utils.glide.GlideApp
@@ -237,6 +235,11 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
     override fun itemCollapsed(position: Int, childView: View) {
         //TODO: Investigate how to scroll to collapsed position
         // scrollView.smoothScrollTo(0, position - 1)
+    }
+
+    override fun viewCrossReference(word: Word) {
+        val fragment = StrongsDialogFragment.newInstance(word)
+        fragment.show(supportFragmentManager, fragment.tag)
     }
 
     private fun displaySpeechRecognizer() {

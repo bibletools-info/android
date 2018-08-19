@@ -20,4 +20,9 @@
     </style>
 
     <style name="Theme" parent="BaseTheme.Dark" />
+
+    <style name="BaseBottomSheetDialog" parent="@style/Theme.MaterialComponents.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+    </style>
 </resources>

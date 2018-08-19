@@ -18,6 +18,10 @@ class HomeViewModel @Inject constructor(private val repository: ReferencesReposi
     var viewState = SingleLiveEvent<ViewStateData>()
     var reference = MutableLiveData<Reference>()
 
+    init {
+        viewState.value = ViewStateData(ViewState.LOADING)
+    }
+
     override fun subscribe() {
 
     }

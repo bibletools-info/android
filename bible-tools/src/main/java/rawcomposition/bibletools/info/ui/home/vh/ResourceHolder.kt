@@ -1,12 +1,6 @@
 package rawcomposition.bibletools.info.ui.home.vh
 
-import android.os.Build
 import android.support.v7.widget.RecyclerView
-import android.text.Html
-import android.text.SpannableStringBuilder
-import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
-import android.text.style.URLSpan
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.extensions.LayoutContainer
@@ -15,12 +9,8 @@ import rawcomposition.bibletools.info.R
 import rawcomposition.bibletools.info.data.model.Helpful
 import rawcomposition.bibletools.info.data.model.Reference.Companion.MAP
 import rawcomposition.bibletools.info.data.model.Resource
+import rawcomposition.bibletools.info.utils.*
 import rawcomposition.bibletools.info.utils.glide.GlideRequests
-import rawcomposition.bibletools.info.utils.hide
-import rawcomposition.bibletools.info.utils.inflateView
-import rawcomposition.bibletools.info.utils.isVisible
-import rawcomposition.bibletools.info.utils.show
-import timber.log.Timber
 
 
 class ResourceHolder constructor(override val containerView: View) :
@@ -61,7 +51,7 @@ class ResourceHolder constructor(override val containerView: View) :
                 contentContainer.show()
                 map.hide()
 
-                setContentHtml(resource.content ?: "") {
+                content.setContentHtml(resource.content ?: "") {
 
                     if (it.startsWith("http")) {
 
@@ -95,7 +85,7 @@ class ResourceHolder constructor(override val containerView: View) :
 
                     gradient.hide()
 
-                    if (resource.rating == null) {
+                    if (resource.rating == null && resource.type == null) {
                         ratingContainer.show()
                     }
                 }
@@ -142,36 +132,6 @@ class ResourceHolder constructor(override val containerView: View) :
         if (content.maxLines == Int.MAX_VALUE) {
             itemView.performClick()
         }
-    }
-
-    private fun setContentHtml(html: String, callback: (String) -> Unit) {
-        val sequence = if (Build.VERSION.SDK_INT >= 24) {
-            Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY)
-        } else {
-            Html.fromHtml(html)
-        }
-        val strBuilder = SpannableStringBuilder(sequence)
-        val urls = strBuilder.getSpans(0, sequence.length, URLSpan::class.java)
-        for (span in urls) {
-            makeLinkClickable(strBuilder, span, callback)
-        }
-        content.text = strBuilder
-        content.movementMethod = LinkMovementMethod.getInstance()
-    }
-
-    private fun makeLinkClickable(strBuilder: SpannableStringBuilder, span: URLSpan, callback: (String) -> Unit) {
-        val start = strBuilder.getSpanStart(span)
-        val end = strBuilder.getSpanEnd(span)
-        val flags = strBuilder.getSpanFlags(span)
-        val clickable = object : ClickableSpan() {
-            override fun onClick(view: View) {
-                Timber.d("URL: ${span.url}")
-
-                callback.invoke(span.url)
-            }
-        }
-        strBuilder.setSpan(clickable, start, end, flags)
-        strBuilder.removeSpan(span)
     }
 
     interface Callback {

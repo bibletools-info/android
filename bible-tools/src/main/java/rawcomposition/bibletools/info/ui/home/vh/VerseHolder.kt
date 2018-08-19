@@ -8,8 +8,9 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.layout_reference_verse_item.*
 import rawcomposition.bibletools.info.R
 import rawcomposition.bibletools.info.data.model.Reference
+import rawcomposition.bibletools.info.data.model.Word
 import rawcomposition.bibletools.info.utils.inflateView
-import rawcomposition.bibletools.info.utils.renderHtml
+import rawcomposition.bibletools.info.utils.renderVerse
 
 class VerseHolder constructor(override val containerView: View) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
@@ -22,7 +23,10 @@ class VerseHolder constructor(override val containerView: View) :
         }
 
         shortRef.text = reference.textRef ?: ""
-        textRef.renderHtml(reference.verse ?: "")
+
+        textRef.renderVerse(reference.verse ?: "") {
+            callback.viewCrossReference(it)
+        }
 
         actionFavourite.setImageResource(if (reference.favorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border)
 
@@ -53,6 +57,8 @@ class VerseHolder constructor(override val containerView: View) :
         fun goToPrevious(prev: String)
 
         fun goToNext(next: String)
+
+        fun viewCrossReference(word: Word)
     }
 
     companion object {
