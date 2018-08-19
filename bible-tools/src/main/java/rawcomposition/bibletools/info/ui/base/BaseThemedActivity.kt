@@ -1,28 +1,32 @@
 package rawcomposition.bibletools.info.ui.base
 
-import android.annotation.TargetApi
 import android.content.Intent
-import android.content.res.Configuration
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.support.customtabs.CustomTabsIntent
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AppCompatDelegate
 import android.view.MenuItem
-import android.view.View
+import android.widget.Toast
+import com.android.billingclient.api.*
 import dagger.android.AndroidInjection
 import rawcomposition.bibletools.info.BuildConfig
 import rawcomposition.bibletools.info.R
 import rawcomposition.bibletools.info.data.prefs.AppPrefs
+import timber.log.Timber
 import javax.inject.Inject
 
-
-abstract class BaseThemedActivity : AppCompatActivity() {
+abstract class BaseThemedActivity : AppCompatActivity(), PurchasesUpdatedListener, BillingClientStateListener {
 
     @Inject
     lateinit var appPrefs: AppPrefs
+
+    private lateinit var billingClient: BillingClient
+
+    private var selectedPos = 0
+    private var skuDetailsList: List<SkuDetails>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,24 +38,10 @@ abstract class BaseThemedActivity : AppCompatActivity() {
             AppCompatDelegate.MODE_NIGHT_NO
         })
 
-        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
-
-            /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                disableLightStatusBar()
-            }*/
-
-        }
-
+        billingClient = BillingClient.newBuilder(this).setListener(this).build()
+        billingClient.startConnection(this)
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
-    private fun disableLightStatusBar() {
-        val view = window.decorView
-        var flags = view.systemUiVisibility
-        flags = flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
-        view.systemUiVisibility = flags
-    }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
@@ -78,6 +68,18 @@ abstract class BaseThemedActivity : AppCompatActivity() {
 
     fun donateClicked() {
 
+        AlertDialog.Builder(this)
+                .setTitle(R.string.title_make_donation)
+                .setSingleChoiceItems(resources.getStringArray(R.array.available_donations_titles), selectedPos) { _, position ->
+                    selectedPos = position
+                }
+                .setPositiveButton(R.string.action_donate) { _, _ ->
+
+                    skuDetailsList?.let {
+                        purchaseDonation(it[selectedPos].sku)
+                    } ?: purchaseDonation(SKU_LIST[selectedPos])
+                }
+                .create().show()
     }
 
     fun showWebUrl(url: String) {
@@ -91,9 +93,62 @@ abstract class BaseThemedActivity : AppCompatActivity() {
         try {
             val intent = builder.build()
             intent.launchUrl(this, Uri.parse(url))
-        } catch (ex: Exception){
+        } catch (ex: Exception) {
 
         }
+    }
 
+    private fun purchaseDonation(sku: String) {
+        val flowParams = BillingFlowParams.newBuilder()
+                .setSku(sku)
+                .setType(BillingClient.SkuType.INAPP)
+                .build()
+
+        val responseCode = billingClient.launchBillingFlow(this, flowParams)
+    }
+
+    override fun onPurchasesUpdated(responseCode: Int, purchases: MutableList<Purchase>?) {
+        Timber.d("onPurchasesUpdated: RC $responseCode, $purchases")
+
+        if (responseCode == BillingClient.BillingResponse.OK && purchases != null) {
+            val purchasesResult = billingClient.queryPurchases(BillingClient.SkuType.INAPP)
+
+            Timber.d("Purchase result: $purchasesResult")
+
+            // Answers.getInstance().logPurchase(PurchaseEvent().putSuccess(true))
+            Toast.makeText(this, "Thank You!", Toast.LENGTH_LONG).show()
+
+        } else if (responseCode == BillingClient.BillingResponse.ITEM_ALREADY_OWNED) {
+            Toast.makeText(this, "Already Purchased.\nPlease select another amount.", Toast.LENGTH_SHORT).show()
+        } else {
+            //Answers.getInstance().logPurchase(PurchaseEvent().putSuccess(false))
+        }
+    }
+
+    override fun onBillingServiceDisconnected() {
+    }
+
+    override fun onBillingSetupFinished(responseCode: Int) {
+
+        if (responseCode == BillingClient.BillingResponse.OK) {
+            // The billing client is ready. You can query purchases here.
+
+            val params = SkuDetailsParams.newBuilder()
+            params.setSkusList(SKU_LIST).setType(BillingClient.SkuType.INAPP)
+            billingClient.querySkuDetailsAsync(params.build()) { code, skuDetailsList ->
+                // Process the result.
+                if (code == BillingClient.BillingResponse.OK && skuDetailsList.isNotEmpty()) {
+                    //skuDetails = skuDetailsList.find { it.sku == PREMIUM_SKU_ID }
+                    Timber.d("Products: $skuDetailsList")
+                    this.skuDetailsList = skuDetailsList
+                }
+            }
+        }
+
+    }
+
+    companion object {
+        private val SKU_LIST = arrayListOf("donate_id_1", "donate_id_5", "donate_id_10",
+                "donate_id_20", "donate_id_50", "donate_id_100")
     }
 }

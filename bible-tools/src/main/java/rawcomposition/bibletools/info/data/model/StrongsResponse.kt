@@ -3,10 +3,10 @@ package rawcomposition.bibletools.info.data.model
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-data class StrongsResponse(val pronunciation: String,
+data class StrongsResponse(val pronunciation: String? = null,
 
                            @SerializedName("original_word")
-                           val originalWord: String,
+                           val originalWord: String? = null,
 
                            val definition: String,
 

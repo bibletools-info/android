@@ -62,15 +62,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".v1.ui.references.MainActivity" />
         </activity>
-        <activity
-            android:name=".v1.ui.MapDetailActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/blank"
-            android:theme="@style/Theme.Dark">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".v1.ui.references.MainActivity" />
-        </activity>-->
+       -->
 
     </application>
 

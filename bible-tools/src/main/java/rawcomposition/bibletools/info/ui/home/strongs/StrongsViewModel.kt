@@ -33,9 +33,9 @@ class StrongsViewModel @Inject constructor(private val rxSchedulers: RxScheduler
                 .subscribeOn(rxSchedulers.network)
                 .observeOn(rxSchedulers.main)
                 .doOnSubscribe { viewState.value = ViewStateData(ViewState.LOADING) }
-                .subscribe({
+                .subscribe({ response ->
                     viewState.value = ViewStateData(ViewState.SUCCESS)
-                    strongs.value = it
+                    strongs.value = response
                 }, {
                     Timber.e(it)
 

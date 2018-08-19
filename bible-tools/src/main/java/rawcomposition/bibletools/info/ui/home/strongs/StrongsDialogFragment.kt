@@ -66,6 +66,10 @@ class StrongsDialogFragment : RoundedBottomSheetDialogFragment() {
                             description.renderHtml(msg)
                             description.show()
                         }
+                        it.errorRes?.let { errorRes ->
+                            description.renderHtml(getString(errorRes))
+                            description.show()
+                        }
                     }
                     else -> {
                     }
@@ -75,11 +79,10 @@ class StrongsDialogFragment : RoundedBottomSheetDialogFragment() {
         })
         viewModel.strongs.observe(this, Observer { it ->
             it?.let { response ->
-                originalWord.text = "${response.originalWord} ${response.pronunciation}"
+                originalWord.text = "${response.originalWord ?: ""} ${response.pronunciation ?: ""}"
                 description.text = response.definition
                 originalWord.show()
                 description.show()
-                listAdapter.resources = response.resources
                 listAdapter.resources = response.resources
             }
         })

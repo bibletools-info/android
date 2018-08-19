@@ -148,6 +148,7 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
                     true
                 }
                 R.id.action_donate -> {
+                    donateClicked()
                     true
                 }
                 else -> false

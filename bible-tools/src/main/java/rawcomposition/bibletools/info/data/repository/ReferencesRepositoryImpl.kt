@@ -134,7 +134,15 @@ class ReferencesRepositoryImpl constructor(private val api: BibleToolsApi,
             api.getStrongs(wordId)
                     .flatMap {
                         if (it.isSuccessful) {
-                            Observable.just(it.body())
+
+                            val response = it.body()
+                            if(response?.pronunciation != null && response.originalWord != null){
+                                Observable.just(response)
+                            } else {
+                                Observable.error(RuntimeException(""))
+                            }
+
+
                         } else {
                             Observable.error(RuntimeException(""))
                         }
