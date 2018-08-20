@@ -54,15 +54,9 @@
             android:label="@string/blank"
             android:theme="@style/Theme.BibleTools.Map" />
 
-        <!--
-        <activity
-            android:name=".v1.ui.FavouritesActivity"
-            android:label="@string/title_favourites">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".v1.ui.references.MainActivity" />
-        </activity>
-       -->
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="b96b26697c759110beca6ba089ba37aac26740ba" />
 
     </application>
 

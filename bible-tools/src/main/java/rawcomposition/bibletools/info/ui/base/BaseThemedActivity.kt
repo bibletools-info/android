@@ -11,6 +11,9 @@ import android.support.v7.app.AppCompatDelegate
 import android.view.MenuItem
 import android.widget.Toast
 import com.android.billingclient.api.*
+import com.crashlytics.android.answers.Answers
+import com.crashlytics.android.answers.PurchaseEvent
+import com.crashlytics.android.answers.StartCheckoutEvent
 import dagger.android.AndroidInjection
 import rawcomposition.bibletools.info.BuildConfig
 import rawcomposition.bibletools.info.R
@@ -104,6 +107,8 @@ abstract class BaseThemedActivity : AppCompatActivity(), PurchasesUpdatedListene
                 .setType(BillingClient.SkuType.INAPP)
                 .build()
 
+        Answers.getInstance().logStartCheckout(StartCheckoutEvent().putCustomAttribute("sku", sku))
+
         val responseCode = billingClient.launchBillingFlow(this, flowParams)
     }
 
@@ -115,13 +120,13 @@ abstract class BaseThemedActivity : AppCompatActivity(), PurchasesUpdatedListene
 
             Timber.d("Purchase result: $purchasesResult")
 
-            // Answers.getInstance().logPurchase(PurchaseEvent().putSuccess(true))
+            Answers.getInstance().logPurchase(PurchaseEvent().putSuccess(true))
             Toast.makeText(this, "Thank You!", Toast.LENGTH_LONG).show()
 
         } else if (responseCode == BillingClient.BillingResponse.ITEM_ALREADY_OWNED) {
             Toast.makeText(this, "Already Purchased.\nPlease select another amount.", Toast.LENGTH_SHORT).show()
         } else {
-            //Answers.getInstance().logPurchase(PurchaseEvent().putSuccess(false))
+            Answers.getInstance().logPurchase(PurchaseEvent().putSuccess(false))
         }
     }
 

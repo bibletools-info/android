@@ -1,6 +1,8 @@
 package rawcomposition.bibletools.info.ui.home
 
 import android.arch.lifecycle.MutableLiveData
+import com.crashlytics.android.answers.Answers
+import com.crashlytics.android.answers.ContentViewEvent
 import io.reactivex.Observable
 import rawcomposition.bibletools.info.R
 import rawcomposition.bibletools.info.data.exceptions.ReferenceExeption
@@ -58,6 +60,9 @@ class HomeViewModel @Inject constructor(private val repository: ReferencesReposi
                     if (history.value?.contains(it.shortRef) == false) {
                         history.value?.add(it.shortRef)
                     }
+
+                    Answers.getInstance().logContentView(ContentViewEvent().putContentName("Reference-View")
+                            .putCustomAttribute("verse", it.textRef))
 
                 }, { it ->
                     Timber.e(it)

@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'io.fabric'
 
 android {
 
@@ -87,4 +88,11 @@ dependencies {
     implementation 'com.github.arimorty:floatingsearchview:2.1.1'
     implementation 'com.facebook.shimmer:shimmer:0.3.0'
     implementation 'org.jsoup:jsoup:1.11.3'
+
+    implementation('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
+        transitive = true
+    }
+    compile('com.crashlytics.sdk.android:answers:1.4.2@aar') {
+        transitive = true;
+    }
 }

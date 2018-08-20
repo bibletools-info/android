@@ -1,6 +1,8 @@
 package rawcomposition.bibletools.info.ui.home.strongs
 
 import android.arch.lifecycle.MutableLiveData
+import com.crashlytics.android.answers.Answers
+import com.crashlytics.android.answers.ContentViewEvent
 import rawcomposition.bibletools.info.R
 import rawcomposition.bibletools.info.data.exceptions.ReferenceExeption
 import rawcomposition.bibletools.info.data.model.StrongsResponse
@@ -36,6 +38,11 @@ class StrongsViewModel @Inject constructor(private val rxSchedulers: RxScheduler
                 .subscribe({ response ->
                     viewState.value = ViewStateData(ViewState.SUCCESS)
                     strongs.value = response
+
+                    Answers.getInstance().logContentView(ContentViewEvent()
+                            .putContentName("Strongs-Word")
+                            .putCustomAttribute("word", word.text))
+
                 }, {
                     Timber.e(it)
 

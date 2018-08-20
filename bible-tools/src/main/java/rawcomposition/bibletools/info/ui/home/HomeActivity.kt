@@ -11,6 +11,9 @@ import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.View
 import com.arlib.floatingsearchview.FloatingSearchView
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
+import com.crashlytics.android.answers.Answers
+import com.crashlytics.android.answers.CustomEvent
+import com.crashlytics.android.answers.SearchEvent
 import kotlinx.android.synthetic.main.activity_home.*
 import rawcomposition.bibletools.info.R
 import rawcomposition.bibletools.info.data.model.*
@@ -199,10 +202,16 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
 
     override fun submitHelpful(resource: Resource) {
         viewModel.submitHelpful(resource)
+
+        Answers.getInstance().logCustom(CustomEvent("Resource-Helpful")
+                .putCustomAttribute("id", resource.id))
     }
 
     override fun submitUnHelpful(resource: Resource) {
         viewModel.submitUnHelpful(resource)
+
+        Answers.getInstance().logCustom(CustomEvent("Resource-unHelpful")
+                .putCustomAttribute("id", resource.id))
     }
 
     override fun itemCollapsed(position: Int, childView: View) {
@@ -231,6 +240,8 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
             if (results.isNotEmpty()) {
                 val query = results.first()
                 searchView.setSearchText(query)
+
+                Answers.getInstance().logSearch(SearchEvent().putQuery(query))
 
                 viewModel.fetchReference(query)
             }

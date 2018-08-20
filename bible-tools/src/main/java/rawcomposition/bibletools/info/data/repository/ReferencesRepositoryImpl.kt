@@ -2,6 +2,8 @@ package rawcomposition.bibletools.info.data.repository
 
 import android.content.Context
 import android.net.ConnectivityManager
+import com.crashlytics.android.answers.Answers
+import com.crashlytics.android.answers.CustomEvent
 import io.reactivex.Completable
 import io.reactivex.Observable
 import rawcomposition.bibletools.info.BuildConfig
@@ -92,9 +94,16 @@ class ReferencesRepositoryImpl constructor(private val api: BibleToolsApi,
                                 prefs.setLastRef(reference.shortRef)
                                 Observable.just(reference)
                             } else {
+
+                                Answers.getInstance().logCustom(CustomEvent("Load-Reference-Fail-Event")
+                                        .putCustomAttribute("query", query))
+
                                 Observable.error(ReferenceExeption(String.format(context.getString(R.string.api_default_error), query)))
                             }
                         } else {
+                            Answers.getInstance().logCustom(CustomEvent("Load-Reference-Fail-Event")
+                                    .putCustomAttribute("query", query))
+
                             Observable.error(ReferenceExeption(String.format(context.getString(R.string.api_default_error), query)))
                         }
                     }
@@ -136,14 +145,21 @@ class ReferencesRepositoryImpl constructor(private val api: BibleToolsApi,
                         if (it.isSuccessful) {
 
                             val response = it.body()
-                            if(response?.pronunciation != null && response.originalWord != null){
+                            if (response?.pronunciation != null && response.originalWord != null) {
                                 Observable.just(response)
                             } else {
+
+                                Answers.getInstance().logCustom(CustomEvent("Load-Strongs-Fail-Event")
+                                        .putCustomAttribute("wordId", wordId))
+
                                 Observable.error(RuntimeException(""))
                             }
 
-
                         } else {
+
+                            Answers.getInstance().logCustom(CustomEvent("Load-Strongs-Fail-Event")
+                                    .putCustomAttribute("wordId", wordId))
+
                             Observable.error(RuntimeException(""))
                         }
                     }
