@@ -153,6 +153,28 @@ fun TextView.renderVerse(html: String, callback: (Word) -> Unit) {
             }
         }
 
-        ClickSpan(lister).clickify(this, word, lister)
+        for (range in text.toString().matchesIn(word)){
+            ClickSpan(lister).clickify(this, range, lister)
+        }
     }
+}
+
+/**
+ * Return ranges where this word is matched in the string
+ *
+ * @return : IntRanges
+ */
+fun String.matchesIn(word: String): ArrayList<IntRange> {
+
+    val regex = Regex("(?<![\\w\\d])($word)(?![\\w\\d])")
+
+    val matcher = regex.toPattern().matcher(this)
+
+    val ranges = arrayListOf<IntRange>()
+
+    while (matcher.find()) {
+        ranges.add(IntRange(matcher.start(), matcher.end()))
+    }
+
+    return ranges
 }
