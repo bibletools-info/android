@@ -19,6 +19,8 @@ import rawcomposition.bibletools.info.BuildConfig
 import rawcomposition.bibletools.info.R
 import rawcomposition.bibletools.info.data.prefs.AppPrefs
 import timber.log.Timber
+import java.math.BigDecimal
+import java.util.*
 import javax.inject.Inject
 
 abstract class BaseThemedActivity : AppCompatActivity(), PurchasesUpdatedListener, BillingClientStateListener {
@@ -107,7 +109,11 @@ abstract class BaseThemedActivity : AppCompatActivity(), PurchasesUpdatedListene
                 .setType(BillingClient.SkuType.INAPP)
                 .build()
 
-        Answers.getInstance().logStartCheckout(StartCheckoutEvent().putCustomAttribute("sku", sku))
+        Answers.getInstance().logStartCheckout(StartCheckoutEvent()
+                .putItemCount(1)
+                .putTotalPrice(getAmount(sku))
+                .putCurrency(Currency.getInstance("USD"))
+                .putCustomAttribute("sku", sku))
 
         val responseCode = billingClient.launchBillingFlow(this, flowParams)
     }
@@ -120,13 +126,29 @@ abstract class BaseThemedActivity : AppCompatActivity(), PurchasesUpdatedListene
 
             Timber.d("Purchase result: $purchasesResult")
 
-            Answers.getInstance().logPurchase(PurchaseEvent().putSuccess(true))
+            val sku = purchasesResult.purchasesList.first().sku
+            Answers.getInstance().logPurchase(PurchaseEvent()
+                    .putSuccess(true)
+                    .putItemId(sku))
+
             Toast.makeText(this, "Thank You!", Toast.LENGTH_LONG).show()
 
         } else if (responseCode == BillingClient.BillingResponse.ITEM_ALREADY_OWNED) {
             Toast.makeText(this, "Already Purchased.\nPlease select another amount.", Toast.LENGTH_SHORT).show()
         } else {
             Answers.getInstance().logPurchase(PurchaseEvent().putSuccess(false))
+        }
+    }
+
+    private fun getAmount(sku: String): BigDecimal {
+        return when(sku){
+            SKU_LIST[0] -> BigDecimal.ONE
+            SKU_LIST[1] -> BigDecimal("5.00")
+            SKU_LIST[2] -> BigDecimal.TEN
+            SKU_LIST[3] -> BigDecimal("20.00")
+            SKU_LIST[4] -> BigDecimal("50.00")
+            SKU_LIST[5] -> BigDecimal("100.00")
+            else -> BigDecimal.ZERO
         }
     }
 

@@ -61,7 +61,8 @@ class HomeViewModel @Inject constructor(private val repository: ReferencesReposi
                         history.value?.add(it.shortRef)
                     }
 
-                    Answers.getInstance().logContentView(ContentViewEvent().putContentName("Reference-View")
+                    Answers.getInstance().logContentView(ContentViewEvent()
+                            .putContentName("Reference-View")
                             .putCustomAttribute("verse", it.textRef))
 
                 }, { it ->
