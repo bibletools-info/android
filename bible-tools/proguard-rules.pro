@@ -16,85 +16,24 @@
 #   public *;
 #}
 
-#Realm
--keepnames public class * extends io.realm.RealmObject
--keep class io.realm.** { *; }
--dontwarn javax.**
--dontwarn io.realm.**
+-ignorewarnings
+-renamesourcefileattribute SourceFile
+-keepattributes *Annotation*,Signature,SourceFile,LineNumberTable
 
-#ABC
-# Need to keep classes unobfuscated from v7.**, not v7.appcompat.**, because other packages directly under
 # v7.** get obfuscated. eg. v7.internal.** and v7.widget.** cause errors if obfuscated.
 -keep class android.support.v7.** { *; }
 -keep interface android.support.v7.** { *; }
+-keep class !android.support.v7.internal.view.menu.**,android.support.** {*;}
 
-#To revise
--keep class com.google.android.gms.** { *; }
--keep public class com.google.android.gms.**
--dontwarn com.google.android.gms.**
--keep class android.support.v7.** { *; }
--keep interface android.support.v7.** { *; }
-
-#Retrofit
--dontwarn retrofit.**
--keep class retrofit.** { *; }
+## Retrofit2
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
 -keepattributes Signature
 -keepattributes Exceptions
-
-#Gson
--keep class com.google.gson.** { *; }
--keepattributes Signature
-
-#OkHttp
--dontwarn com.squareup.okhttp.**
--dontwarn java.nio.file.*
--dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
-
-#nineoldandroids
--keep class com.nineoldandroids.** { *; }
--keep interface com.nineoldandroids.** { *; }
-
-#Glide
--keep public class * implements com.bumptech.glide.module.GlideModule
--keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
-    **[] $VALUES;
-    public *;
+-keepclasseswithmembers class * {
+    @retrofit2.http.* <methods>;
 }
-
-#Butterknife
--keep class butterknife.** { *; }
--dontwarn butterknife.internal.**
--keep class **$$ViewBinder { *; }
-
--keepclasseswithmembernames class * {
-    @butterknife.* <fields>;
-}
-
--keepclasseswithmembernames class * {
-    @butterknife.* <methods>;
-}
-
-#To remove debug logs:
--assumenosideeffects class android.util.Log {
-public static *** d(...);
-public static *** v(...);
-}
-
-#To keep line numbers for crash reports
--renamesourcefileattribute SourceFile
--keepattributes SourceFile, LineNumberTable
-
--dontwarn uk.co.senab.**
-
-
--keep public class android.app.ActivityTransitionCoordinator
-
-
-#Retrolambda
--dontwarn java.lang.invoke.*
-
--keep class io.codetail.animation.arcanimator.** { *; }
-
+## /Retrofit2
 
 ## RxJava
 -keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
@@ -111,17 +50,18 @@ public static *** v(...);
 }
 ## /RxJava
 
--ignorewarnings
--keepattributes *Annotation*,Signature
+## Dagger
+-dontwarn com.google.errorprone.annotations.*
 
-#Retrofit
-# Platform calls Class.forName on types which do not exist on Android to determine platform.
--dontnote retrofit2.Platform
-# Platform used when running on RoboVM on iOS. Will not be used at runtime.
--dontnote retrofit2.Platform$IOS$MainThreadExecutor
-# Platform used when running on Java 8 VMs. Will not be used at runtime.
--dontwarn retrofit2.Platform$Java8
-# Retain generic type information for use by reflection by converters and adapters.
--keepattributes Signature
-# Retain declared checked exceptions for use by a Proxy instance.
--keepattributes Exceptions
+-keep class com.tinashe.weather.model.** { *; }
+
+## Glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+ }
+
+ ## Billing
+ -keep class com.android.vending.billing.**

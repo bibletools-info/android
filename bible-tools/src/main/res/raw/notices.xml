@@ -22,41 +22,35 @@
         <copyright>Copyright 2013 Square, Inc.</copyright>
         <license>Apache Software License 2.0</license>
     </notice>
-    <notice>
-        <name>Google-Gson</name>
-        <url>https://code.google.com/p/google-gson/</url>
-        <copyright />
-        <license>Apache Software License 2.0</license>
-    </notice>
-    <notice>
-        <name>Nine Old Androids</name>
-        <url>http://nineoldandroids.com/</url>
-        <copyright>Copyright (C) 2010 The Android Open Source Project</copyright>
-        <license>Apache Software License 2.0</license>
-    </notice>
-    <notice>
-        <name>Material Dialogs</name>
-        <url>https://github.com/afollestad/material-dialogs</url>
-        <!--<copyright>Copyright (C) 2010 The Android Open Source Project</copyright>-->
-        <license>Apache Software License 2.0</license>
-    </notice>
-    <notice>
-        <name>Realm</name>
-        <url>http://realm.io/</url>
-        <!--<copyright>Copyright (C) 2010 The Android Open Source Project</copyright>-->
-        <license>Apache Software License 2.0</license>
-    </notice>
+
     <notice>
         <name>PhotoView</name>
         <url>https://github.com/chrisbanes/PhotoView</url>
-        <copyright>Copyright 2011, 2012 Chris Banes</copyright>
+        <copyright>Copyright 2017 Chris Banes</copyright>
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
         <name>Glide</name>
         <url>https://github.com/bumptech/glide</url>
-        <!--<copyright>Copyright 2011, 2012 Chris Banes</copyright>-->
         <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>Timber</name>
+        <url>https://github.com/JakeWharton/timber</url>
+        <copyright>Copyright 2013 Jake Wharton</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>FloatingSearchView</name>
+        <url>https://github.com/arimorty/floatingsearchview</url>
+        <copyright>Copyright (C) 2015 Ari C.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>Shimmer Android</name>
+        <url>https://github.com/facebook/shimmer-android</url>
+        <copyright>Copyright (c) 2015, Facebook, Inc. All rights reserved.</copyright>
+        <license>BSD 3-Clause License</license>
     </notice>
 
 </notices>
