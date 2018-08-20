@@ -6,13 +6,11 @@ import android.view.ViewGroup
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.strongs_resource_item.*
 import rawcomposition.bibletools.info.R
+import rawcomposition.bibletools.info.data.model.FontType
 import rawcomposition.bibletools.info.data.model.StrongsResource
-import rawcomposition.bibletools.info.utils.hide
-import rawcomposition.bibletools.info.utils.inflateView
-import rawcomposition.bibletools.info.utils.renderHtml
-import rawcomposition.bibletools.info.utils.show
+import rawcomposition.bibletools.info.utils.*
 
-class StrongsResourcesAdapter : RecyclerView.Adapter<StrongsResourcesAdapter.ResourceHolder>() {
+class StrongsResourcesAdapter constructor(@FontType private val fontType: String) : RecyclerView.Adapter<StrongsResourcesAdapter.ResourceHolder>() {
 
     var resources: List<StrongsResource> = listOf()
         set(value) {
@@ -20,7 +18,7 @@ class StrongsResourcesAdapter : RecyclerView.Adapter<StrongsResourcesAdapter.Res
             notifyDataSetChanged()
         }
 
-    override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ResourceHolder = ResourceHolder.inflate(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, p1: Int): ResourceHolder = ResourceHolder.inflate(parent, fontType)
 
     override fun getItemCount(): Int = resources.size
 
@@ -65,8 +63,11 @@ class StrongsResourcesAdapter : RecyclerView.Adapter<StrongsResourcesAdapter.Res
         companion object {
             private const val MAX_LINES = 4
 
-            fun inflate(parent: ViewGroup):
-                    ResourceHolder = ResourceHolder(inflateView(R.layout.strongs_resource_item, parent, false))
+            fun inflate(parent: ViewGroup, @FontType fontType: String): ResourceHolder {
+                val holder = ResourceHolder(inflateView(R.layout.strongs_resource_item, parent, false))
+                holder.content.setFont(fontType)
+                return holder
+            }
         }
     }
 }

@@ -30,7 +30,7 @@ data class Book(val title: String) : SearchSuggestion {
 
     companion object CREATOR : Parcelable.Creator<Book> {
         override fun createFromParcel(parcel: Parcel): Book {
-            return Book(parcel.readString())
+            return Book(parcel.readString() ?: "")
         }
 
         override fun newArray(size: Int): Array<Book?> {

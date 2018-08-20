@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.layout_reference_item.*
 import rawcomposition.bibletools.info.R
+import rawcomposition.bibletools.info.data.model.FontType
 import rawcomposition.bibletools.info.data.model.Helpful
 import rawcomposition.bibletools.info.data.model.Reference.Companion.MAP
 import rawcomposition.bibletools.info.data.model.Resource
@@ -152,7 +153,10 @@ class ResourceHolder constructor(override val containerView: View) :
         private const val MAX_LINES = 4
         private const val LOGO_URL = "https://bibletools.info/assets/img/authors/%s.png"
 
-        fun inflate(parent: ViewGroup):
-                ResourceHolder = ResourceHolder(inflateView(R.layout.layout_reference_item, parent, false))
+        fun inflate(parent: ViewGroup, @FontType fontType: String): ResourceHolder {
+            val holder = ResourceHolder(inflateView(R.layout.layout_reference_item, parent, false))
+            holder.content.setFont(fontType)
+            return holder
+        }
     }
 }

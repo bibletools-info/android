@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.fragment_strongs.*
 import rawcomposition.bibletools.info.R
 import rawcomposition.bibletools.info.data.model.ViewState
 import rawcomposition.bibletools.info.data.model.Word
+import rawcomposition.bibletools.info.data.prefs.AppPrefs
 import rawcomposition.bibletools.info.di.ViewModelFactory
 import rawcomposition.bibletools.info.ui.base.RoundedBottomSheetDialogFragment
 import rawcomposition.bibletools.info.utils.*
@@ -19,6 +20,9 @@ class StrongsDialogFragment : RoundedBottomSheetDialogFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    lateinit var prefs: AppPrefs
 
     private lateinit var viewModel: StrongsViewModel
 
@@ -35,7 +39,7 @@ class StrongsDialogFragment : RoundedBottomSheetDialogFragment() {
         val word = arguments?.getSerializable(ARG_WORD) as Word
         source.text = word.text
 
-        listAdapter = StrongsResourcesAdapter()
+        listAdapter = StrongsResourcesAdapter(prefs.getFontType())
 
         resourcesList.apply {
             vertical()

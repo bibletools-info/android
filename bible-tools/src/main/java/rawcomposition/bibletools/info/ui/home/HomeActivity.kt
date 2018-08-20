@@ -132,7 +132,7 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
             }
         }
 
-        listAdapter = ReferencesListAdapter(GlideApp.with(this), this)
+        listAdapter = ReferencesListAdapter(GlideApp.with(this), this, appPrefs.getFontType())
 
         val manager: RecyclerView.LayoutManager
 

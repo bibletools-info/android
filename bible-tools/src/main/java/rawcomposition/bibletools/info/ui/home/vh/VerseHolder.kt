@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.layout_reference_verse_item.*
 import rawcomposition.bibletools.info.R
+import rawcomposition.bibletools.info.data.model.FontType
 import rawcomposition.bibletools.info.data.model.Reference
 import rawcomposition.bibletools.info.data.model.Word
 import rawcomposition.bibletools.info.utils.inflateView
 import rawcomposition.bibletools.info.utils.renderVerse
+import rawcomposition.bibletools.info.utils.setFont
 
 class VerseHolder constructor(override val containerView: View) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
@@ -62,10 +64,10 @@ class VerseHolder constructor(override val containerView: View) :
     }
 
     companion object {
-        fun inflate(parent: ViewGroup): VerseHolder {
+        fun inflate(parent: ViewGroup, @FontType fontType: String): VerseHolder {
             val holder = VerseHolder(inflateView(R.layout.layout_reference_verse_item, parent, false))
             holder.textRef.maxLines = Int.MAX_VALUE
-
+            holder.textRef.setFont(fontType)
             return holder
         }
     }

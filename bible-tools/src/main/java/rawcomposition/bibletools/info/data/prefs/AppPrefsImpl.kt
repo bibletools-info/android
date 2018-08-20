@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import rawcomposition.bibletools.info.R
+import rawcomposition.bibletools.info.data.model.FontType
 
 class AppPrefsImpl constructor(private val context: Context) : AppPrefs {
 
@@ -29,6 +30,11 @@ class AppPrefsImpl constructor(private val context: Context) : AppPrefs {
 
     override fun backHistoryEnabled(): Boolean {
         return prefs.getBoolean(context.getString(R.string.pref_key_back_history), true)
+    }
+
+    @FontType
+    override fun getFontType(): String {
+        return prefs.getString(context.getString(R.string.pref_font_weight), FontType.REGULAR)
     }
 
     companion object {

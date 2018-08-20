@@ -3,6 +3,7 @@ package rawcomposition.bibletools.info.ui.home
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.reference_skeleton_item.*
+import rawcomposition.bibletools.info.data.model.FontType
 import rawcomposition.bibletools.info.data.model.Reference
 import rawcomposition.bibletools.info.data.model.Resource
 import rawcomposition.bibletools.info.ui.home.vh.ResourceHolder
@@ -11,7 +12,8 @@ import rawcomposition.bibletools.info.ui.home.vh.VerseHolder
 import rawcomposition.bibletools.info.utils.glide.GlideRequests
 
 class ReferencesListAdapter constructor(private val glide: GlideRequests,
-                                        private val callback: ReferenceCallback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                                        private val callback: ReferenceCallback,
+                                        @FontType private val fontType: String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var size = 0
 
@@ -54,8 +56,8 @@ class ReferencesListAdapter constructor(private val glide: GlideRequests,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             TYPE_SKELETON -> SkeletonHolder.inflate(parent)
-            TYPE_VERSE -> VerseHolder.inflate(parent)
-            TYPE_REFERENCE -> ResourceHolder.inflate(parent)
+            TYPE_VERSE -> VerseHolder.inflate(parent, fontType)
+            TYPE_REFERENCE -> ResourceHolder.inflate(parent, fontType)
             else -> SkeletonHolder.inflate(parent)
         }
     }

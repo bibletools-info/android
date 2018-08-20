@@ -26,6 +26,7 @@ import android.widget.TextView
 import com.arlib.floatingsearchview.FloatingSearchView
 import org.jsoup.Jsoup
 import rawcomposition.bibletools.info.R
+import rawcomposition.bibletools.info.data.model.FontType
 import rawcomposition.bibletools.info.data.model.Word
 import rawcomposition.bibletools.info.di.ViewModelFactory
 
@@ -177,4 +178,18 @@ fun String.matchesIn(word: String): ArrayList<IntRange> {
     }
 
     return ranges
+}
+
+fun TextView.setFont(@FontType fontType: String) {
+
+    val font = when(fontType){
+        FontType.LIGHT -> ResourcesCompat.getFont(context, R.font.lato_light)
+        FontType.REGULAR -> ResourcesCompat.getFont(context, R.font.lato_regular)
+        FontType.MEDIUM -> ResourcesCompat.getFont(context, R.font.lato_medium)
+        FontType.HEAVY -> ResourcesCompat.getFont(context, R.font.lato_heavy)
+        else -> return
+    }
+
+    typeface = font
+
 }
