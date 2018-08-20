@@ -5,6 +5,7 @@ import io.reactivex.Observable
 import rawcomposition.bibletools.info.R
 import rawcomposition.bibletools.info.data.exceptions.ReferenceExeption
 import rawcomposition.bibletools.info.data.model.*
+import rawcomposition.bibletools.info.data.prefs.AppPrefs
 import rawcomposition.bibletools.info.data.repository.ReferencesRepository
 import rawcomposition.bibletools.info.ui.base.RxAwareViewModel
 import rawcomposition.bibletools.info.ui.base.SingleLiveEvent
@@ -13,13 +14,17 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(private val repository: ReferencesRepository,
-                                        private val rxSchedulers: RxSchedulers) : RxAwareViewModel() {
+                                        private val rxSchedulers: RxSchedulers,
+                                        private val prefs: AppPrefs) : RxAwareViewModel() {
 
     var viewState = SingleLiveEvent<ViewStateData>()
     var reference = MutableLiveData<Reference>()
 
+    private var history = MutableLiveData<ArrayList<String>>()
+
     init {
         viewState.value = ViewStateData(ViewState.LOADING)
+        history.value = arrayListOf()
     }
 
     override fun subscribe() {
@@ -49,6 +54,11 @@ class HomeViewModel @Inject constructor(private val repository: ReferencesReposi
                     viewState.value = if (it.resources?.isEmpty() == true || it.verse == null) ViewStateData(ViewState.ERROR) else ViewStateData(ViewState.SUCCESS)
 
                     reference.value = it
+
+                    if (history.value?.contains(it.shortRef) == false) {
+                        history.value?.add(it.shortRef)
+                    }
+
                 }, { it ->
                     Timber.e(it)
 
@@ -88,5 +98,28 @@ class HomeViewModel @Inject constructor(private val repository: ReferencesReposi
                 .subscribe({}, { Timber.e(it) })
 
         disposables.add(disposable)
+    }
+
+    fun navigateBack(): Boolean {
+        if (!prefs.backHistoryEnabled()) {
+            return true
+        }
+
+        val list = history.value ?: return true
+
+        if (list.isEmpty()) {
+            return true
+        }
+
+        if (list.size == 1 && reference.value?.shortRef == list.first()) {
+            history.value = arrayListOf()
+            return true
+        }
+
+        history.value = ArrayList(list.dropLast(1))
+        val ref = history.value?.last()
+        ref?.let { fetchReference(it) }
+
+        return false
     }
 }

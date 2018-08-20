@@ -26,12 +26,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
+                <!--TODO: Show when we have favs -->
                 <ImageView
                     android:id="@+id/actionFavourite"
                     style="@style/verseNavigation"
                     android:layout_margin="@dimen/margin_tiny"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/blank"
+                    android:visibility="gone"
                     android:src="@drawable/ic_favorite_border" />
 
                 <ImageView

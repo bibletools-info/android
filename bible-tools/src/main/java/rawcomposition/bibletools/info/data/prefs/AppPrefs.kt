@@ -7,4 +7,6 @@ interface AppPrefs {
     fun setLastRef(ref: String)
 
     fun isNightMode(): Boolean
+
+    fun backHistoryEnabled(): Boolean
 }

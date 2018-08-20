@@ -45,6 +45,8 @@
     <string name="error_no_connection">&lt;b>No Internet Connection!&lt;/b>&lt;br/>&lt;br/>Check your network connection and try again.</string>
 
     <string name="settings_about_preference">ABOUT</string>
+    <string name="settings_back_history_summary">Navigate back to the previous verse when you tap/click the back button.</string>
+    <string name="settings_back_history_title">Back button navigates back in history</string>
     <string name="settings_cache">CACHE</string>
     <string name="settings_cache_pref_title">Cache all References?</string>
     <string name="settings_cache_pref_summary">This will save all references you search for.</string>

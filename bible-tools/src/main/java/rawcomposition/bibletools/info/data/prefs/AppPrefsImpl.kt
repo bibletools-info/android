@@ -3,8 +3,9 @@ package rawcomposition.bibletools.info.data.prefs
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import rawcomposition.bibletools.info.R
 
-class AppPrefsImpl constructor(context: Context) : AppPrefs {
+class AppPrefsImpl constructor(private val context: Context) : AppPrefs {
 
     private val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
@@ -24,6 +25,10 @@ class AppPrefsImpl constructor(context: Context) : AppPrefs {
             "one" -> true
             else -> false
         }
+    }
+
+    override fun backHistoryEnabled(): Boolean {
+        return prefs.getBoolean(context.getString(R.string.pref_key_back_history), true)
     }
 
     companion object {

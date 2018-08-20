@@ -11,6 +11,7 @@
     <string name="app_license_key">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1ToYVSA/6aGMK9qGBzULby2O1tUTJnBvfS3w7DbIrfP0pVEjt4Wdxkcr7kZL0fGM1GwP0rG1sM1bKZmNRpJAM+EA1k8MlOx12x6/OxLebe4o4GWThe4L2d3Mp1Ld5hbSiuViiHHpn3+CGOgRQGM7gYNQE8JX8jLZy5IwO6aq8Bc4lyPMGniBq7GjH6xk2swGCKfinTLf+DVfekLfabboafpLtEj9ZSTl6x2xpoBplVromv3o3fP/DKuuEx6/9lLbrc3KvJ7f1pp8Lxa0PxUUTE6Xw1VMsZitEwfaASGOvrrv1y72Nx8V6RsGOsj9NS5PS3/pOoSG/hcmaesjG43vSQIDAQAB</string>
 
     <string name="pref_key_history_entries">history_entries</string>
+    <string name="pref_key_back_history">back_history</string>
     <string name="pref_key_version">version</string>
     <string name="pref_key_cache">cache_references</string>
     <string name="pref_feedback">send_feedback</string>

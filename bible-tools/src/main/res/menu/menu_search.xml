@@ -3,7 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action.voice"
-        android:title="@string/blank"
         android:icon="@drawable/ic_keyboard_voice"
-        app:showAsAction="ifRoom"/>
+        android:title="@string/blank"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_feedback"
+        android:title="@string/action_send_feedback"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_about"
+        android:title="@string/title_about"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_donate"
+        android:title="@string/action_donate"
+        app:showAsAction="never" />
 </menu>

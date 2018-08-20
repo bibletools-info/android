@@ -5,7 +5,6 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.speech.RecognizerIntent
-import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
@@ -13,7 +12,6 @@ import android.view.View
 import com.arlib.floatingsearchview.FloatingSearchView
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
 import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.layout_nav_header.view.*
 import rawcomposition.bibletools.info.R
 import rawcomposition.bibletools.info.data.model.*
 import rawcomposition.bibletools.info.di.ViewModelFactory
@@ -49,10 +47,9 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
                     ViewState.LOADING -> {
                         errorView.hide()
                         listAdapter.isLoading = true
-                        searchView.showProgress()
                     }
                     ViewState.ERROR -> {
-                        searchView.hideProgress()
+
                         listAdapter.isLoading = false
 
                         it.errorMessage?.let { message ->
@@ -67,7 +64,6 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
 
                     }
                     ViewState.SUCCESS -> {
-                        searchView.hideProgress()
                         errorView.hide()
                         listAdapter.isLoading = false
                     }
@@ -84,10 +80,6 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
     }
 
     private fun initUi() {
-        val header = navView.getHeaderView(0)
-        header.appTitle.setCustomFontTitle()
-
-        searchView.attachNavigationDrawerToMenuButton(drawerLayout)
         searchView.setDimBackground(false)
         searchView.setOnSearchListener(object : FloatingSearchView.OnSearchListener {
             override fun onSearchAction(currentQuery: String?) {
@@ -125,38 +117,20 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
         searchView.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.action_voice -> displaySpeechRecognizer()
-            }
-        }
-
-        navView.setNavigationItemSelectedListener {
-            drawerLayout.closeDrawers()
-
-            when (it.itemId) {
-                R.id.nav_fav -> {
-                    true
-                }
                 R.id.action_settings -> {
                     startActivity(Intent(this, SettingsActivity::class.java))
-                    true
                 }
                 R.id.action_feedback -> {
                     sendFeedback()
-                    true
                 }
                 R.id.action_about -> {
                     showWebUrl("https://bibletools.info/about/info")
-                    true
                 }
                 R.id.action_donate -> {
                     donateClicked()
-                    true
                 }
-                else -> false
-
             }
         }
-
-        navView.menu.findItem(R.id.nam_home).isChecked = true
 
         listAdapter = ReferencesListAdapter(GlideApp.with(this), this)
 
@@ -172,12 +146,10 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
         recycler.apply {
             layoutManager = manager
             adapter = listAdapter
+            isNestedScrollingEnabled = false
         }
 
         scrollView.setOnScrollChangeListener(SearchScrollListener(searchView))
-        ViewCompat.setNestedScrollingEnabled(recycler, false)
-        scrollView.isSmoothScrollingEnabled = true
-
     }
 
     override fun onEnterAnimationComplete() {
@@ -264,6 +236,12 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onBackPressed() {
+        if (viewModel.navigateBack()) {
+            super.onBackPressed()
+        }
     }
 
     companion object {

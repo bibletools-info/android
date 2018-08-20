@@ -19,6 +19,12 @@
             android:summary="@string/summary_font_weight"
             android:title="@string/title_font_weght" />
 
+        <android.support.v7.preference.SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:key="@string/pref_key_back_history"
+            android:summary="@string/settings_back_history_summary"
+            android:title="@string/settings_back_history_title" />
+
     </android.support.v7.preference.PreferenceCategory>
 
     <android.support.v7.preference.PreferenceCategory android:title="@string/settings_support">
