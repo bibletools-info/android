@@ -53,7 +53,7 @@
 ## Dagger
 -dontwarn com.google.errorprone.annotations.*
 
--keep class com.tinashe.weather.model.** { *; }
+-keep class rawcomposition.bibletools.info.data.model.** { *; }
 
 ## Glide
 -keep public class * implements com.bumptech.glide.module.GlideModule
