@@ -76,7 +76,12 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
             }
         })
 
-        viewModel.reference.observe(this, Observer {
+        viewModel.reference.observe(this, Observer { it ->
+
+            if (listAdapter.resources.isNotEmpty()) {
+                it?.let { searchView.setSearchText(it.textRef) }
+            }
+
             listAdapter.reference = it
         })
 

@@ -17,7 +17,7 @@ class ReferencesListAdapter constructor(private val glide: GlideRequests,
 
     private var size = 0
 
-    private var resources: List<Resource> = emptyList()
+    var resources: List<Resource> = emptyList()
 
     var isLoading = false
         set(value) {
