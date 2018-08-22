@@ -12,6 +12,7 @@ import dagger.android.HasActivityInjector
 import dagger.android.support.HasSupportFragmentInjector
 import io.fabric.sdk.android.Fabric
 import rawcomposition.bibletools.info.di.DaggerBibleToolsAppComponent
+import rawcomposition.bibletools.info.utils.CrashlyticsTree
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -43,6 +44,8 @@ class BibleToolsApp : Application(), HasActivityInjector, HasSupportFragmentInje
 
             if (BuildConfig.DEBUG) {
                 Timber.plant(Timber.DebugTree())
+            } else {
+                Timber.plant(CrashlyticsTree())
             }
 
             DaggerBibleToolsAppComponent.builder()
