@@ -29,6 +29,8 @@ import rawcomposition.bibletools.info.R
 import rawcomposition.bibletools.info.data.model.FontType
 import rawcomposition.bibletools.info.data.model.Word
 import rawcomposition.bibletools.info.di.ViewModelFactory
+import timber.log.Timber
+import java.util.regex.PatternSyntaxException
 
 
 inline fun <reified T : ViewModel> getViewModel(activity: FragmentActivity, factory: ViewModelFactory): T {
@@ -126,6 +128,11 @@ private fun makeLinkClickable(strBuilder: SpannableStringBuilder, span: URLSpan,
     val start = strBuilder.getSpanStart(span)
     val end = strBuilder.getSpanEnd(span)
     val flags = strBuilder.getSpanFlags(span)
+
+    if (start == -1 || end == -1) {
+        return
+    }
+
     val clickable = object : ClickableSpan() {
         override fun onClick(view: View) {
 
@@ -154,8 +161,12 @@ fun TextView.renderVerse(html: String, callback: (Word) -> Unit) {
             }
         }
 
-        for (range in text.toString().matchesIn(word)){
-            ClickSpan(lister).clickify(this, range, lister)
+        for (range in text.toString().matchesIn(word)) {
+            try {
+                ClickSpan(lister).clickify(this, range, lister)
+            } catch (ex: Exception) {
+                Timber.e(ex, ex.message)
+            }
         }
     }
 }
@@ -167,7 +178,13 @@ fun TextView.renderVerse(html: String, callback: (Word) -> Unit) {
  */
 fun String.matchesIn(word: String): ArrayList<IntRange> {
 
-    val regex = Regex("(?<![\\w\\d])($word)(?![\\w\\d])")
+    val regex: Regex
+    try {
+        regex = Regex("(?<![\\w\\d])($word)(?![\\w\\d])")
+    } catch (ex: PatternSyntaxException) {
+        Timber.e(ex, ex.message)
+        return arrayListOf()
+    }
 
     val matcher = regex.toPattern().matcher(this)
 
@@ -182,7 +199,7 @@ fun String.matchesIn(word: String): ArrayList<IntRange> {
 
 fun TextView.setFont(@FontType fontType: String) {
 
-    val font = when(fontType){
+    val font = when (fontType) {
         FontType.LIGHT -> ResourcesCompat.getFont(context, R.font.lato_light)
         FontType.REGULAR -> ResourcesCompat.getFont(context, R.font.lato_regular)
         FontType.MEDIUM -> ResourcesCompat.getFont(context, R.font.lato_medium)

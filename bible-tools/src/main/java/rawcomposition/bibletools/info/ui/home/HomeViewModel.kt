@@ -123,6 +123,10 @@ class HomeViewModel @Inject constructor(private val repository: ReferencesReposi
         }
 
         history.value = ArrayList(list.dropLast(1))
+        if (history.value?.isEmpty() == true) {
+            return true
+        }
+
         val ref = history.value?.last()
         ref?.let { fetchReference(it) }
 
