@@ -35,10 +35,6 @@
             <rawcomposition.bibletools.info.ui.custom.ResourceTextView
                 android:id="@+id/content"
                 style="@style/referenceText"
-                android:autoLink="none"
-                android:overScrollMode="never"
-                android:scrollHorizontally="false"
-                android:singleLine="false"
                 android:textIsSelectable="true"
                 tools:text="@tools:sample/lorem/random" />
 

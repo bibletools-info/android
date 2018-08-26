@@ -69,6 +69,7 @@
             <rawcomposition.bibletools.info.ui.custom.ResourceTextView
                 android:id="@+id/content"
                 style="@style/referenceText"
+                android:textIsSelectable="true"
                 tools:text="@tools:sample/lorem/random" />
 
             <View

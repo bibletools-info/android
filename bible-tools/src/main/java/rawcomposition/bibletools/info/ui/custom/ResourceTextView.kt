@@ -1,7 +1,6 @@
 package rawcomposition.bibletools.info.ui.custom
 
 import android.content.Context
-import android.support.v7.widget.AppCompatTextView
 import android.util.AttributeSet
 
 /**
@@ -9,7 +8,7 @@ import android.util.AttributeSet
  *
  * https://stackoverflow.com/a/36193267
  */
-class ResourceTextView : AppCompatTextView {
+class ResourceTextView : JellyBeanSpanFixTextView {
 
     constructor(context: Context) : super(context)
 
