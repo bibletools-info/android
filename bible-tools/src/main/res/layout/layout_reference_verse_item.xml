@@ -33,8 +33,8 @@
                     android:layout_margin="@dimen/margin_tiny"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/blank"
-                    android:visibility="gone"
-                    android:src="@drawable/ic_favorite_border" />
+                    android:src="@drawable/ic_favorite_border"
+                    android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/acttionPrevious"
@@ -61,8 +61,6 @@
         <TextView
             android:id="@+id/textRef"
             style="@style/referenceText"
-            android:textIsSelectable="true"
-            android:linksClickable="true"
             android:textColorLink="?android:textColorPrimary"
             tools:text="In the beginning God created the heavens and earth" />
 

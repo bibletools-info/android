@@ -44,7 +44,7 @@ class StrongsViewModel @Inject constructor(private val rxSchedulers: RxScheduler
                             .putCustomAttribute("word", word.text))
 
                 }, {
-                    Timber.e(it)
+                    Timber.e(it, it.message)
 
                     if (it is ReferenceExeption && it.message != null) {
                         viewState.value = ViewStateData(ViewState.ERROR, it.message!!)

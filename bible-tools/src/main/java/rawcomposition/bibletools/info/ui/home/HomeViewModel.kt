@@ -66,7 +66,7 @@ class HomeViewModel @Inject constructor(private val repository: ReferencesReposi
                             .putCustomAttribute("verse", it.textRef))
 
                 }, { it ->
-                    Timber.e(it)
+                    Timber.e(it, it.message)
 
                     if (it is ReferenceExeption && it.message != null) {
                         viewState.value = ViewStateData(ViewState.ERROR, it.message!!)
@@ -86,7 +86,7 @@ class HomeViewModel @Inject constructor(private val repository: ReferencesReposi
         val disposable = repository.submitHelpful(resource.id, ref)
                 .subscribeOn(rxSchedulers.network)
                 .observeOn(rxSchedulers.main)
-                .subscribe({}, { Timber.e(it) })
+                .subscribe({}, { Timber.e(it, it.message) })
 
         disposables.add(disposable)
 
