@@ -51,8 +51,6 @@ dependencies {
     implementation "com.android.support:preference-v14:${versions.support_library}"
     implementation "com.android.support:customtabs:${versions.support_library}"
 
-    implementation "com.google.android.gms:play-services-base:${versions.play_services}"
-
     implementation "android.arch.lifecycle:extensions:${versions.arch_lifecycle}"
     implementation "android.arch.lifecycle:reactivestreams:${versions.arch_lifecycle}"
     kapt "android.arch.lifecycle:compiler:${versions.arch_comp}"
@@ -93,6 +91,6 @@ dependencies {
         transitive = true
     }
     implementation('com.crashlytics.sdk.android:answers:1.4.2@aar') {
-        transitive = true;
+        transitive = true
     }
 }

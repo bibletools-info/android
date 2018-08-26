@@ -17,7 +17,6 @@ buildscript {
             'retrofit'       : '2.3.0',
             'okhttp3'        : '3.8.1',
             'timber'         : '4.7.0',
-            'play_services'  : '15.0.1',
             'lottie'         : '2.5.4',
             'mockito'        : '2.13.0'
     ]
@@ -51,7 +50,7 @@ task clean(type: Delete) {
 
 ext {
     versionCode = generateBuildTime()
-    versionName = "2.0.2"
+    versionName = "2.0.3"
 }
 
 static def generateBuildTime() {

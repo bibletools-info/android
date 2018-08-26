@@ -23,8 +23,14 @@ class MapDetailActivity : AppCompatActivity() {
 
         toolbar.setNavigationOnClickListener { supportFinishAfterTransition() }
 
+        val url = intent.getStringExtra(EXTRA_URL)
+        if (url == null) {
+            finish()
+            return
+        }
+
         GlideApp.with(this)
-                .load(MAP_URL)
+                .load(url)
                 .into(PhotoTarget(photo, progress))
 
         ViewCompat.setTransitionName(photo, EXTRA_IMAGE)
@@ -32,16 +38,15 @@ class MapDetailActivity : AppCompatActivity() {
 
     companion object {
         private const val EXTRA_IMAGE = "arg:img"
-
-        private lateinit var MAP_URL: String
+        private const val EXTRA_URL = "arg:url"
 
         fun view(activity: AppCompatActivity, transitionView: View, url: String) {
-            MAP_URL = url
 
             val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                     activity, transitionView, EXTRA_IMAGE)
 
             val intent = Intent(activity, MapDetailActivity::class.java)
+            intent.putExtra(EXTRA_URL, url)
             ActivityCompat.startActivity(activity, intent, options.toBundle())
         }
     }
