@@ -42,6 +42,7 @@
         </activity>
         <activity
             android:name=".ui.home.picker.VersePickerActivity"
+            android:excludeFromRecents="true"
             android:label="@string/blank"
             android:theme="@style/Theme.BibleTools.Picker" />
         <activity

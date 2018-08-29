@@ -76,7 +76,11 @@ class VersePickerActivity : BaseThemedActivity(), VersePickerCallback {
     override fun onBookSelected(position: Int) {
         book = books[position]
 
-        viewPager.currentItem = 1
+        if (book?.chapters?.size == 1) {
+            onChapterSelected(0)
+        } else {
+            viewPager.currentItem = 1
+        }
     }
 
     override fun onChapterSelected(position: Int) {
