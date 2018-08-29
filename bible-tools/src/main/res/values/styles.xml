@@ -66,12 +66,36 @@
     </style>
 
     <!-- set the rounded drawable as background to your bottom sheet -->
-    <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
+    <style name="BottomSheet" parent="@style/Widget.MaterialComponents.BottomSheet.Modal">
         <item name="android:background">@drawable/bg_bottom_sheet_dialog_fragment</item>
     </style>
 
     <style name="BaseBottomSheetDialog" parent="@style/Theme.MaterialComponents.Light.BottomSheetDialog">
         <item name="android:windowIsFloating">false</item>
         <item name="bottomSheetStyle">@style/BottomSheet</item>
+    </style>
+
+    <!-- set the rounded drawable as background to your bottom sheet -->
+    <style name="BottomSheet.Normal" parent="@style/Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_bottom_sheet_dialog_fragment_normal</item>
+    </style>
+
+    <style name="BaseBottomSheetDialog.Normal" parent="@style/Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheet.Normal</item>
+    </style>
+
+    <style name="Widget.TabTextAppearance" parent="@style/TextAppearance.MaterialComponents.Tab">
+        <item name="android:fontFamily">@font/sans_regular</item>
+    </style>
+
+    <style name="Widget.TabTextAppearance.Tab" parent="@style/TextAppearance.MaterialComponents.Tab">
+        <item name="android:fontFamily">@font/sans_bold</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="Widget.TabTextAppearance.Toolbar" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:fontFamily">@font/sans_bold</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
     </style>
 </resources>

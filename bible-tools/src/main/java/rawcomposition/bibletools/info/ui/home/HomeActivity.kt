@@ -21,6 +21,7 @@ import rawcomposition.bibletools.info.di.ViewModelFactory
 import rawcomposition.bibletools.info.ui.base.BaseThemedActivity
 import rawcomposition.bibletools.info.ui.custom.SearchScrollListener
 import rawcomposition.bibletools.info.ui.home.map.MapDetailActivity
+import rawcomposition.bibletools.info.ui.home.picker.VersePickerActivity
 import rawcomposition.bibletools.info.ui.home.strongs.StrongsDialogFragment
 import rawcomposition.bibletools.info.ui.settings.SettingsActivity
 import rawcomposition.bibletools.info.utils.*
@@ -124,6 +125,11 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
 
         searchView.setOnMenuItemClickListener {
             when (it.itemId) {
+                R.id.action_list -> {
+                    val intent = Intent(this, VersePickerActivity::class.java)
+
+                    startActivityForResult(intent, PICK_VERSE_CODE)
+                }
                 R.id.action_voice -> displaySpeechRecognizer()
                 R.id.action_settings -> {
                     startActivity(Intent(this, SettingsActivity::class.java))
@@ -250,6 +256,11 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
 
                 viewModel.fetchReference(query)
             }
+        } else if (requestCode == PICK_VERSE_CODE && resultCode == Activity.RESULT_OK) {
+            val ref = data?.getStringExtra(VersePickerActivity.VERSE)
+            ref?.let {
+                viewModel.fetchReference(it)
+            }
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
@@ -263,5 +274,6 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
     companion object {
         private const val VERSE_KEY = "verse"
         private const val SPEECH_REQUEST_CODE = 1234
+        private const val PICK_VERSE_CODE = 123
     }
 }

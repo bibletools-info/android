@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingEnd="@dimen/spacing_medium"
+    android:paddingStart="@dimen/spacing_medium">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:fontFamily="@font/lato_medium"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        android:textColor="?android:textColorPrimary"
+        tools:text="Toolbar Title" />
+
+    <ImageButton
+        android:id="@+id/close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/blank"
+        android:paddingBottom="@dimen/spacing_list"
+        android:paddingEnd="@dimen/spacing_medium"
+        android:paddingStart="@dimen/spacing_medium"
+        android:paddingTop="@dimen/spacing_list"
+        android:src="@drawable/ic_keyboard_arrow_down" />
+
+</LinearLayout>

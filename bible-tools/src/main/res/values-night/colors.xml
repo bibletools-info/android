@@ -3,11 +3,14 @@
     <color name="window_background">#212121</color>
 
     <color name="text">#FFFFFF</color>
+    <color name="deselected">#99FFFFFF</color>
     <color name="secondary">#70FFFFFF</color>
 
     <color name="divider">#757575</color>
 
     <color name="card_background">#424242</color>
+
+    <color name="status_bar_transluscent">@color/theme_primary</color>
 
     <color name="scrim_center">#98424242</color>
     <color name="scrim_start">#424242</color>

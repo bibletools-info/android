@@ -50,7 +50,7 @@ task clean(type: Delete) {
 
 ext {
     versionCode = generateBuildTime()
-    versionName = "2.0.3"
+    versionName = "2.1.0"
 }
 
 static def generateBuildTime() {

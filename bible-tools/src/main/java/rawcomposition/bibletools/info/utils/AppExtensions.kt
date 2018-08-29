@@ -115,13 +115,19 @@ fun TextView.setContentHtml(html: String, callback: (String) -> Unit) {
     } else {
         Html.fromHtml(html)
     }
-    val strBuilder = SpannableStringBuilder(sequence)
-    val urls = strBuilder.getSpans(0, sequence.length, URLSpan::class.java)
-    for (span in urls) {
-        makeLinkClickable(strBuilder, span, callback)
+
+    try {
+        val strBuilder = SpannableStringBuilder(sequence)
+        val urls = strBuilder.getSpans(0, sequence.length, URLSpan::class.java)
+        for (span in urls) {
+            makeLinkClickable(strBuilder, span, callback)
+        }
+        text = strBuilder
+        movementMethod = LinkMovementMethod.getInstance()
+    } catch (ex: Exception) {
+        Timber.e(ex, ex.message)
+        renderHtml(html)
     }
-    text = strBuilder
-    movementMethod = LinkMovementMethod.getInstance()
 }
 
 private fun makeLinkClickable(strBuilder: SpannableStringBuilder, span: URLSpan, callback: (String) -> Unit) {

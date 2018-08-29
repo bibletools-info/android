@@ -7,4 +7,9 @@
         <item name="android:navigationBarDividerColor">@color/divider</item>
     </style>
 
+    <style name="Theme.BibleTools.Picker">
+        <item name="colorPrimaryDark">@color/status_bar_transluscent</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
 </resources>

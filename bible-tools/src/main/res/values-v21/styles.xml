@@ -17,4 +17,11 @@
         <item name="colorPrimary">@color/theme</item>
     </style>
 
+    <style name="BottomSheetDialogTheme.Normal" parent="BaseBottomSheetDialog.Normal">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/window_background</item>
+        <item name="colorAccent">@color/theme</item>
+        <item name="colorPrimary">@color/theme</item>
+    </style>
+
 </resources>
