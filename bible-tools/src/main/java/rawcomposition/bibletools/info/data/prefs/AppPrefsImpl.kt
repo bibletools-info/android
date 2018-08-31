@@ -34,7 +34,8 @@ class AppPrefsImpl constructor(private val context: Context) : AppPrefs {
 
     @FontType
     override fun getFontType(): String {
-        return prefs.getString(context.getString(R.string.pref_font_weight), FontType.REGULAR)
+        return prefs
+                .getString(context.getString(R.string.pref_font_weight), FontType.REGULAR) as String
     }
 
     companion object {

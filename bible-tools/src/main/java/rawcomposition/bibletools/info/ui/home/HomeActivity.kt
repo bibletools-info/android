@@ -3,6 +3,7 @@ package rawcomposition.bibletools.info.ui.home
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.speech.RecognizerIntent
 import android.support.v7.widget.LinearLayoutManager
@@ -85,6 +86,10 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
 
             listAdapter.reference = it
         })
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            startUp()
+        }
 
     }
 
@@ -169,6 +174,10 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
     override fun onEnterAnimationComplete() {
         super.onEnterAnimationComplete()
 
+        startUp()
+    }
+
+    private fun startUp(){
         if (listAdapter.itemCount > 0 && !listAdapter.isLoading) {
             return
         }

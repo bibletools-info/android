@@ -68,6 +68,7 @@ dependencies {
 
     implementation "com.squareup.okhttp3:okhttp:${versions.okhttp3}"
     implementation "com.squareup.okhttp3:logging-interceptor:${versions.okhttp3}"
+    implementation "com.squareup.okhttp3:okhttp-urlconnection:${versions.okhttp3}"
 
     implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
     implementation "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}"
