@@ -1,5 +1,6 @@
 package rawcomposition.bibletools.info.ui.home.vh
 
+import android.os.Build
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
@@ -151,7 +152,8 @@ class ResourceHolder constructor(override val containerView: View) :
 
     companion object {
         private const val MAX_LINES = 4
-        private const val LOGO_URL = "https://bibletools.info/assets/img/authors/%s.png"
+        private val LOGO_URL = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            "https://bibletools.info/assets/img/authors/%s.png" else "http://bibletools.info/assets/img/authors/%s.png"
 
         fun inflate(parent: ViewGroup, @FontType fontType: String): ResourceHolder {
             val holder = ResourceHolder(inflateView(R.layout.layout_reference_item, parent, false))
