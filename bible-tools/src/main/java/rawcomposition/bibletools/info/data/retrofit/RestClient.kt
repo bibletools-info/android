@@ -1,5 +1,6 @@
 package rawcomposition.bibletools.info.data.retrofit
 
+import android.os.Build
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -34,7 +35,7 @@ object RestClient {
     private val retrofit: Retrofit
         get() {
             return Retrofit.Builder()
-                    .baseUrl(BuildConfig.URL_BASE)
+                    .baseUrl(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) "https://bibletools.info" else BuildConfig.URL_BASE)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                     .client(client)
