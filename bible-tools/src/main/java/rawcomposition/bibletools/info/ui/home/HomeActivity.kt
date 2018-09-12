@@ -16,6 +16,7 @@ import com.crashlytics.android.answers.Answers
 import com.crashlytics.android.answers.CustomEvent
 import com.crashlytics.android.answers.SearchEvent
 import kotlinx.android.synthetic.main.activity_home.*
+import rawcomposition.bibletools.info.BuildConfig
 import rawcomposition.bibletools.info.R
 import rawcomposition.bibletools.info.data.model.*
 import rawcomposition.bibletools.info.di.ViewModelFactory
@@ -177,7 +178,7 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
         startUp()
     }
 
-    private fun startUp(){
+    private fun startUp() {
         if (listAdapter.itemCount > 0 && !listAdapter.isLoading) {
             return
         }
@@ -242,6 +243,21 @@ class HomeActivity : BaseThemedActivity(), ReferenceCallback {
     override fun viewCrossReference(word: Word) {
         val fragment = StrongsDialogFragment.newInstance(word)
         fragment.show(supportFragmentManager, fragment.tag)
+    }
+
+    override fun shareContent(content: CharSequence) {
+        val link = BuildConfig.URL_BASE + "/" + viewModel.reference.value?.shortRef
+
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, "$content\n$link")
+            type = "text/plain"
+        }
+
+        sendIntent.resolveActivity(packageManager)?.let {
+            startActivity(Intent.createChooser(sendIntent, "Send to:"))
+        }
+
     }
 
     private fun displaySpeechRecognizer() {

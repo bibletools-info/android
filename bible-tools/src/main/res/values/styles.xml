@@ -54,6 +54,7 @@
         <item name="android:foreground">?attr/selectableItemBackground</item>
         <item name="cardElevation">@dimen/margin_small</item>
         <item name="cardBackgroundColor">@color/card_background</item>
+        <item name="cardCornerRadius">@dimen/card_radius</item>
     </style>
 
     <style name="Widget.SearchView">

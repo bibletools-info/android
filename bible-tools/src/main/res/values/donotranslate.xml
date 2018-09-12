@@ -4,7 +4,7 @@
     <string name="base_api_url">http://bibletools.info</string>
     <string name="base_maps_url">http://bibletools.info/assets/img/maps/</string>
 
-    <string name="app_email">akjackson1@gmail.com</string>
+    <string name="app_email">adam@bibletools.info</string>
     <string name="app_help">http://bibletools.info/about</string>
     <string name="app_host">path</string>
     <string name="app_scheme">bibletools</string>

@@ -64,7 +64,7 @@ abstract class BaseThemedActivity : AppCompatActivity(), PurchasesUpdatedListene
 
         val intent = Intent(Intent.ACTION_SENDTO)
         intent.data = Uri.parse("mailto:")
-        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.app_email)))
+        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.app_email), "tmzon08@gmail.cm"))
         intent.putExtra(Intent.EXTRA_SUBJECT, subject)
         if (intent.resolveActivity(packageManager) != null) {
             startActivity(Intent.createChooser(intent, getString(R.string.label_email)))

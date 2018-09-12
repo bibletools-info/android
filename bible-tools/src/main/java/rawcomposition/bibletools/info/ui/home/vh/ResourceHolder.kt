@@ -40,6 +40,10 @@ class ResourceHolder constructor(override val containerView: View) :
             author.text = resource.source
         }
 
+        share.setOnClickListener {
+            callback.shareContent(content.text)
+        }
+
 
         when (resource.type) {
             MAP -> {
@@ -81,7 +85,7 @@ class ResourceHolder constructor(override val containerView: View) :
             when (content.maxLines) {
                 MAX_LINES -> {
                     content.maxLines = Int.MAX_VALUE
-                    it.isActivated = true
+                    cardView.isActivated = true
 
                     resource.isExpanded = true
 
@@ -90,6 +94,9 @@ class ResourceHolder constructor(override val containerView: View) :
                     if (resource.rating == null && resource.type == null) {
                         ratingContainer.show()
                     }
+
+                    if (!share.isVisible())
+                        share.show()
                 }
                 else -> {
                     if (ratingContainer.isVisible()) {
@@ -97,13 +104,16 @@ class ResourceHolder constructor(override val containerView: View) :
                     }
 
                     content.maxLines = MAX_LINES
-                    it.isActivated = false
+                    cardView.isActivated = false
 
                     resource.isExpanded = false
 
                     gradient.show()
 
                     callback.itemCollapsed(position, itemView)
+
+                    if (share.isVisible())
+                        share.hide()
                 }
             }
         }
@@ -148,6 +158,8 @@ class ResourceHolder constructor(override val containerView: View) :
         fun submitUnHelpful(resource: Resource)
 
         fun itemCollapsed(position: Int, childView: View)
+
+        fun shareContent(content: CharSequence)
     }
 
     companion object {

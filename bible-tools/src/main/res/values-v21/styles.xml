@@ -7,6 +7,7 @@
         <item name="cardUseCompatPadding">true</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
         <item name="cardElevation">1dp</item>
+        <item name="cardCornerRadius">@dimen/card_radius</item>
         <item name="android:stateListAnimator">@animator/animator_raise</item>
     </style>
 
