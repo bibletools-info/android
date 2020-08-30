@@ -18,12 +18,15 @@ android {
         buildConfigField "String", "URL_BASE", '"http://bibletools.info"'
     }
 
+    Properties keyProps = new Properties()
+    keyProps.load(new FileInputStream(file("../bible-tools/keystore.properties")))
+
     signingConfigs {
         release {
-            keyAlias 'rawcomposition'
-            keyPassword '&i&l3s'
-            storeFile file('../key_store.jks')
-            storePassword '&i&l3s'
+            storeFile file(keyProps['release.keystore'])
+            storePassword keyProps['release.keystore.password']
+            keyAlias keyProps['key.alias']
+            keyPassword keyProps['key.password']
         }
     }
 

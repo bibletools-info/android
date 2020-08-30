@@ -6,3 +6,5 @@
 .idea/*
 *.apk
 bible-tools/manifest-merger-release-report.txt
+/bible-tools/key_store.jks
+/bible-tools/keystore.properties
